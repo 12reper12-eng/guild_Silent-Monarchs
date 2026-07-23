@@ -60,6 +60,7 @@
             display: flex;
             list-style: none;
             gap: 1.5rem;
+            align-items: center;
         }
 
         .nav-links a {
@@ -71,6 +72,25 @@
 
         .nav-links a:hover {
             color: var(--accent-gold);
+        }
+
+        /* Music Bar Widget */
+        .music-widget {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #202330;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid var(--accent-purple);
+        }
+
+        .music-widget button {
+            background: none;
+            border: none;
+            color: var(--accent-gold);
+            cursor: pointer;
+            font-weight: bold;
         }
 
         /* Hero Section */
@@ -118,7 +138,7 @@
             transform: scale(1.05);
         }
 
-        /* Main Containers */
+        /* Containers */
         .container {
             max-width: 1100px;
             margin: 4rem auto;
@@ -137,11 +157,11 @@
             text-align: center;
         }
 
-        /* Grid & Cards */
-        .grid-2 {
+        .grid-3 {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
         .card {
@@ -156,7 +176,27 @@
             margin-bottom: 1rem;
         }
 
-        /* Roster Table */
+        /* Podio Top 1 */
+        .podium-card {
+            background: linear-gradient(135deg, #181a24, #251e3e);
+            border: 2px solid var(--accent-gold);
+            text-align: center;
+            position: relative;
+        }
+
+        .podium-card h3 {
+            color: var(--accent-gold);
+            font-size: 1.3rem;
+        }
+
+        .podium-player {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: white;
+            margin: 0.5rem 0;
+        }
+
+        /* Tables */
         .table-responsive {
             max-height: 400px;
             overflow-y: auto;
@@ -194,7 +234,7 @@
         .status-open { background-color: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid var(--success); }
         .status-closed { background-color: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        /* Public Registration Form */
+        /* Registration Form */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -225,6 +265,42 @@
             border-radius: 4px;
         }
 
+        /* Minigame Section */
+        .minigame-box {
+            background-color: var(--bg-card);
+            border: 2px dashed var(--accent-purple);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #gameArea {
+            height: 250px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+            border: 1px solid #2a2e3d;
+            cursor: crosshair;
+        }
+
+        .target {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-gold);
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #000;
+            font-weight: bold;
+        }
+
         /* Admin Panel */
         .admin-section {
             background-color: #12141c;
@@ -234,7 +310,7 @@
             margin-top: 3rem;
         }
 
-        .admin-form input, .admin-form select {
+        .admin-form select {
             width: 100%;
             padding: 0.8rem;
             margin: 0.5rem 0 1rem 0;
@@ -280,14 +356,11 @@
             font-size: 1.05rem;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            .grid-2, .form-grid {
+            .grid-3, .grid-2, .form-grid {
                 grid-template-columns: 1fr;
             }
-            .form-group.full {
-                grid-column: span 1;
-            }
+            .form-group.full { grid-column: span 1; }
             .hero h1 { font-size: 2.5rem; }
             .nav-links { display: none; }
         }
@@ -295,12 +368,18 @@
 </head>
 <body>
 
+    <!-- Audio de Fondo (Música del Lobby) -->
+    <!-- Puedes cambiar el enlace de abajo por el archivo de música (.mp3) que quieras descargar o subir -->
+    <audio id="lobbyMusic" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-epic.mp3" type="audio/mp3">
+    </audio>
+
     <!-- Modal de Bienvenida -->
     <div id="welcomeModal" class="modal-overlay">
         <div class="modal-content">
             <h2>¡Bienvenido a Silent March!</h2>
-            <p>Gracias por unirte a nuestra familia y formar parte de esta gran orden en Rucoy Online. Prepárate para conquistar las sombras.</p>
-            <button class="btn" onclick="closeModal()">Entrar al Sitio</button>
+            <p>Gracias por unirte a nuestra familia y formar parte de esta gran orden en Rucoy Online. ¡Prepárate para pelear por el Top!</p>
+            <button class="btn" onclick="startExperience()">Entrar al Sitio</button>
         </div>
     </div>
 
@@ -310,10 +389,18 @@
             <div class="logo">Silent March</div>
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#acerca">Nosotros</a></li>
+                <li><a href="#tops">Pelea por Top</a></li>
                 <li><a href="#registro">Registro</a></li>
+                <li><a href="#minijuego">Minijuego</a></li>
                 <li><a href="#roster">Miembros</a></li>
                 <li><a href="#admin">Admin</a></li>
+                <!-- Reproductor de Música -->
+                <li>
+                    <div class="music-widget">
+                        <span style="font-size: 0.8rem; color: var(--text-muted);">Música:</span>
+                        <button id="musicBtn" onclick="toggleMusic()">▶ Play</button>
+                    </div>
+                </li>
             </ul>
         </nav>
     </header>
@@ -331,28 +418,36 @@
 
     <!-- Container -->
     <div class="container">
-        <!-- About & Rules -->
-        <section id="acerca">
-            <h2>Acerca de la Guild</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Nuestra Historia</h3>
-                    <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent March no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
+
+        <!-- Sección de Tops del Clan (Pelea por Top) -->
+        <section id="tops">
+            <h2>Podio de Guerreros (Top 1 Clan)</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate en la guild!</p>
+            
+            <div class="grid-3">
+                <div class="card podium-card">
+                    <h3>⚔️ Top 1 Melee</h3>
+                    <div class="podium-player" id="topMeleeName">Sin Asignar</div>
+                    <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 0</p>
                 </div>
-                <div class="card">
-                    <h3>Código de Conducta</h3>
-                    <p>1. Respeto absoluto a los compañeros de guild.<br>
-                    2. Prohibido el KS (Kill Stealing) a aliados.<br>
-                    3. Actividad constante y uso obligatorio del canal de Discord para eventos.</p>
+                <div class="card podium-card">
+                    <h3>🏹 Top 1 Distance</h3>
+                    <div class="podium-player" id="topDistanceName">Sin Asignar</div>
+                    <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 0</p>
+                </div>
+                <div class="card podium-card">
+                    <h3>🔮 Top 1 Magic</h3>
+                    <div class="podium-player" id="topMagicName">Sin Asignar</div>
+                    <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 0</p>
                 </div>
             </div>
         </section>
 
-        <!-- Public Registration Section (Para los 200 miembros) -->
+        <!-- Registro de Miembros -->
         <section id="registro">
             <h2>Registro de Miembro</h2>
             <div class="card">
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus datos. El sistema detectará automáticamente tu clase principal según tu skill más alta.</p>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus stats reales. Tu clase y puesto en el clan se calcularán automáticamente.</p>
                 
                 <div class="form-grid">
                     <div class="form-group full">
@@ -382,6 +477,25 @@
             </div>
         </section>
 
+        <!-- Minijuego Competitivo -->
+        <section id="minijuego">
+            <h2>Minijuego de Reacción "Quilla el Slime"</h2>
+            <div class="minigame-box">
+                <p style="color: var(--text-muted);">¡Pon a prueba tus reflejos! Haz clic en los objetivos dorados tan rápido como puedas antes de que se acaben los 20 segundos.</p>
+                <div style="margin-top: 1rem; font-weight: bold;">
+                    Puntuación: <span id="gameScore" style="color: var(--accent-gold);">0</span> | 
+                    Tiempo restante: <span id="gameTime" style="color: var(--danger);">20</span>s
+                </div>
+                <div id="gameArea">
+                    <div id="gameStartPrompt" style="position: absolute; width: 100%; top: 40%; text-align: center; color: var(--text-muted);">
+                        Presiona el botón para iniciar el evento competitivo
+                    </div>
+                </div>
+                <br>
+                <button class="btn" id="startBtn" onclick="startMinigame()">¡Iniciar Minijuego!</button>
+            </div>
+        </section>
+
         <!-- Roster Section -->
         <section id="roster">
             <h2>Roster de Miembros (<span id="memberCount">3</span>/200)</h2>
@@ -389,7 +503,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Rango / Clase</th>
+                            <th>Clase Principal</th>
                             <th>Nombre del Personaje</th>
                             <th>Nivel</th>
                             <th>Estadísticas (Melee / Dist / Magia)</th>
@@ -397,19 +511,19 @@
                     </thead>
                     <tbody id="rosterTableBody">
                         <tr>
-                            <td><strong>Líder (Melee)</strong></td>
+                            <td><strong>Melee</strong></td>
                             <td>MarchLeader</td>
                             <td>600</td>
                             <td>450 / 200 / 150</td>
                         </tr>
                         <tr>
-                            <td><strong>Sublíder (Distance)</strong></td>
+                            <td><strong>Distance</strong></td>
                             <td>ShadowKnight</td>
                             <td>550</td>
                             <td>180 / 420 / 140</td>
                         </tr>
                         <tr>
-                            <td><strong>Veterano (Magic)</strong></td>
+                            <td><strong>Magic</strong></td>
                             <td>AetherMage</td>
                             <td>520</td>
                             <td>150 / 190 / 410</td>
@@ -442,12 +556,175 @@
         </section>
     </div>
 
-    <!-- Scripting -->
+    <!-- Scripting General -->
     <script>
-        function closeModal() {
+        // --- Reproductor de Música del Lobby ---
+        function startExperience() {
             document.getElementById('welcomeModal').style.display = 'none';
+            const music = document.getElementById('lobbyMusic');
+            music.volume = 0.4;
+            music.play().then(() => {
+                document.getElementById('musicBtn').innerText = '❚❚ Pause';
+            }).catch(e => {
+                console.log("Audio autoplay bloqueado por el navegador.");
+            });
+            updateTops();
         }
 
+        function toggleMusic() {
+            const music = document.getElementById('lobbyMusic');
+            const btn = document.getElementById('musicBtn');
+            if (music.paused) {
+                music.play();
+                btn.innerText = '❚❚ Pause';
+            } else {
+                music.pause();
+                btn.innerText = '▶ Play';
+            }
+        }
+
+        // --- Sistema de Top 1 por Clases ---
+        let membersData = [
+            { name: "MarchLeader", level: 600, melee: 450, distance: 200, magic: 150, mainClass: "Melee", highest: 450 },
+            { name: "ShadowKnight", level: 550, melee: 180, distance: 420, magic: 140, mainClass: "Distance", highest: 420 },
+            { name: "AetherMage", level: 520, melee: 150, distance: 190, magic: 410, mainClass: "Magic", highest: 410 }
+        ];
+
+        function updateTops() {
+            let topMelee = { name: "Sin Asignar", val: 0 };
+            let topDistance = { name: "Sin Asignar", val: 0 };
+            let topMagic = { name: "Sin Asignar", val: 0 };
+
+            membersData.forEach(m => {
+                if (m.melee > topMelee.val) { topMelee = { name: m.name, val: m.melee }; }
+                if (m.distance > topDistance.val) { topDistance = { name: m.name, val: m.distance }; }
+                if (m.magic > topMagic.val) { topMagic = { name: m.name, val: m.magic }; }
+            });
+
+            document.getElementById('topMeleeName').innerText = topMelee.name;
+            document.getElementById('topMeleeStat').innerText = "Skill: " + topMelee.val;
+
+            document.getElementById('topDistanceName').innerText = topDistance.name;
+            document.getElementById('topDistanceStat').innerText = "Skill: " + topDistance.val;
+
+            document.getElementById('topMagicName').innerText = topMagic.name;
+            document.getElementById('topMagicStat').innerText = "Skill: " + topMagic.val;
+        }
+
+        // --- Registro de Miembros ---
+        function registerMember() {
+            const name = document.getElementById('regName').value.trim();
+            const level = parseInt(document.getElementById('regLevel').value) || 0;
+            const melee = parseInt(document.getElementById('regMelee').value) || 0;
+            const distance = parseInt(document.getElementById('regDistance').value) || 0;
+            const magic = parseInt(document.getElementById('regMagic').value) || 0;
+
+            if (!name || !level) {
+                alert('Por favor ingresa al menos tu nombre de personaje y nivel.');
+                return;
+            }
+
+            let mainClass = "Melee";
+            let highestSkill = melee;
+            if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
+            if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
+
+            // Guardar en array de miembros
+            membersData.push({ name, level, melee, distance, magic, mainClass, highest: highestSkill });
+
+            // Actualizar tabla HTML
+            const tableBody = document.getElementById('rosterTableBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><strong>${mainClass}</strong></td>
+                <td>${name}</td>
+                <td>${level}</td>
+                <td>${melee} / ${distance} / ${magic}</td>
+            `;
+            tableBody.appendChild(newRow);
+
+            document.getElementById('memberCount').innerText = membersData.length;
+
+            // Limpiar inputs y refrescar pods de tops
+            document.getElementById('regName').value = '';
+            document.getElementById('regLevel').value = '';
+            document.getElementById('regMelee').value = '';
+            document.getElementById('regDistance').value = '';
+            document.getElementById('regMagic').value = '';
+
+            updateTops();
+            alert('¡Te has registrado con éxito! Tus stats ya compiten por el Top de la guild.');
+        }
+
+        // --- Minijuego Competitivo ---
+        let score = 0;
+        let timeLeft = 20;
+        let gameInterval = null;
+        let targetTimeout = null;
+
+        function startMinigame() {
+            const area = document.getElementById('gameArea');
+            document.getElementById('gameStartPrompt').style.display = 'none';
+            document.getElementById('startBtn').style.display = 'none';
+            score = 0;
+            timeLeft = 20;
+            document.getElementById('gameScore').innerText = score;
+            document.getElementById('gameTime').innerText = timeLeft;
+
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('gameTime').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(gameInterval);
+                    clearTimeout(targetTimeout);
+                    area.innerHTML = `<div style="position: absolute; width: 100%; top: 40%; text-align: center; color: var(--accent-gold); font-size: 1.2rem; font-weight: bold;">¡Tiempo terminado! Puntuación final: ${score} puntos.</div>`;
+                    document.getElementById('startBtn').style.display = 'inline-block';
+                    document.getElementById('startBtn').innerText = 'Jugar Otra Vez';
+                }
+            }, 1000);
+
+            spawnTarget();
+        }
+
+        function spawnTarget() {
+            const area = document.getElementById('gameArea');
+            // Limpiar objetivo anterior si existe
+            const oldTarget = document.getElementById('activeTarget');
+            if (oldTarget) oldTarget.remove();
+
+            if (timeLeft <= 0) return;
+
+            const target = document.createElement('div');
+            target.className = 'target';
+            target.id = 'activeTarget';
+            target.innerText = 'Slime';
+
+            const maxX = area.clientWidth - 50;
+            const maxY = area.clientHeight - 50;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            target.style.left = randomX + 'px';
+            target.style.top = randomY + 'px';
+
+            target.onclick = function() {
+                score++;
+                document.getElementById('gameScore').innerText = score;
+                target.remove();
+                spawnTarget();
+            };
+
+            area.appendChild(target);
+
+            // El objetivo cambia de posición solo si no se le hace clic rápido
+            targetTimeout = setTimeout(() => {
+                if (document.getElementById('activeTarget')) {
+                    spawnTarget();
+                }
+            }, 900);
+        }
+
+        // --- Panel de Admin ---
         function verifyAdmin() {
             const pass = document.getElementById('adminPassword').value;
             if (pass === "admin123") {
@@ -469,55 +746,6 @@
                 badge.className = 'status-badge status-closed';
                 badge.innerText = 'Reclutamiento: CERRADO';
             }
-        }
-
-        function registerMember() {
-            const name = document.getElementById('regName').value;
-            const level = parseInt(document.getElementById('regLevel').value) || 0;
-            const melee = parseInt(document.getElementById('regMelee').value) || 0;
-            const distance = parseInt(document.getElementById('regDistance').value) || 0;
-            const magic = parseInt(document.getElementById('regMagic').value) || 0;
-
-            if (!name || !level) {
-                alert('Por favor ingresa al menos tu nombre de personaje y nivel.');
-                return;
-            }
-
-            // Cálculo automático de la skill más alta
-            let mainClass = "Melee";
-            let highestSkill = melee;
-
-            if (distance > highestSkill) {
-                highestSkill = distance;
-                mainClass = "Distance";
-            }
-            if (magic > highestSkill) {
-                highestSkill = magic;
-                mainClass = "Magic";
-            }
-
-            const tableBody = document.getElementById('rosterTableBody');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td>Miembro (${mainClass})</td>
-                <td>${name}</td>
-                <td>${level}</td>
-                <td>${melee} / ${distance} / ${magic}</td>
-            `;
-            tableBody.appendChild(newRow);
-
-            // Actualizar contador
-            const currentRows = tableBody.getElementsByTagName('tr').length;
-            document.getElementById('memberCount').innerText = currentRows;
-
-            // Limpiar formulario
-            document.getElementById('regName').value = '';
-            document.getElementById('regLevel').value = '';
-            document.getElementById('regMelee').value = '';
-            document.getElementById('regDistance').value = '';
-            document.getElementById('regMagic').value = '';
-
-            alert('¡Te has registrado exitosamente en la guild Silent March!');
         }
     </script>
 </body>
