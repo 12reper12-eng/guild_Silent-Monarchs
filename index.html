@@ -59,7 +59,7 @@
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 1.5rem;
+            gap: 1.2rem;
             align-items: center;
         }
 
@@ -69,6 +69,7 @@
             transition: color 0.3s;
             font-weight: 500;
             cursor: pointer;
+            font-size: 0.95rem;
         }
 
         .nav-links a:hover, .nav-links a.active {
@@ -425,12 +426,13 @@
         </div>
     </div>
 
-    <!-- Header & Menú de Pestañas Internas -->
+    <!-- Header & Menú Actualizado con Registro -->
     <header>
         <nav>
             <div class="logo">Silent Monarchs</div>
             <ul class="nav-links">
                 <li><a onclick="switchView('home', this)" class="active">Inicio</a></li>
+                <li><a onclick="switchView('registro', this)">Registro</a></li>
                 <li><a onclick="switchView('minigame', this)">Minijuego</a></li>
                 <li><a onclick="switchView('roster', this)">Miembros</a></li>
                 <li><a onclick="switchView('admin', this)">Admin Pro</a></li>
@@ -447,7 +449,7 @@
                 <span id="guildStatus" class="status-badge status-open">Reclutamiento: ABIERTO</span>
             </div>
             <br>
-            <a onclick="document.getElementById('registro-box').scrollIntoView({behavior: 'smooth'})" class="btn">Registrarse en la Guild</a>
+            <a onclick="switchView('registro', document.querySelector('.nav-links li:nth-child(2) a'))" class="btn">Registrarse en la Guild</a>
         </section>
 
         <div class="container">
@@ -467,65 +469,68 @@
                 </div>
             </section>
 
-            <section style="padding: 3rem 0; border-bottom: 1px solid #222;">
+            <section style="padding: 3rem 0;">
                 <h2>Podio de Guerreros (Top 1 Clan)</h2>
                 <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate en la guild!</p>
                 
                 <div class="grid-3">
                     <div class="card podium-card">
                         <h3>⚔️ Top 1 Melee</h3>
-                        <div class="podium-player" id="topMeleeName">MonarchLeader</div>
-                        <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 450</p>
+                        <div class="podium-player" id="topMeleeName">Sin Asignar</div>
+                        <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 0</p>
                     </div>
                     <div class="card podium-card">
                         <h3>🏹 Top 1 Distance</h3>
-                        <div class="podium-player" id="topDistanceName">ShadowKnight</div>
-                        <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 420</p>
+                        <div class="podium-player" id="topDistanceName">Sin Asignar</div>
+                        <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 0</p>
                     </div>
                     <div class="card podium-card">
                         <h3>🔮 Top 1 Magic</h3>
-                        <div class="podium-player" id="topMagicName">AetherMage</div>
-                        <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 410</p>
-                    </div>
-                </div>
-            </section>
-
-            <section id="registro-box" style="padding: 3rem 0;">
-                <h2>Registro de Miembro</h2>
-                <div class="card">
-                    <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus stats reales. Tu clase y puesto en el clan se calcularán automáticamente.</p>
-                    
-                    <div class="form-grid">
-                        <div class="form-group full">
-                            <label>Nombre del Personaje:</label>
-                            <input type="text" id="regName" placeholder="Ej: RucoyWarrior">
-                        </div>
-                        <div class="form-group">
-                            <label>Nivel (Level):</label>
-                            <input type="number" id="regLevel" placeholder="Ej: 500">
-                        </div>
-                        <div class="form-group">
-                            <label>Skill Melee:</label>
-                            <input type="number" id="regMelee" placeholder="Ej: 350">
-                        </div>
-                        <div class="form-group">
-                            <label>Skill Distancia (Distance):</label>
-                            <input type="number" id="regDistance" placeholder="Ej: 200">
-                        </div>
-                        <div class="form-group">
-                            <label>Skill Magia (Magic):</label>
-                            <input type="number" id="regMagic" placeholder="Ej: 150">
-                        </div>
-                        <div class="form-group full" style="text-align: center; margin-top: 1rem;">
-                            <button class="btn" onclick="registerMember()">Enviar Registro</button>
-                        </div>
+                        <div class="podium-player" id="topMagicName">Sin Asignar</div>
+                        <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 0</p>
                     </div>
                 </div>
             </section>
         </div>
     </div>
 
-    <!-- VISTA 2: MINIJUEGO -->
+    <!-- VISTA NUEVA: REGISTRO (Independiente) -->
+    <div id="view-registro" class="view-section">
+        <div class="container" style="margin-top: 100px;">
+            <h2>Registro de Miembro</h2>
+            <div class="card" style="max-width: 700px; margin: 0 auto;">
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus stats reales. Tu clase y puesto en el clan se calcularán automáticamente.</p>
+                
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Nombre del Personaje:</label>
+                        <input type="text" id="regName" placeholder="Ej: RucoyWarrior">
+                    </div>
+                    <div class="form-group">
+                        <label>Nivel (Level):</label>
+                        <input type="number" id="regLevel" placeholder="Ej: 500">
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Melee:</label>
+                        <input type="number" id="regMelee" placeholder="Ej: 350">
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Distancia (Distance):</label>
+                        <input type="number" id="regDistance" placeholder="Ej: 200">
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Magia (Magic):</label>
+                        <input type="number" id="regMagic" placeholder="Ej: 150">
+                    </div>
+                    <div class="form-group full" style="text-align: center; margin-top: 1rem;">
+                        <button class="btn" onclick="registerMember()">Enviar Registro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISTA 3: MINIJUEGO -->
     <div id="view-minigame" class="view-section">
         <div class="container" style="margin-top: 100px;">
             <h2>Minijuego de Reacción "Quilla el Slime"</h2>
@@ -546,10 +551,10 @@
         </div>
     </div>
 
-    <!-- VISTA 3: MIEMBROS (ROSTER PÚBLICO) -->
+    <!-- VISTA 4: MIEMBROS (ROSTER PÚBLICO) -->
     <div id="view-roster" class="view-section">
         <div class="container" style="margin-top: 100px;">
-            <h2>Roster de Miembros (<span id="memberCount">3</span>/200)</h2>
+            <h2>Roster de Miembros (<span id="memberCount">0</span>/200)</h2>
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -562,14 +567,14 @@
                         </tr>
                     </thead>
                     <tbody id="rosterTableBody">
-                        <!-- Relleno dinámico -->
+                        <!-- Vacío inicialmente -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- VISTA 4: ADMIN PRO -->
+    <!-- VISTA 5: ADMIN PRO -->
     <div id="view-admin" class="view-section">
         <div class="container" style="margin-top: 100px;">
             <div class="admin-section">
@@ -617,7 +622,7 @@
                                 </tr>
                             </thead>
                             <tbody id="adminTableBody">
-                                <!-- Relleno dinámico de Admin -->
+                                <!-- Dinámico -->
                             </tbody>
                         </table>
                     </div>
@@ -628,11 +633,8 @@
 
     <!-- Scripting General -->
     <script>
-        let membersData = [
-            { name: "MonarchLeader", level: 600, melee: 450, distance: 200, magic: 150, mainClass: "Melee", role: "lider" },
-            { name: "ShadowKnight", level: 550, melee: 180, distance: 420, magic: 140, mainClass: "Distance", role: "colider" },
-            { name: "AetherMage", level: 520, melee: 150, distance: 190, magic: 410, mainClass: "Magic", role: "admin" }
-        ];
+        // Arreglo vacío para que no aparezca nadie por defecto
+        let membersData = [];
 
         function switchView(viewName, element) {
             document.querySelectorAll('.view-section').forEach(section => {
@@ -682,11 +684,13 @@
             let topDistance = { name: "Sin Asignar", val: 0 };
             let topMagic = { name: "Sin Asignar", val: 0 };
 
-            membersData.forEach(m => {
-                if (m.melee > topMelee.val) { topMelee = { name: m.name, val: m.melee }; }
-                if (m.distance > topDistance.val) { topDistance = { name: m.name, val: m.distance }; }
-                if (m.magic > topMagic.val) { topMagic = { name: m.name, val: m.magic }; }
-            });
+            if (membersData.length > 0) {
+                membersData.forEach(m => {
+                    if (m.melee > topMelee.val) { topMelee = { name: m.name, val: m.melee }; }
+                    if (m.distance > topDistance.val) { topDistance = { name: m.name, val: m.distance }; }
+                    if (m.magic > topMagic.val) { topMagic = { name: m.name, val: m.magic }; }
+                });
+            }
 
             document.getElementById('topMeleeName').innerText = topMelee.name;
             document.getElementById('topMeleeStat').innerText = "Skill: " + topMelee.val;
@@ -707,6 +711,12 @@
 
             document.getElementById('memberCount').innerText = membersData.length;
 
+            if (membersData.length === 0) {
+                rosterBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros registrados todavía. ¡Sé el primero en registrarte!</td></tr>`;
+                adminBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros registrados.</td></tr>`;
+                return;
+            }
+
             membersData.forEach((m, index) => {
                 let roleBadgeName = "Miembro";
                 let roleClass = "role-miembro";
@@ -714,7 +724,6 @@
                 else if(m.role === 'colider') { roleBadgeName = "Co-Líder"; roleClass = "role-colider"; }
                 else if(m.role === 'admin') { roleBadgeName = "Admin"; roleClass = "role-admin"; }
 
-                // Tabla pública de Miembros
                 rosterBody.innerHTML += `
                     <tr>
                         <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
@@ -725,7 +734,6 @@
                     </tr>
                 `;
 
-                // Tabla de Admin Pro
                 adminBody.innerHTML += `
                     <tr>
                         <td><strong>${m.name}</strong></td>
@@ -762,7 +770,10 @@
             if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
-            membersData.push({ name, level, melee, distance, magic, mainClass, role: "miembro" });
+            // Si es el primer usuario registrado, asignarlo como Líder automáticamente
+            let assignedRole = membersData.length === 0 ? "lider" : "miembro";
+
+            membersData.push({ name, level, melee, distance, magic, mainClass, role: assignedRole });
             
             updateTops();
             renderTables();
@@ -773,7 +784,8 @@
             document.getElementById('regDistance').value = '';
             document.getElementById('regMagic').value = '';
 
-            alert('¡Te has registrado con éxito! Tus stats ya compiten por el Top de la guild.');
+            alert('¡Te has registrado con éxito! Redirigiendo al Roster...');
+            switchView('roster', document.querySelector('.nav-links li:nth-child(4) a'));
         }
 
         function sortMembers(criteria) {
