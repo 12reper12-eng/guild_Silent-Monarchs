@@ -202,13 +202,6 @@
             text-align: center;
         }
 
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.2rem;
-            margin-bottom: 3rem;
-        }
-
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -227,25 +220,18 @@
             margin-bottom: 1rem;
         }
 
-        /* Podio Top 1 */
-        .podium-card {
-            background: linear-gradient(135deg, #181a24, #251e3e);
-            border: 2px solid var(--accent-gold);
-            text-align: center;
-            padding: 1.5rem 1rem;
+        /* Tablas Top 10 */
+        .top10-container {
+            margin-bottom: 2.5rem;
         }
 
-        .podium-card h3 {
+        .top10-title {
+            font-size: 1.4rem;
             color: var(--accent-gold);
-            font-size: 1.1rem;
-        }
-
-        .podium-player {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: white;
-            margin: 0.5rem 0;
-            word-break: break-word;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         /* Tables */
@@ -427,14 +413,8 @@
             font-size: 1.05rem;
         }
 
-        @media (max-width: 992px) {
-            .grid-4 {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
         @media (max-width: 768px) {
-            .grid-4, .grid-2, .form-grid {
+            .grid-2, .form-grid {
                 grid-template-columns: 1fr;
             }
             .form-group.full { grid-column: span 1; }
@@ -533,29 +513,86 @@
             </section>
 
             <section style="padding: 3rem 0;">
-                <h2>Podio de Guerreros (Top 1 Clan)</h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate y defensa en la guild!</p>
+                <h2>Tablas del Top 10 del Clan</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2.5rem;">Los 10 mejores guerreros que lideran las estadísticas de combate en la guild.</p>
                 
-                <div class="grid-4">
-                    <div class="card podium-card">
-                        <h3>⚔️ Top 1 Melee</h3>
-                        <div class="podium-player" id="topMeleeName">Sin Asignar</div>
-                        <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 0</p>
+                <!-- TOP 10 MELEE -->
+                <div class="top10-container">
+                    <div class="top10-title">⚔️ Top 10 Melee</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Pos</th>
+                                    <th>Personaje</th>
+                                    <th>Nivel</th>
+                                    <th>Skill Melee</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topMeleeTableBody">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card podium-card">
-                        <h3>🏹 Top 1 Distance</h3>
-                        <div class="podium-player" id="topDistanceName">Sin Asignar</div>
-                        <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 0</p>
+                </div>
+
+                <!-- TOP 10 DISTANCE -->
+                <div class="top10-container">
+                    <div class="top10-title">🏹 Top 10 Distance</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Pos</th>
+                                    <th>Personaje</th>
+                                    <th>Nivel</th>
+                                    <th>Skill Distance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topDistanceTableBody">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card podium-card">
-                        <h3>🔮 Top 1 Magic</h3>
-                        <div class="podium-player" id="topMagicName">Sin Asignar</div>
-                        <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 0</p>
+                </div>
+
+                <!-- TOP 10 MAGIC -->
+                <div class="top10-container">
+                    <div class="top10-title">🔮 Top 10 Magic</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Pos</th>
+                                    <th>Personaje</th>
+                                    <th>Nivel</th>
+                                    <th>Skill Magic</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topMagicTableBody">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="card podium-card">
-                        <h3>🛡️ Top 1 Defense</h3>
-                        <div class="podium-player" id="topDefenseName">Sin Asignar</div>
-                        <p style="color: var(--accent-gold);" id="topDefenseStat">Def: 0</p>
+                </div>
+
+                <!-- TOP 10 DEFENSE -->
+                <div class="top10-container">
+                    <div class="top10-title">🛡️ Top 10 Defense</div>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="width: 80px;">Pos</th>
+                                    <th>Personaje</th>
+                                    <th>Nivel</th>
+                                    <th>Defensa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="topDefenseTableBody">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </section>
@@ -775,12 +812,11 @@
                     seenNames.add(lowerName);
                     membersData.push(m);
                 } else if (lowerName && seenNames.has(lowerName)) {
-                    // Si ya existe en la lista, eliminar el duplicado directamente de Firebase
                     db.ref('miembros/' + m.id).remove();
                 }
             });
 
-            updateTops();
+            updateTop10Tables();
             renderTables();
         });
 
@@ -855,32 +891,40 @@
             }
         }
 
-        function updateTops() {
-            let topMelee = { name: "Sin Asignar", val: 0 };
-            let topDistance = { name: "Sin Asignar", val: 0 };
-            let topMagic = { name: "Sin Asignar", val: 0 };
-            let topDefense = { name: "Sin Asignar", val: 0 };
+        function updateTop10Tables() {
+            // Generar copias independientes para ordenar cada categoría sin alterar el array principal
+            let meleeList = [...membersData].sort((a, b) => (b.melee || 0) - (a.melee || 0)).slice(0, 10);
+            let distanceList = [...membersData].sort((a, b) => (b.distance || 0) - (a.distance || 0)).slice(0, 10);
+            let magicList = [...membersData].sort((a, b) => (b.magic || 0) - (a.magic || 0)).slice(0, 10);
+            let defenseList = [...membersData].sort((a, b) => (b.defense || 0) - (a.defense || 0)).slice(0, 10);
 
-            if (membersData.length > 0) {
-                membersData.forEach(m => {
-                    if (m.melee > topMelee.val) { topMelee = { name: m.name, val: m.melee }; }
-                    if (m.distance > topDistance.val) { topDistance = { name: m.name, val: m.distance }; }
-                    if (m.magic > topMagic.val) { topMagic = { name: m.name, val: m.magic }; }
-                    if ((m.defense || 0) > topDefense.val) { topDefense = { name: m.name, val: (m.defense || 0) }; }
-                });
+            renderTop10List('topMeleeTableBody', meleeList, 'melee');
+            renderTop10List('topDistanceTableBody', distanceList, 'distance');
+            renderTop10List('topMagicTableBody', magicList, 'magic');
+            renderTop10List('topDefenseTableBody', defenseList, 'defense');
+        }
+
+        function renderTop10List(elementId, list, statKey) {
+            const tbody = document.getElementById(elementId);
+            tbody.innerHTML = '';
+
+            if (list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Sin datos en el ranking todavía.</td></tr>`;
+                return;
             }
 
-            document.getElementById('topMeleeName').innerText = topMelee.name;
-            document.getElementById('topMeleeStat').innerText = "Skill: " + topMelee.val;
-
-            document.getElementById('topDistanceName').innerText = topDistance.name;
-            document.getElementById('topDistanceStat').innerText = "Skill: " + topDistance.val;
-
-            document.getElementById('topMagicName').innerText = topMagic.name;
-            document.getElementById('topMagicStat').innerText = "Skill: " + topMagic.val;
-
-            document.getElementById('topDefenseName').innerText = topDefense.name;
-            document.getElementById('topDefenseStat').innerText = "Def: " + topDefense.val;
+            list.forEach((m, index) => {
+                let crown = '';
+                if(index === 0) crown = '👑 ';
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>#${index + 1}</strong></td>
+                        <td>${crown}${m.name}</td>
+                        <td>${m.level}</td>
+                        <td style="color: var(--accent-gold); font-weight: bold;">${m[statKey] || 0}</td>
+                    </tr>
+                `;
+            });
         }
 
         function renderTables() {
@@ -982,10 +1026,7 @@
             }
 
             const lowerInputName = name.toLowerCase();
-
-            // Verificar si ya existe en miembros activos
             const existsInActive = membersData.some(m => m.name && m.name.trim().toLowerCase() === lowerInputName);
-            // Verificar si ya existe en solicitudes pendientes
             const existsInPending = pendingData.some(p => p.name && p.name.trim().toLowerCase() === lowerInputName);
 
             if (existsInActive || existsInPending) {
