@@ -120,6 +120,18 @@
             transform: scale(1.05);
         }
 
+        .btn-small {
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .btn-small:hover { background-color: #732d91; }
+
         /* Botón flotante para la música */
         .music-float-btn {
             position: fixed;
@@ -151,12 +163,12 @@
         }
 
         .view-section {
-            display: none; /* Ocultas por defecto */
+            display: none;
             padding: 2rem 0;
         }
 
         .view-section.active-view {
-            display: block; /* Solo se muestra la activa */
+            display: block;
         }
 
         h2 {
@@ -212,10 +224,11 @@
 
         /* Tables */
         .table-responsive {
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
             border-radius: 8px;
             border: 1px solid #2a2e3d;
+            margin-top: 1rem;
         }
 
         table {
@@ -235,6 +248,7 @@
             color: var(--accent-gold);
             position: sticky;
             top: 0;
+            z-index: 10;
         }
 
         /* Status Badge */
@@ -247,6 +261,19 @@
         }
         .status-open { background-color: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid var(--success); }
         .status-closed { background-color: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+        /* Badges de Roles */
+        .badge-role {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .role-lider { background: #f39c12; color: #000; }
+        .role-colider { background: #8e44ad; color: #fff; }
+        .role-admin { background: #2980b9; color: #fff; }
+        .role-miembro { background: #34495e; color: #bdc3c7; }
 
         /* Registration Form */
         .form-grid {
@@ -270,7 +297,7 @@
             font-size: 0.9rem;
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 0.8rem;
             background-color: var(--bg-dark);
@@ -323,14 +350,11 @@
             border-radius: 8px;
         }
 
-        .admin-form select {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 0.5rem 0 1rem 0;
-            background-color: var(--bg-card);
-            border: 1px solid #2a2e3d;
-            color: white;
-            border-radius: 4px;
+        .admin-controls-grid {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
         }
 
         /* Welcome Modal */
@@ -382,7 +406,7 @@
 </head>
 <body>
 
-    <!-- Audio de Fondo (Nombre exacto de tu archivo en GitHub) -->
+    <!-- Audio de Fondo -->
     <audio id="lobbyMusic" loop>
         <source src="nastelbom-rap-rap-beats-427008.mp3" type="audio/mp3">
     </audio>
@@ -409,12 +433,12 @@
                 <li><a onclick="switchView('home', this)" class="active">Inicio</a></li>
                 <li><a onclick="switchView('minigame', this)">Minijuego</a></li>
                 <li><a onclick="switchView('roster', this)">Miembros</a></li>
-                <li><a onclick="switchView('admin', this)">Admin</a></li>
+                <li><a onclick="switchView('admin', this)">Admin Pro</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- VISTA 1: INICIO (Acerca, Tops, Registro) -->
+    <!-- VISTA 1: INICIO -->
     <div id="view-home" class="view-section active-view">
         <section class="hero">
             <h1>Silent Monarchs</h1>
@@ -427,7 +451,6 @@
         </section>
 
         <div class="container">
-            <!-- Acerca de -->
             <section style="padding: 2rem 0; border-bottom: 1px solid #222;">
                 <h2>Acerca de la Guild</h2>
                 <div class="grid-2">
@@ -444,7 +467,6 @@
                 </div>
             </section>
 
-            <!-- Tops -->
             <section style="padding: 3rem 0; border-bottom: 1px solid #222;">
                 <h2>Podio de Guerreros (Top 1 Clan)</h2>
                 <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate en la guild!</p>
@@ -468,7 +490,6 @@
                 </div>
             </section>
 
-            <!-- Registro -->
             <section id="registro-box" style="padding: 3rem 0;">
                 <h2>Registro de Miembro</h2>
                 <div class="card">
@@ -525,7 +546,7 @@
         </div>
     </div>
 
-    <!-- VISTA 3: MIEMBROS (ROSTER) -->
+    <!-- VISTA 3: MIEMBROS (ROSTER PÚBLICO) -->
     <div id="view-roster" class="view-section">
         <div class="container" style="margin-top: 100px;">
             <h2>Roster de Miembros (<span id="memberCount">3</span>/200)</h2>
@@ -533,6 +554,7 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Rol</th>
                             <th>Clase Principal</th>
                             <th>Nombre del Personaje</th>
                             <th>Nivel</th>
@@ -540,51 +562,65 @@
                         </tr>
                     </thead>
                     <tbody id="rosterTableBody">
-                        <tr>
-                            <td><strong>Melee</strong></td>
-                            <td>MonarchLeader</td>
-                            <td>600</td>
-                            <td>450 / 200 / 150</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Distance</strong></td>
-                            <td>ShadowKnight</td>
-                            <td>550</td>
-                            <td>180 / 420 / 140</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Magic</strong></td>
-                            <td>AetherMage</td>
-                            <td>520</td>
-                            <td>150 / 190 / 410</td>
-                        </tr>
+                        <!-- Relleno dinámico -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- VISTA 4: ADMIN -->
+    <!-- VISTA 4: ADMIN PRO -->
     <div id="view-admin" class="view-section">
         <div class="container" style="margin-top: 100px;">
             <div class="admin-section">
-                <h2>Panel de Administración</h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Área exclusiva para la gestión del Líder y Sublíderes.</p>
+                <h2>Panel de Administración Pro</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Gestión de rangos y control total por niveles y skills.</p>
                 
-                <div id="loginBox">
+                <div id="loginBox" style="max-width: 400px; margin: 0 auto; text-align: center;">
                     <label>Contraseña de Administrador:</label>
-                    <input type="password" id="adminPassword" placeholder="Introduce la contraseña (Silent)...">
-                    <button class="btn" onclick="verifyAdmin()">Acceder</button>
+                    <input type="password" id="adminPassword" placeholder="Introduce la contraseña (Silent)..." style="margin: 0.5rem 0;">
+                    <button class="btn" onclick="verifyAdmin()" style="width: 100%;">Acceder</button>
                 </div>
 
-                <div id="adminControls" style="display: none;" class="admin-form">
+                <div id="adminControls" style="display: none;">
                     <hr style="border-color: #2a2e3d; margin: 1.5rem 0;">
-                    <h3 style="color: var(--accent-gold);">Configuración del Estado</h3>
-                    <label>Estado de Reclutamiento:</label>
-                    <select id="selectStatus" onchange="updateGuildStatus()">
-                        <option value="open">Abierto</option>
-                        <option value="closed">Cerrado</option>
-                    </select>
+                    
+                    <div class="admin-controls-grid">
+                        <div>
+                            <label style="color: var(--accent-gold); font-weight: bold;">Estado del Reclutamiento:</label>
+                            <select id="selectStatus" onchange="updateGuildStatus()" style="padding: 0.5rem; background: var(--bg-card); color: white; border: 1px solid #2a2e3d; border-radius: 4px; margin-top: 0.3rem;">
+                                <option value="open">Abierto</option>
+                                <option value="closed">Cerrado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Gestión de Rangos y Miembros</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Ordena la lista y asigna rangos de Co-Líder, Admin o Miembro a voluntad.</p>
+
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                        <button class="btn-small" onclick="sortMembers('level')">Ordenar por Nivel</button>
+                        <button class="btn-small" onclick="sortMembers('melee')">Ordenar por Melee</button>
+                        <button class="btn-small" onclick="sortMembers('distance')">Ordenar por Distance</button>
+                        <button class="btn-small" onclick="sortMembers('magic')">Ordenar por Magic</button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Personaje</th>
+                                    <th>Nivel</th>
+                                    <th>Melee / Dist / Magia</th>
+                                    <th>Rango Actual</th>
+                                    <th>Cambiar Rango</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTableBody">
+                                <!-- Relleno dinámico de Admin -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -592,7 +628,12 @@
 
     <!-- Scripting General -->
     <script>
-        // Cambiar entre pestañas de forma fluida
+        let membersData = [
+            { name: "MonarchLeader", level: 600, melee: 450, distance: 200, magic: 150, mainClass: "Melee", role: "lider" },
+            { name: "ShadowKnight", level: 550, melee: 180, distance: 420, magic: 140, mainClass: "Distance", role: "colider" },
+            { name: "AetherMage", level: 520, melee: 150, distance: 190, magic: 410, mainClass: "Magic", role: "admin" }
+        ];
+
         function switchView(viewName, element) {
             document.querySelectorAll('.view-section').forEach(section => {
                 section.classList.remove('active-view');
@@ -606,7 +647,6 @@
             window.scrollTo(0, 0);
         }
 
-        // Control de Música
         let isPlaying = false;
         function toggleMusic() {
             const music = document.getElementById('lobbyMusic');
@@ -637,12 +677,6 @@
             }).catch(() => {});
         }
 
-        let membersData = [
-            { name: "MonarchLeader", level: 600, melee: 450, distance: 200, magic: 150, mainClass: "Melee" },
-            { name: "ShadowKnight", level: 550, melee: 180, distance: 420, magic: 140, mainClass: "Distance" },
-            { name: "AetherMage", level: 520, melee: 150, distance: 190, magic: 410, mainClass: "Magic" }
-        ];
-
         function updateTops() {
             let topMelee = { name: "Sin Asignar", val: 0 };
             let topDistance = { name: "Sin Asignar", val: 0 };
@@ -664,6 +698,53 @@
             document.getElementById('topMagicStat').innerText = "Skill: " + topMagic.val;
         }
 
+        function renderTables() {
+            const rosterBody = document.getElementById('rosterTableBody');
+            const adminBody = document.getElementById('adminTableBody');
+            
+            rosterBody.innerHTML = '';
+            adminBody.innerHTML = '';
+
+            document.getElementById('memberCount').innerText = membersData.length;
+
+            membersData.forEach((m, index) => {
+                let roleBadgeName = "Miembro";
+                let roleClass = "role-miembro";
+                if(m.role === 'lider') { roleBadgeName = "Líder"; roleClass = "role-lider"; }
+                else if(m.role === 'colider') { roleBadgeName = "Co-Líder"; roleClass = "role-colider"; }
+                else if(m.role === 'admin') { roleBadgeName = "Admin"; roleClass = "role-admin"; }
+
+                // Tabla pública de Miembros
+                rosterBody.innerHTML += `
+                    <tr>
+                        <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
+                        <td><strong>${m.mainClass}</strong></td>
+                        <td>${m.name}</td>
+                        <td>${m.level}</td>
+                        <td>${m.melee} / ${m.distance} / ${m.magic}</td>
+                    </tr>
+                `;
+
+                // Tabla de Admin Pro
+                adminBody.innerHTML += `
+                    <tr>
+                        <td><strong>${m.name}</strong></td>
+                        <td>${m.level}</td>
+                        <td>${m.melee} / ${m.distance} / ${m.magic}</td>
+                        <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
+                        <td>
+                            <select onchange="changeRole(${index}, this.value)" style="background: var(--bg-dark); color: white; border: 1px solid #2a2e3d; padding: 0.3rem; border-radius: 4px;">
+                                <option value="miembro" ${m.role === 'miembro' ? 'selected' : ''}>Miembro</option>
+                                <option value="admin" ${m.role === 'admin' ? 'selected' : ''}>Admin</option>
+                                <option value="colider" ${m.role === 'colider' ? 'selected' : ''}>Co-Líder</option>
+                                <option value="lider" ${m.role === 'lider' ? 'selected' : ''}>Líder</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
         function registerMember() {
             const name = document.getElementById('regName').value.trim();
             const level = parseInt(document.getElementById('regLevel').value) || 0;
@@ -681,20 +762,10 @@
             if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
-            membersData.push({ name, level, melee, distance, magic, mainClass });
-
-            const tableBody = document.getElementById('rosterTableBody');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><strong>${mainClass}</strong></td>
-                <td>${name}</td>
-                <td>${level}</td>
-                <td>${melee} / ${distance} / ${magic}</td>
-            `;
-            tableBody.appendChild(newRow);
-
-            document.getElementById('memberCount').innerText = membersData.length;
+            membersData.push({ name, level, melee, distance, magic, mainClass, role: "miembro" });
+            
             updateTops();
+            renderTables();
 
             document.getElementById('regName').value = '';
             document.getElementById('regLevel').value = '';
@@ -703,6 +774,16 @@
             document.getElementById('regMagic').value = '';
 
             alert('¡Te has registrado con éxito! Tus stats ya compiten por el Top de la guild.');
+        }
+
+        function sortMembers(criteria) {
+            membersData.sort((a, b) => b[criteria] - a[criteria]);
+            renderTables();
+        }
+
+        function changeRole(index, newRole) {
+            membersData[index].role = newRole;
+            renderTables();
         }
 
         // Minijuego
@@ -778,13 +859,14 @@
             }, 900);
         }
 
-        // Admin
+        // Admin Pro Auth
         function verifyAdmin() {
             const pass = document.getElementById('adminPassword').value;
             if (pass === "Silent") {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminControls').style.display = 'block';
-                alert('¡Acceso concedido al panel de administración!');
+                renderTables();
+                alert('¡Acceso concedido al Panel de Administración Pro!');
             } else {
                 alert('Contraseña incorrecta.');
             }
@@ -801,6 +883,10 @@
                 badge.innerText = 'Reclutamiento: CERRADO';
             }
         }
+
+        // Inicializar tablas al cargar
+        renderTables();
+        updateTops();
     </script>
 </body>
 </html>
