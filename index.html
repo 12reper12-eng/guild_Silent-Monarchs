@@ -275,7 +275,7 @@
         .status-open { background-color: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid var(--success); }
         .status-closed { background-color: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        /* Badges de Roles y Clases con Iconos */
+        /* Badges de Roles y Clases con Iconos de Rucoy (Espada, Arco, Bola de Magia) */
         .badge-role {
             padding: 0.2rem 0.6rem;
             border-radius: 12px;
@@ -445,7 +445,7 @@
         </div>
     </div>
 
-    <!-- Header & Menú Actualizado con Registro -->
+    <!-- Header & Menú -->
     <header>
         <nav>
             <div class="logo">Silent Monarchs</div>
@@ -513,12 +513,12 @@
         </div>
     </div>
 
-    <!-- VISTA REGISTRO CON AVISO DE APROBACIÓN -->
+    <!-- VISTA REGISTRO -->
     <div id="view-registro" class="view-section">
         <div class="container" style="margin-top: 100px;">
             <h2>Registro de Miembro</h2>
             <div class="card" style="max-width: 700px; margin: 0 auto;">
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus stats reales. Tu clase y puesto en el clan se calcularán automáticamente.</p>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus stats reales. Tu clase se calculará automáticamente y tu solicitud quedará pendiente de aprobación.</p>
                 
                 <div class="form-grid">
                     <div class="form-group full">
@@ -593,7 +593,7 @@
         </div>
     </div>
 
-    <!-- VISTA 5: ADMIN PRO (INCLUYE PENDIENTES DE APROBACIÓN) -->
+    <!-- VISTA 5: ADMIN PRO -->
     <div id="view-admin" class="view-section">
         <div class="container" style="margin-top: 100px;">
             <div class="admin-section">
@@ -673,10 +673,57 @@
         </div>
     </div>
 
-    <!-- Scripting General -->
+    <!-- Firebase SDKs (Compat v8) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <!-- Scripting General + Firebase Config -->
     <script>
+        // ==========================================
+        // CONFIGURACIÓN DE FIREBASE (¡Reemplaza con tus datos reales de tu consola Firebase!)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "TU_API_KEY_AQUI",
+            authDomain: "tu-proyecto.firebaseapp.com",
+            databaseURL: "https://tu-proyecto-default-rtdb.firebaseio.com",
+            projectId: "tu-proyecto",
+            storageBucket: "tu-proyecto.appspot.com",
+            messagingSenderId: "TU_SENDER_ID",
+            appId: "TU_APP_ID"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
         let membersData = [];
         let pendingData = [];
+
+        // ==========================================
+        // SINCRONIZACIÓN EN TIEMPO REAL CON FIREBASE
+        // ==========================================
+        db.ref('miembros').on('value', (snapshot) => {
+            const data = snapshot.val();
+            membersData = [];
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    membersData.push({ id: key, ...data[key] });
+                });
+            }
+            updateTops();
+            renderTables();
+        });
+
+        db.ref('pendientes').on('value', (snapshot) => {
+            const data = snapshot.val();
+            pendingData = [];
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    pendingData.push({ id: key, ...data[key] });
+                });
+            }
+            renderTables();
+        });
 
         function switchView(viewName, element) {
             document.querySelectorAll('.view-section').forEach(section => {
@@ -721,7 +768,7 @@
             }).catch(() => {});
         }
 
-        // Función para renderizar los iconos de clase (Espada, Arco, Bola de Magia)
+        // Función para renderizar iconos de clase con bolita de magia, arco o espada según la habilidad más alta
         function getClassHtml(mainClass) {
             if (mainClass === 'Melee') {
                 return `<span class="class-icon">⚔️ Melee</span>`;
@@ -793,7 +840,7 @@
             if (pendingData.length === 0) {
                 pendingBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay solicitudes pendientes en este momento.</td></tr>`;
             } else {
-                pendingData.forEach((p, pIndex) => {
+                pendingData.forEach((p) => {
                     pendingBody.innerHTML += `
                         <tr>
                             <td>${getClassHtml(p.mainClass)}</td>
@@ -801,8 +848,8 @@
                             <td>${p.level}</td>
                             <td>${p.melee} / ${p.distance} / ${p.magic}</td>
                             <td>
-                                <button class="btn-small" onclick="approveMember(${pIndex})" style="background-color: var(--success); margin-right: 5px;">Aceptar</button>
-                                <button class="btn-danger" onclick="rejectMember(${pIndex})">Rechazar</button>
+                                <button class="btn-small" onclick="approveMember('${p.id}')" style="background-color: var(--success); margin-right: 5px;">Aceptar</button>
+                                <button class="btn-danger" onclick="rejectMember('${p.id}')">Rechazar</button>
                             </td>
                         </tr>
                     `;
@@ -813,7 +860,7 @@
             if (membersData.length === 0) {
                 adminBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros activos registrados.</td></tr>`;
             } else {
-                membersData.forEach((m, index) => {
+                membersData.forEach((m) => {
                     let roleBadgeName = "Miembro";
                     let roleClass = "role-miembro";
                     if(m.role === 'lider') { roleBadgeName = "Líder"; roleClass = "role-lider"; }
@@ -827,7 +874,7 @@
                             <td>${m.melee} / ${m.distance} / ${m.magic}</td>
                             <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
                             <td>
-                                <select onchange="changeRole(${index}, this.value)" style="background: var(--bg-dark); color: white; border: 1px solid #2a2e3d; padding: 0.3rem; border-radius: 4px;">
+                                <select onchange="changeRole('${m.id}', this.value)" style="background: var(--bg-dark); color: white; border: 1px solid #2a2e3d; padding: 0.3rem; border-radius: 4px;">
                                     <option value="miembro" ${m.role === 'miembro' ? 'selected' : ''}>Miembro</option>
                                     <option value="admin" ${m.role === 'admin' ? 'selected' : ''}>Admin</option>
                                     <option value="colider" ${m.role === 'colider' ? 'selected' : ''}>Co-Líder</option>
@@ -857,45 +904,62 @@
             if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
-            // Añadir a pendientes en lugar de activarlo directo
-            pendingData.push({ name, level, melee, distance, magic, mainClass, role: "miembro" });
-            
-            document.getElementById('regName').value = '';
-            document.getElementById('regLevel').value = '';
-            document.getElementById('regMelee').value = '';
-            document.getElementById('regDistance').value = '';
-            document.getElementById('regMagic').value = '';
+            // Guardar en Firebase dentro de 'pendientes' con rol inicial 'miembro'
+            db.ref('pendientes').push({
+                name,
+                level,
+                melee,
+                distance,
+                magic,
+                mainClass,
+                role: "miembro"
+            }).then(() => {
+                document.getElementById('regName').value = '';
+                document.getElementById('regLevel').value = '';
+                document.getElementById('regMelee').value = '';
+                document.getElementById('regDistance').value = '';
+                document.getElementById('regMagic').value = '';
 
-            alert('¡Registro enviado con éxito! Espera que un admin, líder o co-líder te acepte la solicitud.');
-            switchView('home', document.querySelector('.nav-links li:nth-child(1) a'));
+                alert('¡Registro enviado con éxito! Espera que un admin, líder o co-líder te acepte la solicitud.');
+                switchView('home', document.querySelector('.nav-links li:nth-child(1) a'));
+            }).catch(error => {
+                alert('Error al enviar el registro a Firebase: ' + error.message);
+            });
         }
 
-        function approveMember(index) {
-            const accepted = pendingData.splice(index, 1)[0];
-            // Si es el primero, lo ponemos de líder de forma automática, sino de miembro
-            if (membersData.length === 0) {
-                accepted.role = "lider";
-            } else {
-                accepted.role = "miembro";
-            }
-            membersData.push(accepted);
-            updateTops();
-            renderTables();
+        function approveMember(id) {
+            // Buscar en pendientes
+            const refPending = db.ref('pendientes/' + id);
+            refPending.once('value', (snapshot) => {
+                const memberData = snapshot.val();
+                if (memberData) {
+                    // Por defecto ingresa como 'miembro'
+                    memberData.role = "miembro";
+                    
+                    // Guardar en 'miembros' activos
+                    db.ref('miembros').push(memberData).then(() => {
+                        // Eliminar de 'pendientes'
+                        refPending.remove();
+                    });
+                }
+            });
         }
 
-        function rejectMember(index) {
-            pendingData.splice(index, 1);
-            renderTables();
+        function rejectMember(id) {
+            db.ref('pendientes/' + id).remove();
         }
 
         function sortMembers(criteria) {
             membersData.sort((a, b) => b[criteria] - a[criteria]);
+            // Re-render con orden local temporal
+            const adminBody = document.getElementById('adminTableBody');
+            const rosterBody = document.getElementById('rosterTableBody');
+            // Opcional: renderTables respeta el orden actual si se desea o se puede ordenar visualmente
             renderTables();
         }
 
-        function changeRole(index, newRole) {
-            membersData[index].role = newRole;
-            renderTables();
+        function changeRole(id, newRole) {
+            db.ref('miembros/' + id).update({ role: newRole });
         }
 
         // Minijuego
@@ -995,10 +1059,6 @@
                 badge.innerText = 'Reclutamiento: CERRADO';
             }
         }
-
-        // Inicializar tablas al cargar
-        renderTables();
-        updateTops();
     </script>
 </body>
 </html>
