@@ -205,33 +205,6 @@
             margin: 0.5rem 0;
         }
 
-        /* Tables */
-        .table-responsive {
-            max-height: 400px;
-            overflow-y: auto;
-            border-radius: 8px;
-            border: 1px solid #2a2e3d;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: var(--bg-card);
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #2a2e3d;
-        }
-
-        th {
-            background-color: #202330;
-            color: var(--accent-gold);
-            position: sticky;
-            top: 0;
-        }
-
         /* Status Badge */
         .status-badge {
             display: inline-block;
@@ -269,61 +242,6 @@
             width: 100%;
             padding: 0.8rem;
             background-color: var(--bg-dark);
-            border: 1px solid #2a2e3d;
-            color: white;
-            border-radius: 4px;
-        }
-
-        /* Minigame Section */
-        .minigame-box {
-            background-color: var(--bg-card);
-            border: 2px dashed var(--accent-purple);
-            padding: 2rem;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        #gameArea {
-            height: 300px;
-            background: var(--bg-dark);
-            border-radius: 6px;
-            position: relative;
-            overflow: hidden;
-            margin-top: 1rem;
-            border: 1px solid #2a2e3d;
-        }
-
-        .target {
-            width: 50px;
-            height: 50px;
-            background-color: var(--accent-gold);
-            border-radius: 50%;
-            position: absolute;
-            cursor: pointer;
-            box-shadow: 0 0 15px var(--accent-gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            color: #000;
-            font-weight: bold;
-            user-select: none;
-        }
-
-        /* Admin Panel */
-        .admin-section {
-            background-color: #12141c;
-            border: 2px dashed var(--accent-gold);
-            padding: 2rem;
-            border-radius: 8px;
-            margin-top: 3rem;
-        }
-
-        .admin-form select {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 0.5rem 0 1rem 0;
-            background-color: var(--bg-card);
             border: 1px solid #2a2e3d;
             color: white;
             border-radius: 4px;
@@ -378,12 +296,12 @@
 </head>
 <body>
 
-    <!-- Audio de Fondo (Lobby) con controles manuales seguros -->
+    <!-- Audio conectado al nombre real de tu archivo en GitHub -->
     <audio id="lobbyMusic" loop>
-        <source src="musica.mp3" type="audio/mp3">
+        <source src="nastelbom-rap-rap-beats-427008.mp3" type="audio/mp3">
     </audio>
 
-    <!-- Botón Flotante de Música por si el navegador bloquea el inicio automático -->
+    <!-- Botón Flotante para encender/apagar la música manualmente -->
     <button class="music-float-btn" onclick="toggleMusic()">
         🎵 <span id="musicBtnText">Reproducir Música</span>
     </button>
@@ -397,7 +315,7 @@
         </div>
     </div>
 
-    <!-- Header & Nav -->
+    <!-- Header & Nav limpio y redirigido -->
     <header>
         <nav>
             <div class="logo">Silent Monarchs</div>
@@ -406,9 +324,9 @@
                 <li><a href="#acerca">Nosotros</a></li>
                 <li><a href="#tops">Pelea por Top</a></li>
                 <li><a href="#registro">Registro</a></li>
-                <li><a href="#minijuego">Minijuego</a></li>
-                <li><a href="#roster">Miembros</a></li>
-                <li id="navAdminLink" style="display: none;"><a href="#admin">Admin</a></li>
+                <li><a href="minijuego.html">Minijuego</a></li>
+                <li><a href="roster.html">Miembros</a></li>
+                <li><a href="admin.html">Admin</a></li>
             </ul>
         </nav>
     </header>
@@ -424,7 +342,7 @@
         <a href="#registro" class="btn">Registrarse en la Guild</a>
     </section>
 
-    <!-- Container -->
+    <!-- Container con las secciones esenciales solicitadas -->
     <div class="container">
 
         <!-- About & Rules -->
@@ -502,88 +420,10 @@
             </div>
         </section>
 
-        <!-- Minijuego Competitivo Totalmente Funcional -->
-        <section id="minijuego">
-            <h2>Minijuego de Reacción "Quilla el Slime"</h2>
-            <div class="minigame-box">
-                <p style="color: var(--text-muted);">¡Pon a prueba tus reflejos! Haz clic en los slimes dorados tan rápido como puedas antes de que se acaben los 20 segundos.</p>
-                <div style="margin-top: 1rem; font-weight: bold; font-size: 1.1rem;">
-                    Puntuación: <span id="gameScore" style="color: var(--accent-gold);">0</span> | 
-                    Tiempo restante: <span id="gameTime" style="color: var(--danger);">20</span>s
-                </div>
-                <div id="gameArea">
-                    <div id="gameStartPrompt" style="position: absolute; width: 100%; top: 42%; text-align: center; color: var(--text-muted);">
-                        Presiona el botón de abajo para iniciar el evento competitivo
-                    </div>
-                </div>
-                <br>
-                <button class="btn" id="startBtn" onclick="startMinigame()">¡Iniciar Minijuego!</button>
-            </div>
-        </section>
-
-        <!-- Roster Section -->
-        <section id="roster">
-            <h2>Roster de Miembros (<span id="memberCount">3</span>/200)</h2>
-            <div class="table-responsive">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Clase Principal</th>
-                            <th>Nombre del Personaje</th>
-                            <th>Nivel</th>
-                            <th>Estadísticas (Melee / Dist / Magia)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="rosterTableBody">
-                        <tr>
-                            <td><strong>Melee</strong></td>
-                            <td>MonarchLeader</td>
-                            <td>600</td>
-                            <td>450 / 200 / 150</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Distance</strong></td>
-                            <td>ShadowKnight</td>
-                            <td>550</td>
-                            <td>180 / 420 / 140</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Magic</strong></td>
-                            <td>AetherMage</td>
-                            <td>520</td>
-                            <td>150 / 190 / 410</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- Admin Panel Section -->
-        <section id="admin" class="admin-section">
-            <h2>Panel de Administración</h2>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Área exclusiva para la gestión del Líder y Sublíderes.</p>
-            
-            <div id="loginBox">
-                <label>Contraseña de Administrador:</label>
-                <input type="password" id="adminPassword" placeholder="Introduce la contraseña...">
-                <button class="btn" onclick="verifyAdmin()">Acceder</button>
-            </div>
-
-            <div id="adminControls" style="display: none;" class="admin-form">
-                <hr style="border-color: #2a2e3d; margin: 1.5rem 0;">
-                <h3 style="color: var(--accent-gold);">Configuración del Estado</h3>
-                <label>Estado de Reclutamiento:</label>
-                <select id="selectStatus" onchange="updateGuildStatus()">
-                    <option value="open">Abierto</option>
-                    <option value="closed">Cerrado</option>
-                </select>
-            </div>
-        </section>
     </div>
 
     <!-- Scripting General -->
     <script>
-        // --- Control de Música Seguro ---
         let isPlaying = false;
         function toggleMusic() {
             const music = document.getElementById('lobbyMusic');
@@ -599,14 +439,13 @@
                     isPlaying = true;
                     btnText.innerText = "Pausar Música";
                 }).catch(error => {
-                    alert("No se pudo reproducir el archivo 'musica.mp3'. Verifica que esté en la misma carpeta.");
+                    alert("El navegador bloqueó la reproducción o falta verificar el archivo de audio.");
                 });
             }
         }
 
         function closeModal() {
             document.getElementById('welcomeModal').style.display = 'none';
-            // Intenta reproducir al cerrar el modal de bienvenida aprovechando la interacción
             const music = document.getElementById('lobbyMusic');
             music.volume = 0.5;
             music.play().then(() => {
@@ -615,7 +454,6 @@
             }).catch(() => {});
         }
 
-        // --- Sistema de Top 1 por Clases ---
         let membersData = [
             { name: "MonarchLeader", level: 600, melee: 450, distance: 200, magic: 150, mainClass: "Melee" },
             { name: "ShadowKnight", level: 550, melee: 180, distance: 420, magic: 140, mainClass: "Distance" },
@@ -643,7 +481,6 @@
             document.getElementById('topMagicStat').innerText = "Skill: " + topMagic.val;
         }
 
-        // --- Registro de Miembros ---
         function registerMember() {
             const name = document.getElementById('regName').value.trim();
             const level = parseInt(document.getElementById('regLevel').value) || 0;
@@ -662,18 +499,7 @@
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
             membersData.push({ name, level, melee, distance, magic, mainClass });
-
-            const tableBody = document.getElementById('rosterTableBody');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><strong>${mainClass}</strong></td>
-                <td>${name}</td>
-                <td>${level}</td>
-                <td>${melee} / ${distance} / ${magic}</td>
-            `;
-            tableBody.appendChild(newRow);
-
-            document.getElementById('memberCount').innerText = membersData.length;
+            updateTops();
 
             document.getElementById('regName').value = '';
             document.getElementById('regLevel').value = '';
@@ -681,106 +507,7 @@
             document.getElementById('regDistance').value = '';
             document.getElementById('regMagic').value = '';
 
-            updateTops();
             alert('¡Te has registrado con éxito! Tus stats ya compiten por el Top de la guild.');
-        }
-
-        // --- Minijuego Competitivo Funcional ---
-        let score = 0;
-        let timeLeft = 20;
-        let gameInterval = null;
-        let targetTimeout = null;
-
-        function startMinigame() {
-            const area = document.getElementById('gameArea');
-            document.getElementById('gameStartPrompt').style.display = 'none';
-            document.getElementById('startBtn').style.display = 'none';
-            
-            const oldTarget = document.getElementById('activeTarget');
-            if (oldTarget) oldTarget.remove();
-
-            score = 0;
-            timeLeft = 20;
-            document.getElementById('gameScore').innerText = score;
-            document.getElementById('gameTime').innerText = timeLeft;
-
-            gameInterval = setInterval(() => {
-                timeLeft--;
-                document.getElementById('gameTime').innerText = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(gameInterval);
-                    clearTimeout(targetTimeout);
-                    const finalTarget = document.getElementById('activeTarget');
-                    if (finalTarget) finalTarget.remove();
-
-                    area.innerHTML = `<div style="position: absolute; width: 100%; top: 42%; text-align: center; color: var(--accent-gold); font-size: 1.2rem; font-weight: bold;">¡Tiempo terminado! Puntuación final: ${score} puntos.</div>`;
-                    document.getElementById('startBtn').style.display = 'inline-block';
-                    document.getElementById('startBtn').innerText = 'Jugar Otra Vez';
-                }
-            }, 1000);
-
-            spawnTarget();
-        }
-
-        function spawnTarget() {
-            const area = document.getElementById('gameArea');
-            const oldTarget = document.getElementById('activeTarget');
-            if (oldTarget) oldTarget.remove();
-
-            if (timeLeft <= 0) return;
-
-            const target = document.createElement('div');
-            target.className = 'target';
-            target.id = 'activeTarget';
-            target.innerText = 'Slime';
-
-            const maxX = area.clientWidth - 60;
-            const maxY = area.clientHeight - 60;
-            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
-            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
-
-            target.style.left = randomX + 'px';
-            target.style.top = randomY + 'px';
-
-            target.onclick = function() {
-                score++;
-                document.getElementById('gameScore').innerText = score;
-                target.remove();
-                spawnTarget();
-            };
-
-            area.appendChild(target);
-
-            targetTimeout = setTimeout(() => {
-                if (document.getElementById('activeTarget')) {
-                    spawnTarget();
-                }
-            }, 900);
-        }
-
-        // --- Panel de Admin (Contraseña: Silent) ---
-        function verifyAdmin() {
-            const pass = document.getElementById('adminPassword').value;
-            if (pass === "Silent") {
-                document.getElementById('loginBox').style.display = 'none';
-                document.getElementById('adminControls').style.display = 'block';
-                document.getElementById('navAdminLink').style.display = 'block';
-                alert('¡Acceso concedido al panel de administración!');
-            } else {
-                alert('Contraseña incorrecta.');
-            }
-        }
-
-        function updateGuildStatus() {
-            const statusVal = document.getElementById('selectStatus').value;
-            const badge = document.getElementById('guildStatus');
-            if (statusVal === 'open') {
-                badge.className = 'status-badge status-open';
-                badge.innerText = 'Reclutamiento: ABIERTO';
-            } else {
-                badge.className = 'status-badge status-closed';
-                badge.innerText = 'Reclutamiento: CERRADO';
-            }
         }
     </script>
 </body>
