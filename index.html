@@ -477,7 +477,7 @@
                 <div class="grid-2">
                     <div class="card">
                         <h3>Nuestra Historia</h3>
-                        <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarchs no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
+                        <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarchs not solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
                     </div>
                     <div class="card">
                         <h3>Código de Conducta</h3>
@@ -541,6 +541,10 @@
                         <label>Skill Magia (Magic):</label>
                         <input type="number" id="regMagic" placeholder="Ej: 150">
                     </div>
+                    <div class="form-group">
+                        <label>Defensa (Defense):</label>
+                        <input type="number" id="regDefense" placeholder="Ej: 300">
+                    </div>
                     <div class="form-group full" style="text-align: center; margin-top: 1rem;">
                         <button class="btn" onclick="registerMember()">Enviar Registro</button>
                     </div>
@@ -582,7 +586,7 @@
                             <th>Clase Principal</th>
                             <th>Nombre del Personaje</th>
                             <th>Nivel</th>
-                            <th>Estadísticas (Melee / Dist / Magia)</th>
+                            <th>Estadísticas (Melee / Dist / Magia / Def)</th>
                         </tr>
                     </thead>
                     <tbody id="rosterTableBody">
@@ -630,7 +634,7 @@
                                     <th>Clase</th>
                                     <th>Personaje</th>
                                     <th>Nivel</th>
-                                    <th>Stats (M / D / Mg)</th>
+                                    <th>Stats (M / D / Mg / Def)</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -650,6 +654,7 @@
                         <button class="btn-small" onclick="sortMembers('melee')">Ordenar por Melee</button>
                         <button class="btn-small" onclick="sortMembers('distance')">Ordenar por Distance</button>
                         <button class="btn-small" onclick="sortMembers('magic')">Ordenar por Magic</button>
+                        <button class="btn-small" onclick="sortMembers('defense')">Ordenar por Defensa</button>
                     </div>
 
                     <div class="table-responsive">
@@ -658,7 +663,7 @@
                                 <tr>
                                     <th>Personaje</th>
                                     <th>Nivel</th>
-                                    <th>Melee / Dist / Magia</th>
+                                    <th>Melee / Dist / Magia / Def</th>
                                     <th>Rango Actual</th>
                                     <th>Cambiar Rango</th>
                                 </tr>
@@ -830,7 +835,7 @@
                             <td>${getClassHtml(m.mainClass)}</td>
                             <td>${m.name}</td>
                             <td>${m.level}</td>
-                            <td>${m.melee} / ${m.distance} / ${m.magic}</td>
+                            <td>${m.melee} / ${m.distance} / ${m.magic} / Def: ${m.defense || 0}</td>
                         </tr>
                     `;
                 });
@@ -846,7 +851,7 @@
                             <td>${getClassHtml(p.mainClass)}</td>
                             <td><strong>${p.name}</strong></td>
                             <td>${p.level}</td>
-                            <td>${p.melee} / ${p.distance} / ${p.magic}</td>
+                            <td>${p.melee} / ${p.distance} / ${p.magic} / Def: ${p.defense || 0}</td>
                             <td>
                                 <button class="btn-small" onclick="approveMember('${p.id}')" style="background-color: var(--success); margin-right: 5px;">Aceptar</button>
                                 <button class="btn-danger" onclick="rejectMember('${p.id}')">Rechazar</button>
@@ -871,7 +876,7 @@
                         <tr>
                             <td><strong>${m.name}</strong></td>
                             <td>${m.level}</td>
-                            <td>${m.melee} / ${m.distance} / ${m.magic}</td>
+                            <td>${m.melee} / ${m.distance} / ${m.magic} / Def: ${m.defense || 0}</td>
                             <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
                             <td>
                                 <select onchange="changeRole('${m.id}', this.value)" style="background: var(--bg-dark); color: white; border: 1px solid #2a2e3d; padding: 0.3rem; border-radius: 4px;">
@@ -893,6 +898,7 @@
             const melee = parseInt(document.getElementById('regMelee').value) || 0;
             const distance = parseInt(document.getElementById('regDistance').value) || 0;
             const magic = parseInt(document.getElementById('regMagic').value) || 0;
+            const defense = parseInt(document.getElementById('regDefense').value) || 0;
 
             if (!name || !level) {
                 alert('Por favor ingresa al menos tu nombre de personaje y nivel.');
@@ -904,13 +910,14 @@
             if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
-            // Guardar en Firebase con rol inicial asegurado como 'miembro'
+            // Guardar en Firebase incluyendo la defensa
             db.ref('pendientes').push({
                 name,
                 level,
                 melee,
                 distance,
                 magic,
+                defense,
                 mainClass,
                 role: "miembro"
             }).then(() => {
@@ -919,6 +926,7 @@
                 document.getElementById('regMelee').value = '';
                 document.getElementById('regDistance').value = '';
                 document.getElementById('regMagic').value = '';
+                document.getElementById('regDefense').value = '';
 
                 alert('¡Registro enviado con éxito! Espera que un admin, líder o co-líder te acepte la solicitud.');
                 switchView('home', document.querySelector('.nav-links li:nth-child(1) a'));
@@ -932,7 +940,7 @@
             refPending.once('value', (snapshot) => {
                 const memberData = snapshot.val();
                 if (memberData) {
-                    memberData.role = "miembro"; // Asegura que entre como miembro y no como líder
+                    memberData.role = "miembro"; 
                     db.ref('miembros').push(memberData).then(() => {
                         refPending.remove();
                     });
@@ -945,7 +953,7 @@
         }
 
         function sortMembers(criteria) {
-            membersData.sort((a, b) => b[criteria] - a[criteria]);
+            membersData.sort((a, b) => (b[criteria] || 0) - (a[criteria] || 0));
             renderTables();
         }
 
