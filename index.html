@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -117,6 +117,29 @@
         .btn:hover {
             background-color: #732d91;
             transform: scale(1.05);
+        }
+
+        /* Botón flotante para la música */
+        .music-float-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-gold);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            padding: 0.7rem 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 3000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        .music-float-btn:hover {
+            transform: scale(1.08);
         }
 
         /* Containers */
@@ -355,10 +378,15 @@
 </head>
 <body>
 
-    <!-- Audio de Fondo Automático (Lobby) -->
-    <audio id="lobbyMusic" loop autoplay>
+    <!-- Audio de Fondo (Lobby) con controles manuales seguros -->
+    <audio id="lobbyMusic" loop>
         <source src="musica.mp3" type="audio/mp3">
     </audio>
+
+    <!-- Botón Flotante de Música por si el navegador bloquea el inicio automático -->
+    <button class="music-float-btn" onclick="toggleMusic()">
+        🎵 <span id="musicBtnText">Reproducir Música</span>
+    </button>
 
     <!-- Modal de Bienvenida -->
     <div id="welcomeModal" class="modal-overlay">
@@ -380,7 +408,6 @@
                 <li><a href="#registro">Registro</a></li>
                 <li><a href="#minijuego">Minijuego</a></li>
                 <li><a href="#roster">Miembros</a></li>
-                <!-- El enlace de Admin está oculto para los usuarios normales en el menú -->
                 <li id="navAdminLink" style="display: none;"><a href="#admin">Admin</a></li>
             </ul>
         </nav>
@@ -556,19 +583,36 @@
 
     <!-- Scripting General -->
     <script>
-        // Reproducir música automáticamente al cargar (con manejo para navegadores)
-        window.addEventListener('DOMContentLoaded', () => {
+        // --- Control de Música Seguro ---
+        let isPlaying = false;
+        function toggleMusic() {
             const music = document.getElementById('lobbyMusic');
+            const btnText = document.getElementById('musicBtnText');
             music.volume = 0.5;
-            music.play().catch(() => {
-                document.body.addEventListener('click', () => {
-                    music.play();
-                }, { once: true });
-            });
-        });
+
+            if (isPlaying) {
+                music.pause();
+                isPlaying = false;
+                btnText.innerText = "Reproducir Música";
+            } else {
+                music.play().then(() => {
+                    isPlaying = true;
+                    btnText.innerText = "Pausar Música";
+                }).catch(error => {
+                    alert("No se pudo reproducir el archivo 'musica.mp3'. Verifica que esté en la misma carpeta.");
+                });
+            }
+        }
 
         function closeModal() {
             document.getElementById('welcomeModal').style.display = 'none';
+            // Intenta reproducir al cerrar el modal de bienvenida aprovechando la interacción
+            const music = document.getElementById('lobbyMusic');
+            music.volume = 0.5;
+            music.play().then(() => {
+                isPlaying = true;
+                document.getElementById('musicBtnText').innerText = "Pausar Música";
+            }).catch(() => {});
         }
 
         // --- Sistema de Top 1 por Clases ---
@@ -720,7 +764,6 @@
             if (pass === "Silent") {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminControls').style.display = 'block';
-                // Hacer visible el enlace de Admin en la barra de navegación al iniciar sesión con éxito
                 document.getElementById('navAdminLink').style.display = 'block';
                 alert('¡Acceso concedido al panel de administración!');
             } else {
