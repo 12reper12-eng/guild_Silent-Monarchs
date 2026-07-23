@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silent March | Rucoy Online Guild</title>
+    <title>Silent Monarchs | Rucoy Online Guild</title>
     <style>
         :root {
             --bg-dark: #0f1016;
@@ -72,25 +72,6 @@
 
         .nav-links a:hover {
             color: var(--accent-gold);
-        }
-
-        /* Music Bar Widget */
-        .music-widget {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: #202330;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            border: 1px solid var(--accent-purple);
-        }
-
-        .music-widget button {
-            background: none;
-            border: none;
-            color: var(--accent-gold);
-            cursor: pointer;
-            font-weight: bold;
         }
 
         /* Hero Section */
@@ -164,6 +145,12 @@
             margin-bottom: 3rem;
         }
 
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
         .card {
             background-color: var(--bg-card);
             padding: 2rem;
@@ -181,7 +168,6 @@
             background: linear-gradient(135deg, #181a24, #251e3e);
             border: 2px solid var(--accent-gold);
             text-align: center;
-            position: relative;
         }
 
         .podium-card h3 {
@@ -275,30 +261,30 @@
         }
 
         #gameArea {
-            height: 250px;
+            height: 300px;
             background: var(--bg-dark);
             border-radius: 6px;
             position: relative;
             overflow: hidden;
             margin-top: 1rem;
             border: 1px solid #2a2e3d;
-            cursor: crosshair;
         }
 
         .target {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             background-color: var(--accent-gold);
             border-radius: 50%;
             position: absolute;
             cursor: pointer;
-            box-shadow: 0 0 10px var(--accent-gold);
+            box-shadow: 0 0 15px var(--accent-gold);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 11px;
             color: #000;
             font-weight: bold;
+            user-select: none;
         }
 
         /* Admin Panel */
@@ -327,7 +313,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 11, 15, 0.85);
+            background: rgba(10, 11, 15, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -340,7 +326,7 @@
             padding: 2.5rem;
             border-radius: 10px;
             text-align: center;
-            max-width: 450px;
+            max-width: 480px;
             width: 90%;
             box-shadow: 0 0 25px rgba(243, 156, 18, 0.3);
         }
@@ -348,6 +334,7 @@
         .modal-content h2 {
             font-size: 1.8rem;
             margin-bottom: 1rem;
+            color: var(--accent-gold);
         }
 
         .modal-content p {
@@ -368,46 +355,39 @@
 </head>
 <body>
 
-    <!-- Audio de Fondo (Música del Lobby) -->
-    <!-- Puedes cambiar el enlace de abajo por el archivo de música (.mp3) que quieras descargar o subir -->
-    <audio id="lobbyMusic" loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-epic.mp3" type="audio/mp3">
+    <!-- Audio de Fondo Automático (Lobby) -->
+    <audio id="lobbyMusic" loop autoplay>
+        <source src="musica.mp3" type="audio/mp3">
     </audio>
 
     <!-- Modal de Bienvenida -->
     <div id="welcomeModal" class="modal-overlay">
         <div class="modal-content">
-            <h2>¡Bienvenido a Silent March!</h2>
+            <h2>¡Bienvenido a Silent Monarchs!</h2>
             <p>Gracias por unirte a nuestra familia y formar parte de esta gran orden en Rucoy Online. ¡Prepárate para pelear por el Top!</p>
-            <button class="btn" onclick="startExperience()">Entrar al Sitio</button>
+            <button class="btn" onclick="closeModal()">Entrar al Sitio</button>
         </div>
     </div>
 
     <!-- Header & Nav -->
     <header>
         <nav>
-            <div class="logo">Silent March</div>
+            <div class="logo">Silent Monarchs</div>
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#acerca">Nosotros</a></li>
                 <li><a href="#tops">Pelea por Top</a></li>
                 <li><a href="#registro">Registro</a></li>
                 <li><a href="#minijuego">Minijuego</a></li>
                 <li><a href="#roster">Miembros</a></li>
                 <li><a href="#admin">Admin</a></li>
-                <!-- Reproductor de Música -->
-                <li>
-                    <div class="music-widget">
-                        <span style="font-size: 0.8rem; color: var(--text-muted);">Música:</span>
-                        <button id="musicBtn" onclick="toggleMusic()">▶ Play</button>
-                    </div>
-                </li>
             </ul>
         </nav>
     </header>
 
     <!-- Hero Section -->
     <section id="inicio" class="hero">
-        <h1>Silent March</h1>
+        <h1>Silent Monarchs</h1>
         <p>"En el silencio de las sombras, forjamos nuestra leyenda en Rucoy."</p>
         <div>
             <span id="guildStatus" class="status-badge status-open">Reclutamiento: ABIERTO</span>
@@ -419,6 +399,23 @@
     <!-- Container -->
     <div class="container">
 
+        <!-- About & Rules -->
+        <section id="acerca">
+            <h2>Acerca de la Guild</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Nuestra Historia</h3>
+                    <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarchs no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
+                </div>
+                <div class="card">
+                    <h3>Código de Conducta</h3>
+                    <p>1. Respeto absoluto a los compañeros de guild.<br>
+                    2. Prohibido el KS (Kill Stealing) a aliados.<br>
+                    3. Actividad constante y uso obligatorio del canal de Discord para eventos.</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Sección de Tops del Clan (Pelea por Top) -->
         <section id="tops">
             <h2>Podio de Guerreros (Top 1 Clan)</h2>
@@ -427,18 +424,18 @@
             <div class="grid-3">
                 <div class="card podium-card">
                     <h3>⚔️ Top 1 Melee</h3>
-                    <div class="podium-player" id="topMeleeName">Sin Asignar</div>
-                    <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 0</p>
+                    <div class="podium-player" id="topMeleeName">MonarchLeader</div>
+                    <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 450</p>
                 </div>
                 <div class="card podium-card">
                     <h3>🏹 Top 1 Distance</h3>
-                    <div class="podium-player" id="topDistanceName">Sin Asignar</div>
-                    <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 0</p>
+                    <div class="podium-player" id="topDistanceName">ShadowKnight</div>
+                    <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 420</p>
                 </div>
                 <div class="card podium-card">
                     <h3>🔮 Top 1 Magic</h3>
-                    <div class="podium-player" id="topMagicName">Sin Asignar</div>
-                    <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 0</p>
+                    <div class="podium-player" id="topMagicName">AetherMage</div>
+                    <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 410</p>
                 </div>
             </div>
         </section>
@@ -477,18 +474,18 @@
             </div>
         </section>
 
-        <!-- Minijuego Competitivo -->
+        <!-- Minijuego Competitivo Totalmente Funcional -->
         <section id="minijuego">
             <h2>Minijuego de Reacción "Quilla el Slime"</h2>
             <div class="minigame-box">
-                <p style="color: var(--text-muted);">¡Pon a prueba tus reflejos! Haz clic en los objetivos dorados tan rápido como puedas antes de que se acaben los 20 segundos.</p>
-                <div style="margin-top: 1rem; font-weight: bold;">
+                <p style="color: var(--text-muted);">¡Pon a prueba tus reflejos! Haz clic en los slimes dorados tan rápido como puedas antes de que se acaben los 20 segundos.</p>
+                <div style="margin-top: 1rem; font-weight: bold; font-size: 1.1rem;">
                     Puntuación: <span id="gameScore" style="color: var(--accent-gold);">0</span> | 
                     Tiempo restante: <span id="gameTime" style="color: var(--danger);">20</span>s
                 </div>
                 <div id="gameArea">
-                    <div id="gameStartPrompt" style="position: absolute; width: 100%; top: 40%; text-align: center; color: var(--text-muted);">
-                        Presiona el botón para iniciar el evento competitivo
+                    <div id="gameStartPrompt" style="position: absolute; width: 100%; top: 42%; text-align: center; color: var(--text-muted);">
+                        Presiona el botón de abajo para iniciar el evento competitivo
                     </div>
                 </div>
                 <br>
@@ -512,7 +509,7 @@
                     <tbody id="rosterTableBody">
                         <tr>
                             <td><strong>Melee</strong></td>
-                            <td>MarchLeader</td>
+                            <td>MonarchLeader</td>
                             <td>600</td>
                             <td>450 / 200 / 150</td>
                         </tr>
@@ -558,36 +555,26 @@
 
     <!-- Scripting General -->
     <script>
-        // --- Reproductor de Música del Lobby ---
-        function startExperience() {
-            document.getElementById('welcomeModal').style.display = 'none';
+        // Reproducir música automáticamente al cargar (con manejo para navegadores)
+        window.addEventListener('DOMContentLoaded', () => {
             const music = document.getElementById('lobbyMusic');
-            music.volume = 0.4;
-            music.play().then(() => {
-                document.getElementById('musicBtn').innerText = '❚❚ Pause';
-            }).catch(e => {
-                console.log("Audio autoplay bloqueado por el navegador.");
+            music.volume = 0.5;
+            music.play().catch(() => {
+                document.body.addEventListener('click', () => {
+                    music.play();
+                }, { once: true });
             });
-            updateTops();
-        }
+        });
 
-        function toggleMusic() {
-            const music = document.getElementById('lobbyMusic');
-            const btn = document.getElementById('musicBtn');
-            if (music.paused) {
-                music.play();
-                btn.innerText = '❚❚ Pause';
-            } else {
-                music.pause();
-                btn.innerText = '▶ Play';
-            }
+        function closeModal() {
+            document.getElementById('welcomeModal').style.display = 'none';
         }
 
         // --- Sistema de Top 1 por Clases ---
         let membersData = [
-            { name: "MarchLeader", level: 600, melee: 450, distance: 200, magic: 150, mainClass: "Melee", highest: 450 },
-            { name: "ShadowKnight", level: 550, melee: 180, distance: 420, magic: 140, mainClass: "Distance", highest: 420 },
-            { name: "AetherMage", level: 520, melee: 150, distance: 190, magic: 410, mainClass: "Magic", highest: 410 }
+            { name: "MonarchLeader", level: 600, melee: 450, distance: 200, magic: 150, mainClass: "Melee" },
+            { name: "ShadowKnight", level: 550, melee: 180, distance: 420, magic: 140, mainClass: "Distance" },
+            { name: "AetherMage", level: 520, melee: 150, distance: 190, magic: 410, mainClass: "Magic" }
         ];
 
         function updateTops() {
@@ -629,10 +616,8 @@
             if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
-            // Guardar en array de miembros
-            membersData.push({ name, level, melee, distance, magic, mainClass, highest: highestSkill });
+            membersData.push({ name, level, melee, distance, magic, mainClass });
 
-            // Actualizar tabla HTML
             const tableBody = document.getElementById('rosterTableBody');
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
@@ -645,7 +630,6 @@
 
             document.getElementById('memberCount').innerText = membersData.length;
 
-            // Limpiar inputs y refrescar pods de tops
             document.getElementById('regName').value = '';
             document.getElementById('regLevel').value = '';
             document.getElementById('regMelee').value = '';
@@ -656,7 +640,7 @@
             alert('¡Te has registrado con éxito! Tus stats ya compiten por el Top de la guild.');
         }
 
-        // --- Minijuego Competitivo ---
+        // --- Minijuego Competitivo Funcional ---
         let score = 0;
         let timeLeft = 20;
         let gameInterval = null;
@@ -666,6 +650,10 @@
             const area = document.getElementById('gameArea');
             document.getElementById('gameStartPrompt').style.display = 'none';
             document.getElementById('startBtn').style.display = 'none';
+            
+            const oldTarget = document.getElementById('activeTarget');
+            if (oldTarget) oldTarget.remove();
+
             score = 0;
             timeLeft = 20;
             document.getElementById('gameScore').innerText = score;
@@ -677,7 +665,10 @@
                 if (timeLeft <= 0) {
                     clearInterval(gameInterval);
                     clearTimeout(targetTimeout);
-                    area.innerHTML = `<div style="position: absolute; width: 100%; top: 40%; text-align: center; color: var(--accent-gold); font-size: 1.2rem; font-weight: bold;">¡Tiempo terminado! Puntuación final: ${score} puntos.</div>`;
+                    const finalTarget = document.getElementById('activeTarget');
+                    if (finalTarget) finalTarget.remove();
+
+                    area.innerHTML = `<div style="position: absolute; width: 100%; top: 42%; text-align: center; color: var(--accent-gold); font-size: 1.2rem; font-weight: bold;">¡Tiempo terminado! Puntuación final: ${score} puntos.</div>`;
                     document.getElementById('startBtn').style.display = 'inline-block';
                     document.getElementById('startBtn').innerText = 'Jugar Otra Vez';
                 }
@@ -688,7 +679,6 @@
 
         function spawnTarget() {
             const area = document.getElementById('gameArea');
-            // Limpiar objetivo anterior si existe
             const oldTarget = document.getElementById('activeTarget');
             if (oldTarget) oldTarget.remove();
 
@@ -699,10 +689,10 @@
             target.id = 'activeTarget';
             target.innerText = 'Slime';
 
-            const maxX = area.clientWidth - 50;
-            const maxY = area.clientHeight - 50;
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
+            const maxX = area.clientWidth - 60;
+            const maxY = area.clientHeight - 60;
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
 
             target.style.left = randomX + 'px';
             target.style.top = randomY + 'px';
@@ -716,7 +706,6 @@
 
             area.appendChild(target);
 
-            // El objetivo cambia de posición solo si no se le hace clic rápido
             targetTimeout = setTimeout(() => {
                 if (document.getElementById('activeTarget')) {
                     spawnTarget();
