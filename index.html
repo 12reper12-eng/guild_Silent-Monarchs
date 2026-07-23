@@ -191,10 +191,10 @@
             text-align: center;
         }
 
-        .grid-3 {
+        .grid-4 {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
             margin-bottom: 3rem;
         }
 
@@ -221,18 +221,20 @@
             background: linear-gradient(135deg, #181a24, #251e3e);
             border: 2px solid var(--accent-gold);
             text-align: center;
+            padding: 1.5rem 1rem;
         }
 
         .podium-card h3 {
             color: var(--accent-gold);
-            font-size: 1.3rem;
+            font-size: 1.1rem;
         }
 
         .podium-player {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: white;
             margin: 0.5rem 0;
+            word-break: break-word;
         }
 
         /* Tables */
@@ -414,8 +416,14 @@
             font-size: 1.05rem;
         }
 
+        @media (max-width: 992px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
-            .grid-3, .grid-2, .form-grid {
+            .grid-4, .grid-2, .form-grid {
                 grid-template-columns: 1fr;
             }
             .form-group.full { grid-column: span 1; }
@@ -477,7 +485,7 @@
                 <div class="grid-2">
                     <div class="card">
                         <h3>Nuestra Historia</h3>
-                        <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarchs not solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
+                        <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarchs no solo es un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
                     </div>
                     <div class="card">
                         <h3>Código de Conducta</h3>
@@ -490,9 +498,9 @@
 
             <section style="padding: 3rem 0;">
                 <h2>Podio de Guerreros (Top 1 Clan)</h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate en la guild!</p>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate y defensa en la guild!</p>
                 
-                <div class="grid-3">
+                <div class="grid-4">
                     <div class="card podium-card">
                         <h3>⚔️ Top 1 Melee</h3>
                         <div class="podium-player" id="topMeleeName">Sin Asignar</div>
@@ -507,6 +515,11 @@
                         <h3>🔮 Top 1 Magic</h3>
                         <div class="podium-player" id="topMagicName">Sin Asignar</div>
                         <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 0</p>
+                    </div>
+                    <div class="card podium-card">
+                        <h3>🛡️ Top 1 Defense</h3>
+                        <div class="podium-player" id="topDefenseName">Sin Asignar</div>
+                        <p style="color: var(--accent-gold);" id="topDefenseStat">Def: 0</p>
                     </div>
                 </div>
             </section>
@@ -685,7 +698,7 @@
     <!-- Scripting General + Firebase Config Real -->
     <script>
         // ==========================================
-        // CONFIGURACIÓN DE FIREBASE (Tus credenciales reales)
+        // CONFIGURACIÓN DE FIREBASE
         // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyCy5uXiDewBDWjEksb3BZOvRL1VUfrfpqc",
@@ -788,12 +801,14 @@
             let topMelee = { name: "Sin Asignar", val: 0 };
             let topDistance = { name: "Sin Asignar", val: 0 };
             let topMagic = { name: "Sin Asignar", val: 0 };
+            let topDefense = { name: "Sin Asignar", val: 0 };
 
             if (membersData.length > 0) {
                 membersData.forEach(m => {
                     if (m.melee > topMelee.val) { topMelee = { name: m.name, val: m.melee }; }
                     if (m.distance > topDistance.val) { topDistance = { name: m.name, val: m.distance }; }
                     if (m.magic > topMagic.val) { topMagic = { name: m.name, val: m.magic }; }
+                    if ((m.defense || 0) > topDefense.val) { topDefense = { name: m.name, val: (m.defense || 0) }; }
                 });
             }
 
@@ -805,6 +820,9 @@
 
             document.getElementById('topMagicName').innerText = topMagic.name;
             document.getElementById('topMagicStat').innerText = "Skill: " + topMagic.val;
+
+            document.getElementById('topDefenseName').innerText = topDefense.name;
+            document.getElementById('topDefenseStat').innerText = "Def: " + topDefense.val;
         }
 
         function renderTables() {
