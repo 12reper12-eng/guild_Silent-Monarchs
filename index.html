@@ -275,7 +275,7 @@
         .status-open { background-color: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid var(--success); }
         .status-closed { background-color: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); }
 
-        /* Badges de Roles y Clases con Iconos de Rucoy (Espada, Arco, Bola de Magia) */
+        /* Badges de Roles y Clases */
         .badge-role {
             padding: 0.2rem 0.6rem;
             border-radius: 12px;
@@ -621,7 +621,7 @@
 
                     <!-- SOLICITUDES PENDIENTES -->
                     <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Solicitudes Pendientes de Aprobación</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Nuevos reclutas esperando que un admin, líder o co-líder acepte su solicitud.</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Nuevos reclutas esperando aprobación.</p>
                     
                     <div class="table-responsive" style="margin-bottom: 2rem;">
                         <table>
@@ -643,7 +643,7 @@
                     <hr style="border-color: #2a2e3d; margin: 1.5rem 0;">
 
                     <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Gestión de Rangos y Miembros Activos</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Ordena la lista y asigna rangos de Co-Líder, Admin o Miembro a voluntad.</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Ordena la lista y asigna rangos.</p>
 
                     <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
                         <button class="btn-small" onclick="sortMembers('level')">Ordenar por Nivel</button>
@@ -677,19 +677,20 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-    <!-- Scripting General + Firebase Config -->
+    <!-- Scripting General + Firebase Config Real -->
     <script>
         // ==========================================
-        // CONFIGURACIÓN DE FIREBASE (¡Reemplaza con tus datos reales de tu consola Firebase!)
+        // CONFIGURACIÓN DE FIREBASE (Tus credenciales reales)
         // ==========================================
         const firebaseConfig = {
-            apiKey: "TU_API_KEY_AQUI",
-            authDomain: "tu-proyecto.firebaseapp.com",
-            databaseURL: "https://tu-proyecto-default-rtdb.firebaseio.com",
-            projectId: "tu-proyecto",
-            storageBucket: "tu-proyecto.appspot.com",
-            messagingSenderId: "TU_SENDER_ID",
-            appId: "TU_APP_ID"
+            apiKey: "AIzaSyCy5uXiDewBDWjEksb3BZOvRL1VUfrfpqc",
+            authDomain: "silent-monarchs.firebaseapp.com",
+            databaseURL: "https://silent-monarchs-default-rtdb.firebaseio.com",
+            projectId: "silent-monarchs",
+            storageBucket: "silent-monarchs.firebasestorage.app",
+            messagingSenderId: "113595305822",
+            appId: "1:113595305822:web:3143cdad116d3b280189cf",
+            measurementId: "G-D5SQ96SYD9"
         };
 
         // Inicializar Firebase
@@ -768,7 +769,6 @@
             }).catch(() => {});
         }
 
-        // Función para renderizar iconos de clase con bolita de magia, arco o espada según la habilidad más alta
         function getClassHtml(mainClass) {
             if (mainClass === 'Melee') {
                 return `<span class="class-icon">⚔️ Melee</span>`;
@@ -904,7 +904,7 @@
             if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
-            // Guardar en Firebase dentro de 'pendientes' con rol inicial 'miembro'
+            // Guardar en Firebase con rol inicial asegurado como 'miembro'
             db.ref('pendientes').push({
                 name,
                 level,
@@ -928,17 +928,12 @@
         }
 
         function approveMember(id) {
-            // Buscar en pendientes
             const refPending = db.ref('pendientes/' + id);
             refPending.once('value', (snapshot) => {
                 const memberData = snapshot.val();
                 if (memberData) {
-                    // Por defecto ingresa como 'miembro'
-                    memberData.role = "miembro";
-                    
-                    // Guardar en 'miembros' activos
+                    memberData.role = "miembro"; // Asegura que entre como miembro y no como líder
                     db.ref('miembros').push(memberData).then(() => {
-                        // Eliminar de 'pendientes'
                         refPending.remove();
                     });
                 }
@@ -951,10 +946,6 @@
 
         function sortMembers(criteria) {
             membersData.sort((a, b) => b[criteria] - a[criteria]);
-            // Re-render con orden local temporal
-            const adminBody = document.getElementById('adminTableBody');
-            const rosterBody = document.getElementById('rosterTableBody');
-            // Opcional: renderTables respeta el orden actual si se desea o se puede ordenar visualmente
             renderTables();
         }
 
