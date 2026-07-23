@@ -759,12 +759,27 @@
         // ==========================================
         db.ref('miembros').on('value', (snapshot) => {
             const data = snapshot.val();
-            membersData = [];
+            let rawMembers = [];
             if (data) {
                 Object.keys(data).forEach(key => {
-                    membersData.push({ id: key, ...data[key] });
+                    rawMembers.push({ id: key, ...data[key] });
                 });
             }
+
+            // Evitar duplicados visuales y limpiar duplicados en BD si existen
+            const seenNames = new Set();
+            membersData = [];
+            rawMembers.forEach(m => {
+                const lowerName = m.name ? m.name.trim().toLowerCase() : '';
+                if (lowerName && !seenNames.has(lowerName)) {
+                    seenNames.add(lowerName);
+                    membersData.push(m);
+                } else if (lowerName && seenNames.has(lowerName)) {
+                    // Si ya existe en la lista, eliminar el duplicado directamente de Firebase
+                    db.ref('miembros/' + m.id).remove();
+                }
+            });
+
             updateTops();
             renderTables();
         });
@@ -796,7 +811,6 @@
             document.getElementById('view-' + viewName).classList.add('active-view');
             if(element) element.classList.add('active');
             
-            // Cerrar menú móvil al hacer clic en una opción
             document.getElementById('navLinksMenu').classList.remove('active-menu');
             window.scrollTo(0, 0);
         }
@@ -967,12 +981,23 @@
                 return;
             }
 
+            const lowerInputName = name.toLowerCase();
+
+            // Verificar si ya existe en miembros activos
+            const existsInActive = membersData.some(m => m.name && m.name.trim().toLowerCase() === lowerInputName);
+            // Verificar si ya existe en solicitudes pendientes
+            const existsInPending = pendingData.some(p => p.name && p.name.trim().toLowerCase() === lowerInputName);
+
+            if (existsInActive || existsInPending) {
+                alert('¡El personaje "' + name + '" ya está registrado o tiene una solicitud pendiente!');
+                return;
+            }
+
             let mainClass = "Melee";
             let highestSkill = melee;
             if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
-            // Guardar en Firebase incluyendo la defensa
             db.ref('pendientes').push({
                 name,
                 level,
@@ -1002,10 +1027,18 @@
             refPending.once('value', (snapshot) => {
                 const memberData = snapshot.val();
                 if (memberData) {
-                    memberData.role = "miembro"; 
-                    db.ref('miembros').push(memberData).then(() => {
+                    const lowerName = memberData.name.trim().toLowerCase();
+                    const alreadyActive = membersData.some(m => m.name && m.name.trim().toLowerCase() === lowerName);
+
+                    if (!alreadyActive) {
+                        memberData.role = "miembro"; 
+                        db.ref('miembros').push(memberData).then(() => {
+                            refPending.remove();
+                        });
+                    } else {
+                        alert('Este miembro ya se encuentra activo en el roster.');
                         refPending.remove();
-                    });
+                    }
                 }
             });
         }
