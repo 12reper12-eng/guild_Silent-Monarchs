@@ -478,7 +478,7 @@
                 <li><a onclick="switchView('registro', this)">Registro</a></li>
                 <li><a onclick="switchView('minigame', this)">Minijuego</a></li>
                 <li><a onclick="switchView('roster', this)">Miembros</a></li>
-                <li><a href="#rangos-supremos">Rangos</a></li>
+                <li><a onclick="switchView('rangos', this)">Rangos</a></li>
                 <li><a onclick="switchView('admin', this)">Admin Pro</a></li>
             </ul>
         </nav>
@@ -509,41 +509,6 @@
                         <p>1. Respeto absoluto a los compañeros de guild.<br>
                         2. Prohibido el KS (Kill Stealing) a aliados.<br>
                         3. Actividad constante y uso obligatorio del canal de Discord para eventos.</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TABLA DE RANGOS ÉPICOS SUPREMOS -->
-            <section id="rangos-supremos" style="padding: 3rem 0; border-bottom: 1px solid #222;">
-                <h2>⚡ TABLA DE RANGOS SUPREMA ⚡</h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2.5rem;">Compite, sube de nivel masivo y demuestra tu poder en el campo de batalla.</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                    <!-- Rangos por Nivel Masivo -->
-                    <div class="card">
-                        <h3 style="color: var(--accent-gold);">🔥 Rangos por Nivel (Level Tier)</h3>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Titán de Acero</strong> (Nivel 300 - 399)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Gladiador Imperial</strong> (Nivel 400 - 499)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Señor de la Guerra</strong> (Nivel 500 - 599)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Conquistador Dimensional</strong> (Nivel 600 - 699)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Dios del Abismo</strong> (Nivel 700 - 799)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Monarca Eterno</strong> (Nivel 800 - 899)</li>
-                            <li style="padding: 8px 0;"><strong style="color: var(--accent-gold);">Leyenda Suprema Nivel Ω</strong> (Nivel 900+)</li>
-                        </ul>
-                    </div>
-
-                    <!-- Rangos por Habilidad y Skill -->
-                    <div class="card">
-                        <h3 style="color: var(--accent-gold);">⚔️ Rangos por Habilidad (Skill & PvP)</h3>
-                        <ul style="list-style: none; padding: 0;">
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Asesino Élite</strong> (Dominio letal y precisión táctica base)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Sombra Imparable</strong> (Rachas de destrucción continua en zona PvP)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Leyenda 4</strong> (Maestría avanzada de combate y control)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Leyenda 8</strong> (Poder de destrucción masiva verificado)</li>
-                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Leyenda 9</strong> (Terror de los calabozos y jefes)</li>
-                            <li style="padding: 8px 0;"><strong style="color: var(--accent-gold);">Supreme Kill Level</strong> (El pináculo absoluto de la fuerza y el skill)</li>
-                        </ul>
                     </div>
                 </div>
             </section>
@@ -719,6 +684,31 @@
         </div>
     </div>
 
+    <!-- VISTA RANGOS (NUEVA: TABLA DE RANGOS POR MIEMBRO) -->
+    <div id="view-rangos" class="view-section">
+        <div class="container" style="margin-top: 100px;">
+            <h2>⚡ Tabla de Rangos por Miembro ⚡</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Visualiza el rango oficial de nivel y skill de cada miembro registrado en el clan.</p>
+            
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Personaje</th>
+                            <th>Nivel Actual</th>
+                            <th>Rango por Nivel</th>
+                            <th>Skill Principal / Valor</th>
+                            <th>Rango por Habilidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rangosTableBody">
+                        <!-- Dinámico -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <!-- VISTA 5: ADMIN PRO -->
     <div id="view-admin" class="view-section">
         <div class="container" style="margin-top: 100px;">
@@ -769,7 +759,7 @@
                     <hr style="border-color: #2a2e3d; margin: 1.5rem 0;">
 
                     <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Gestión de Rangos y Miembros Activos</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Ordena la lista y asigna rangos.</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Ordena la lista y asigna roles.</p>
 
                     <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
                         <button class="btn-small" onclick="sortMembers('level')">Ordenar por Nivel</button>
@@ -786,8 +776,8 @@
                                     <th>Personaje</th>
                                     <th>Nivel</th>
                                     <th>Melee / Dist / Magia / Def</th>
-                                    <th>Rango Actual</th>
-                                    <th>Cambiar Rango</th>
+                                    <th>Rol Actual</th>
+                                    <th>Cambiar Rol</th>
                                 </tr>
                             </thead>
                             <tbody id="adminTableBody">
@@ -839,7 +829,6 @@
                 });
             }
 
-            // Evitar duplicados visuales y limpiar duplicados en BD si existen
             const seenNames = new Set();
             membersData = [];
             rawMembers.forEach(m => {
@@ -927,6 +916,28 @@
             }
         }
 
+        // Lógica de cálculo de rangos por nivel y skill
+        function getLevelRank(level) {
+            if (level >= 900) return '<span style="color: var(--accent-gold); font-weight: bold;">Leyenda Suprema Nivel Ω</span>';
+            if (level >= 800) return '<span style="color: var(--accent-gold); font-weight: bold;">Monarca Eterno</span>';
+            if (level >= 700) return '<span style="color: var(--accent-gold); font-weight: bold;">Dios del Abismo</span>';
+            if (level >= 600) return '<span style="color: var(--accent-gold); font-weight: bold;">Conquistador Dimensional</span>';
+            if (level >= 500) return '<span style="color: var(--accent-gold); font-weight: bold;">Señor de la Guerra</span>';
+            if (level >= 400) return '<span style="color: var(--accent-gold); font-weight: bold;">Gladiador Imperial</span>';
+            if (level >= 300) return '<span style="color: var(--accent-gold); font-weight: bold;">Titán de Acero</span>';
+            return '<span style="color: var(--text-muted);">Recluta / Iniciado</span>';
+        }
+
+        function getSkillRank(skillVal) {
+            if (skillVal >= 400) return '<span style="color: var(--accent-purple); font-weight: bold;">Supreme Kill Level</span>';
+            if (skillVal >= 350) return '<span style="color: var(--accent-purple); font-weight: bold;">Leyenda 9</span>';
+            if (skillVal >= 300) return '<span style="color: var(--accent-purple); font-weight: bold;">Leyenda 8</span>';
+            if (skillVal >= 250) return '<span style="color: var(--accent-purple); font-weight: bold;">Leyenda 4</span>';
+            if (skillVal >= 200) return '<span style="color: var(--accent-purple); font-weight: bold;">Sombra Imparable</span>';
+            if (skillVal >= 100) return '<span style="color: var(--accent-purple); font-weight: bold;">Asesino Élite</span>';
+            return '<span style="color: var(--text-muted);">Novato</span>';
+        }
+
         function updateTop10Tables() {
             let meleeList = [...membersData].sort((a, b) => (b.melee || 0) - (a.melee || 0)).slice(0, 10);
             let distanceList = [...membersData].sort((a, b) => (b.distance || 0) - (a.distance || 0)).slice(0, 10);
@@ -966,15 +977,18 @@
             const rosterBody = document.getElementById('rosterTableBody');
             const adminBody = document.getElementById('adminTableBody');
             const pendingBody = document.getElementById('pendingTableBody');
+            const rangosBody = document.getElementById('rangosTableBody');
             
             rosterBody.innerHTML = '';
             adminBody.innerHTML = '';
             pendingBody.innerHTML = '';
+            rangosBody.innerHTML = '';
 
             document.getElementById('memberCount').innerText = membersData.length;
 
             if (membersData.length === 0) {
                 rosterBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros activos todavía.</td></tr>`;
+                rangosBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros para mostrar rangos.</td></tr>`;
             } else {
                 membersData.forEach(m => {
                     let roleBadgeName = "Miembro";
@@ -983,6 +997,7 @@
                     else if(m.role === 'colider') { roleBadgeName = "Co-Líder"; roleClass = "role-colider"; }
                     else if(m.role === 'admin') { roleBadgeName = "Admin"; roleClass = "role-admin"; }
 
+                    // Roster normal
                     rosterBody.innerHTML += `
                         <tr>
                             <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
@@ -990,6 +1005,18 @@
                             <td>${m.name}</td>
                             <td>${m.level}</td>
                             <td>${m.melee} / ${m.distance} / ${m.magic} / Def: ${m.defense || 0}</td>
+                        </tr>
+                    `;
+
+                    // Tabla de Rangos por Miembro
+                    let maxSkillVal = Math.max(m.melee || 0, m.distance || 0, m.magic || 0);
+                    rangosBody.innerHTML += `
+                        <tr>
+                            <td><strong>${m.name}</strong></td>
+                            <td>${m.level}</td>
+                            <td>${getLevelRank(m.level)}</td>
+                            <td>${getClassHtml(m.mainClass)} (${maxSkillVal})</td>
+                            <td>${getSkillRank(maxSkillVal)}</td>
                         </tr>
                     `;
                 });
@@ -1014,9 +1041,7 @@
                 });
             }
 
-            if (membersData.length === 0) {
-                adminBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros activos registrados.</td></tr>`;
-            } else {
+            if (membersData.length > 0) {
                 membersData.forEach((m) => {
                     let roleBadgeName = "Miembro";
                     let roleClass = "role-miembro";
