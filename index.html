@@ -478,6 +478,7 @@
                 <li><a onclick="switchView('registro', this)">Registro</a></li>
                 <li><a onclick="switchView('minigame', this)">Minijuego</a></li>
                 <li><a onclick="switchView('roster', this)">Miembros</a></li>
+                <li><a href="#rangos-supremos">Rangos</a></li>
                 <li><a onclick="switchView('admin', this)">Admin Pro</a></li>
             </ul>
         </nav>
@@ -508,6 +509,41 @@
                         <p>1. Respeto absoluto a los compañeros de guild.<br>
                         2. Prohibido el KS (Kill Stealing) a aliados.<br>
                         3. Actividad constante y uso obligatorio del canal de Discord para eventos.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TABLA DE RANGOS ÉPICOS SUPREMOS -->
+            <section id="rangos-supremos" style="padding: 3rem 0; border-bottom: 1px solid #222;">
+                <h2>⚡ TABLA DE RANGOS SUPREMA ⚡</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2.5rem;">Compite, sube de nivel masivo y demuestra tu poder en el campo de batalla.</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <!-- Rangos por Nivel Masivo -->
+                    <div class="card">
+                        <h3 style="color: var(--accent-gold);">🔥 Rangos por Nivel (Level Tier)</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Titán de Acero</strong> (Nivel 300 - 399)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Gladiador Imperial</strong> (Nivel 400 - 499)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Señor de la Guerra</strong> (Nivel 500 - 599)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Conquistador Dimensional</strong> (Nivel 600 - 699)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Dios del Abismo</strong> (Nivel 700 - 799)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Monarca Eterno</strong> (Nivel 800 - 899)</li>
+                            <li style="padding: 8px 0;"><strong style="color: var(--accent-gold);">Leyenda Suprema Nivel Ω</strong> (Nivel 900+)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Rangos por Habilidad y Skill -->
+                    <div class="card">
+                        <h3 style="color: var(--accent-gold);">⚔️ Rangos por Habilidad (Skill & PvP)</h3>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Asesino Élite</strong> (Dominio letal y precisión táctica base)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Sombra Imparable</strong> (Rachas de destrucción continua en zona PvP)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Leyenda 4</strong> (Maestría avanzada de combate y control)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Leyenda 8</strong> (Poder de destrucción masiva verificado)</li>
+                            <li style="padding: 8px 0; border-bottom: 1px dashed #2a2e3d;"><strong style="color: var(--accent-gold);">Leyenda 9</strong> (Terror de los calabozos y jefes)</li>
+                            <li style="padding: 8px 0;"><strong style="color: var(--accent-gold);">Supreme Kill Level</strong> (El pináculo absoluto de la fuerza y el skill)</li>
+                        </ul>
                     </div>
                 </div>
             </section>
@@ -892,7 +928,6 @@
         }
 
         function updateTop10Tables() {
-            // Generar copias independientes para ordenar cada categoría sin alterar el array principal
             let meleeList = [...membersData].sort((a, b) => (b.melee || 0) - (a.melee || 0)).slice(0, 10);
             let distanceList = [...membersData].sort((a, b) => (b.distance || 0) - (a.distance || 0)).slice(0, 10);
             let magicList = [...membersData].sort((a, b) => (b.magic || 0) - (a.magic || 0)).slice(0, 10);
@@ -938,7 +973,6 @@
 
             document.getElementById('memberCount').innerText = membersData.length;
 
-            // Roster público
             if (membersData.length === 0) {
                 rosterBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros activos todavía.</td></tr>`;
             } else {
@@ -961,7 +995,6 @@
                 });
             }
 
-            // Solicitudes pendientes en Admin
             if (pendingData.length === 0) {
                 pendingBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay solicitudes pendientes en este momento.</td></tr>`;
             } else {
@@ -981,7 +1014,6 @@
                 });
             }
 
-            // Tabla de administración de miembros activos
             if (membersData.length === 0) {
                 adminBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No hay miembros activos registrados.</td></tr>`;
             } else {
