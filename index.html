@@ -380,7 +380,8 @@
                 <li><a href="#registro">Registro</a></li>
                 <li><a href="#minijuego">Minijuego</a></li>
                 <li><a href="#roster">Miembros</a></li>
-                <li><a href="#admin">Admin</a></li>
+                <!-- El enlace de Admin está oculto para los usuarios normales en el menú -->
+                <li id="navAdminLink" style="display: none;"><a href="#admin">Admin</a></li>
             </ul>
         </nav>
     </header>
@@ -713,12 +714,14 @@
             }, 900);
         }
 
-        // --- Panel de Admin ---
+        // --- Panel de Admin (Contraseña: Silent) ---
         function verifyAdmin() {
             const pass = document.getElementById('adminPassword').value;
-            if (pass === "admin123") {
+            if (pass === "Silent") {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminControls').style.display = 'block';
+                // Hacer visible el enlace de Admin en la barra de navegación al iniciar sesión con éxito
+                document.getElementById('navAdminLink').style.display = 'block';
                 alert('¡Acceso concedido al panel de administración!');
             } else {
                 alert('Contraseña incorrecta.');
