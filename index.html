@@ -46,6 +46,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 1rem 2rem;
+            position: relative;
         }
 
         .logo {
@@ -74,6 +75,16 @@
 
         .nav-links a:hover, .nav-links a.active {
             color: var(--accent-gold);
+        }
+
+        /* Botón hamburguesa móvil */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-gold);
+            font-size: 1.8rem;
+            cursor: pointer;
         }
 
         /* Hero Section */
@@ -428,7 +439,31 @@
             }
             .form-group.full { grid-column: span 1; }
             .hero h1 { font-size: 2.5rem; }
-            .nav-links { display: none; }
+
+            /* Mostrar botón de menú hamburguesa en móvil */
+            .menu-toggle {
+                display: block;
+            }
+
+            /* Estilo desplegable del menú en móvil */
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(15, 16, 22, 0.98);
+                border-bottom: 2px solid var(--accent-purple);
+                padding: 1.5rem 0;
+                gap: 1.2rem;
+                text-align: center;
+                box-shadow: 0 10px 15px rgba(0,0,0,0.5);
+            }
+
+            .nav-links.active-menu {
+                display: flex;
+            }
         }
     </style>
 </head>
@@ -457,7 +492,8 @@
     <header>
         <nav>
             <div class="logo">Silent Monarchs</div>
-            <ul class="nav-links">
+            <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-links" id="navLinksMenu">
                 <li><a onclick="switchView('home', this)" class="active">Inicio</a></li>
                 <li><a onclick="switchView('registro', this)">Registro</a></li>
                 <li><a onclick="switchView('minigame', this)">Minijuego</a></li>
@@ -744,6 +780,11 @@
             renderTables();
         });
 
+        function toggleMobileMenu() {
+            const menu = document.getElementById('navLinksMenu');
+            menu.classList.toggle('active-menu');
+        }
+
         function switchView(viewName, element) {
             document.querySelectorAll('.view-section').forEach(section => {
                 section.classList.remove('active-view');
@@ -754,6 +795,9 @@
 
             document.getElementById('view-' + viewName).classList.add('active-view');
             if(element) element.classList.add('active');
+            
+            // Cerrar menú móvil al hacer clic en una opción
+            document.getElementById('navLinksMenu').classList.remove('active-menu');
             window.scrollTo(0, 0);
         }
 
