@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silent Monarca | Rucoy Online Guild</title>
+    <style>
+        :root {
+            --bg-dark: #0f1016;
+            --bg-card: #181a24;
+            --accent-gold: #f39c12;
+            --accent-purple: #8e44ad;
+            --text-main: #ecf0f1;
+            --text-muted: #bdc3c7;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(15, 16, 22, 0.95);
+            border-bottom: 2px solid var(--accent-purple);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            background: linear-gradient(rgba(15, 16, 22, 0.7), rgba(15, 16, 22, 0.9)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 1rem;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .btn {
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background-color: #732d91;
+            transform: scale(1.05);
+        }
+
+        /* Main Containers */
+        .container {
+            max-width: 1100px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 4rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        /* About & Rules Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #2a2e3d;
+        }
+
+        .card h3 {
+            color: var(--accent-purple);
+            margin-bottom: 1rem;
+        }
+
+        /* Roster Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #2a2e3d;
+        }
+
+        th {
+            background-color: #202330;
+            color: var(--accent-gold);
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .status-open { background-color: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid var(--success); }
+        .status-closed { background-color: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+        /* Admin Panel */
+        .admin-section {
+            background-color: #12141c;
+            border: 2px dashed var(--accent-gold);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 3rem;
+        }
+
+        .admin-form input, .admin-form select {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0 1rem 0;
+            background-color: var(--bg-card);
+            border: 1px solid #2a2e3d;
+            color: white;
+            border-radius: 4px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-title: 1fr;
+                grid-template-columns: 1fr;
+            }
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; } /* Simplified for mobile view */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header & Nav -->
+    <header>
+        <nav>
+            <div class="logo">Silent Monarca</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#acerca">Nosotros</a></li>
+                <li><a href="#reclutamiento">Reclutamiento</a></li>
+                <li><a href="#roster">Miembros</a></li>
+                <li><a href="#admin">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero">
+        <h1>Silent Monarca</h1>
+        <p>"En el silencio de las sombras, forjamos nuestra leyenda en Rucoy."</p>
+        <div>
+            <span id="guildStatus" class="status-badge status-open">Reclutamiento: ABIERTO</span>
+        </div>
+        <br>
+        <a href="#reclutamiento" class="btn">Únete a la Orden</a>
+    </section>
+
+    <!-- About & Rules -->
+    <div class="container">
+        <section id="acerca">
+            <h2>Acerca de la Guild</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Nuestra Historia</h3>
+                    <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarca no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
+                </div>
+                <div class="card">
+                    <h3>Código de Conducta</h3>
+                    <p>1. Respeto absoluto a los compañeros de guild.<br>
+                    2. Prohibido el KS (Kill Stealing) a aliados.<br>
+                    3. Actividad constante y uso obligatorio del canal de Discord para eventos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recruitment Section -->
+        <section id="reclutamiento">
+            <h2>Reclutamiento</h2>
+            <div class="card" style="text-align: center;">
+                <h3>Requisitos Mínimos</h3>
+                <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Nivel mínimo requerido: 500+ | Estadísticas acordes a tu clase (Melee / Distancia / Magia) | Conexión diaria.</p>
+                <a href="https://discord.com" target="_blank" class="btn">Postularse vía Discord</a>
+            </div>
+        </section>
+
+        <!-- Roster Section -->
+        <section id="roster">
+            <h2>Roster de Miembros</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rango</th>
+                        <th>Nombre del Personaje</th>
+                        <th>Clase Principal</th>
+                    </tr>
+                </thead>
+                <tbody id="rosterTableBody">
+                    <tr>
+                        <td><strong>Líder</strong></td>
+                        <td>MonarchLeader</td>
+                        <td>Melee</td>
+                    </tr>
+                    <tr>
+                        <td>Sublíder</td>
+                        <td>ShadowKnight</td>
+                        <td>Distance</td>
+                    </tr>
+                    <tr>
+                        <td>Veterano</td>
+                        <td>AetherMage</td>
+                        <td>Magic</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Admin Panel Section -->
+        <section id="admin" class="admin-section">
+            <h2>Panel de Administración</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Área exclusiva para la gestión del Líder y Sublíderes.</p>
+            
+            <div id="loginBox">
+                <label>Contraseña de Administrador:</label>
+                <input type="password" id="adminPassword" placeholder="Introduce la contraseña...">
+                <button class="btn" onclick="verifyAdmin()">Acceder</button>
+            </div>
+
+            <div id="adminControls" style="display: none;" class="admin-form">
+                <hr style="border-color: #2a2e3d; margin: 1.5rem 0;">
+                <h3 style="color: var(--accent-gold);">Configuración del Estado</h3>
+                <label>Estado de Reclutamiento:</label>
+                <select id="selectStatus" onchange="updateGuildStatus()">
+                    <option value="open">Abierto</option>
+                    <option value="closed">Cerrado</option>
+                </select>
+
+                <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Añadir Miembro al Roster</h3>
+                <label>Rango:</label>
+                <input type="text" id="newRank" placeholder="Ej: Veterano / Miembro">
+                <label>Nombre del Personaje:</label>
+                <input type="text" id="newName" placeholder="Ej: RucoyHero">
+                <label>Clase:</label>
+                <input type="text" id="newClass" placeholder="Ej: Melee / Distance / Magic">
+                <button class="btn" onclick="addMember()">Guardar Miembro</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Script to Handle Admin & Dynamic Actions -->
+    <script>
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPassword').value;
+            // Contraseña de ejemplo temporal (cámbiala por la que prefieras)
+            if (pass === "admin123") {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('adminControls').style.display = 'block';
+                alert('¡Acceso concedido al panel de administración!');
+            } else {
+                alert('Contraseña incorrecta.');
+            }
+        }
+
+        function updateGuildStatus() {
+            const statusVal = document.getElementById('selectStatus').value;
+            const badge = document.getElementById('guildStatus');
+            if (statusVal === 'open') {
+                badge.className = 'status-badge status-open';
+                badge.innerText = 'Reclutamiento: ABIERTO';
+            } else {
+                badge.className = 'status-badge status-closed';
+                badge.innerText = 'Reclutamiento: CERRADO';
+            }
+        }
+
+        function addMember() {
+            const rank = document.getElementById('newRank').value;
+            const name = document.getElementById('newName').value;
+            const charClass = document.getElementById('newClass').value;
+
+            if (!rank || !name || !charClass) {
+                alert('Por favor completa todos los campos para registrar al miembro.');
+                return;
+            }
+
+            const tableBody = document.getElementById('rosterTableBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `<td>${rank}</td><td>${name}</td><td>${charClass}</td>`;
+            tableBody.appendChild(newRow);
+
+            // Limpiar inputs
+            document.getElementById('newRank').value = '';
+            document.getElementById('newName').value = '';
+            document.getElementById('newClass').value = '';
+            alert('¡Miembro añadido exitosamente al roster!');
+        }
+    </script>
+</body>
+</html>
