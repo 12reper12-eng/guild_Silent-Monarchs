@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silent Monarca | Rucoy Online Guild</title>
+    <title>Silent March | Rucoy Online Guild</title>
     <style>
         :root {
             --bg-dark: #0f1016;
@@ -137,7 +137,7 @@
             text-align: center;
         }
 
-        /* About & Rules Grid */
+        /* Grid & Cards */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -157,12 +157,17 @@
         }
 
         /* Roster Table */
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid #2a2e3d;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
             background-color: var(--bg-card);
-            border-radius: 8px;
-            overflow: hidden;
         }
 
         th, td {
@@ -174,6 +179,8 @@
         th {
             background-color: #202330;
             color: var(--accent-gold);
+            position: sticky;
+            top: 0;
         }
 
         /* Status Badge */
@@ -186,6 +193,37 @@
         }
         .status-open { background-color: rgba(46, 204, 113, 0.2); color: var(--success); border: 1px solid var(--success); }
         .status-closed { background-color: rgba(231, 76, 60, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+        /* Public Registration Form */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-dark);
+            border: 1px solid #2a2e3d;
+            color: white;
+            border-radius: 4px;
+        }
 
         /* Admin Panel */
         .admin-section {
@@ -206,27 +244,74 @@
             border-radius: 4px;
         }
 
-        /* Responsive Design */
+        /* Welcome Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 11, 15, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            border: 2px solid var(--accent-gold);
+            padding: 2.5rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 0 25px rgba(243, 156, 18, 0.3);
+        }
+
+        .modal-content h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .grid-2 {
-                grid-title: 1fr;
+            .grid-2, .form-grid {
                 grid-template-columns: 1fr;
             }
+            .form-group.full {
+                grid-column: span 1;
+            }
             .hero h1 { font-size: 2.5rem; }
-            .nav-links { display: none; } /* Simplified for mobile view */
+            .nav-links { display: none; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Modal de Bienvenida -->
+    <div id="welcomeModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>¡Bienvenido a Silent March!</h2>
+            <p>Gracias por unirte a nuestra familia y formar parte de esta gran orden en Rucoy Online. Prepárate para conquistar las sombras.</p>
+            <button class="btn" onclick="closeModal()">Entrar al Sitio</button>
+        </div>
+    </div>
+
     <!-- Header & Nav -->
     <header>
         <nav>
-            <div class="logo">Silent Monarca</div>
+            <div class="logo">Silent March</div>
             <ul class="nav-links">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#acerca">Nosotros</a></li>
-                <li><a href="#reclutamiento">Reclutamiento</a></li>
+                <li><a href="#registro">Registro</a></li>
                 <li><a href="#roster">Miembros</a></li>
                 <li><a href="#admin">Admin</a></li>
             </ul>
@@ -235,23 +320,24 @@
 
     <!-- Hero Section -->
     <section id="inicio" class="hero">
-        <h1>Silent Monarca</h1>
+        <h1>Silent March</h1>
         <p>"En el silencio de las sombras, forjamos nuestra leyenda en Rucoy."</p>
         <div>
             <span id="guildStatus" class="status-badge status-open">Reclutamiento: ABIERTO</span>
         </div>
         <br>
-        <a href="#reclutamiento" class="btn">Únete a la Orden</a>
+        <a href="#registro" class="btn">Registrarse en la Guild</a>
     </section>
 
-    <!-- About & Rules -->
+    <!-- Container -->
     <div class="container">
+        <!-- About & Rules -->
         <section id="acerca">
             <h2>Acerca de la Guild</h2>
             <div class="grid-2">
                 <div class="card">
                     <h3>Nuestra Historia</h3>
-                    <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarca no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
+                    <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent March no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
                 </div>
                 <div class="card">
                     <h3>Código de Conducta</h3>
@@ -262,45 +348,75 @@
             </div>
         </section>
 
-        <!-- Recruitment Section -->
-        <section id="reclutamiento">
-            <h2>Reclutamiento</h2>
-            <div class="card" style="text-align: center;">
-                <h3>Requisitos Mínimos</h3>
-                <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Nivel mínimo requerido: 500+ | Estadísticas acordes a tu clase (Melee / Distancia / Magia) | Conexión diaria.</p>
-                <a href="https://discord.com" target="_blank" class="btn">Postularse vía Discord</a>
+        <!-- Public Registration Section (Para los 200 miembros) -->
+        <section id="registro">
+            <h2>Registro de Miembro</h2>
+            <div class="card">
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus datos. El sistema detectará automáticamente tu clase principal según tu skill más alta.</p>
+                
+                <div class="form-grid">
+                    <div class="form-group full">
+                        <label>Nombre del Personaje:</label>
+                        <input type="text" id="regName" placeholder="Ej: RucoyWarrior">
+                    </div>
+                    <div class="form-group">
+                        <label>Nivel (Level):</label>
+                        <input type="number" id="regLevel" placeholder="Ej: 500">
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Melee:</label>
+                        <input type="number" id="regMelee" placeholder="Ej: 350">
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Distancia (Distance):</label>
+                        <input type="number" id="regDistance" placeholder="Ej: 200">
+                    </div>
+                    <div class="form-group">
+                        <label>Skill Magia (Magic):</label>
+                        <input type="number" id="regMagic" placeholder="Ej: 150">
+                    </div>
+                    <div class="form-group full" style="text-align: center; margin-top: 1rem;">
+                        <button class="btn" onclick="registerMember()">Enviar Registro</button>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Roster Section -->
         <section id="roster">
-            <h2>Roster de Miembros</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Rango</th>
-                        <th>Nombre del Personaje</th>
-                        <th>Clase Principal</th>
-                    </tr>
-                </thead>
-                <tbody id="rosterTableBody">
-                    <tr>
-                        <td><strong>Líder</strong></td>
-                        <td>MonarchLeader</td>
-                        <td>Melee</td>
-                    </tr>
-                    <tr>
-                        <td>Sublíder</td>
-                        <td>ShadowKnight</td>
-                        <td>Distance</td>
-                    </tr>
-                    <tr>
-                        <td>Veterano</td>
-                        <td>AetherMage</td>
-                        <td>Magic</td>
-                    </tr>
-                </tbody>
-            </table>
+            <h2>Roster de Miembros (<span id="memberCount">3</span>/200)</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rango / Clase</th>
+                            <th>Nombre del Personaje</th>
+                            <th>Nivel</th>
+                            <th>Estadísticas (Melee / Dist / Magia)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rosterTableBody">
+                        <tr>
+                            <td><strong>Líder (Melee)</strong></td>
+                            <td>MarchLeader</td>
+                            <td>600</td>
+                            <td>450 / 200 / 150</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sublíder (Distance)</strong></td>
+                            <td>ShadowKnight</td>
+                            <td>550</td>
+                            <td>180 / 420 / 140</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Veterano (Magic)</strong></td>
+                            <td>AetherMage</td>
+                            <td>520</td>
+                            <td>150 / 190 / 410</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
         <!-- Admin Panel Section -->
@@ -322,24 +438,18 @@
                     <option value="open">Abierto</option>
                     <option value="closed">Cerrado</option>
                 </select>
-
-                <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Añadir Miembro al Roster</h3>
-                <label>Rango:</label>
-                <input type="text" id="newRank" placeholder="Ej: Veterano / Miembro">
-                <label>Nombre del Personaje:</label>
-                <input type="text" id="newName" placeholder="Ej: RucoyHero">
-                <label>Clase:</label>
-                <input type="text" id="newClass" placeholder="Ej: Melee / Distance / Magic">
-                <button class="btn" onclick="addMember()">Guardar Miembro</button>
             </div>
         </section>
     </div>
 
-    <!-- Script to Handle Admin & Dynamic Actions -->
+    <!-- Scripting -->
     <script>
+        function closeModal() {
+            document.getElementById('welcomeModal').style.display = 'none';
+        }
+
         function verifyAdmin() {
             const pass = document.getElementById('adminPassword').value;
-            // Contraseña de ejemplo temporal (cámbiala por la que prefieras)
             if (pass === "admin123") {
                 document.getElementById('loginBox').style.display = 'none';
                 document.getElementById('adminControls').style.display = 'block';
@@ -361,26 +471,53 @@
             }
         }
 
-        function addMember() {
-            const rank = document.getElementById('newRank').value;
-            const name = document.getElementById('newName').value;
-            const charClass = document.getElementById('newClass').value;
+        function registerMember() {
+            const name = document.getElementById('regName').value;
+            const level = parseInt(document.getElementById('regLevel').value) || 0;
+            const melee = parseInt(document.getElementById('regMelee').value) || 0;
+            const distance = parseInt(document.getElementById('regDistance').value) || 0;
+            const magic = parseInt(document.getElementById('regMagic').value) || 0;
 
-            if (!rank || !name || !charClass) {
-                alert('Por favor completa todos los campos para registrar al miembro.');
+            if (!name || !level) {
+                alert('Por favor ingresa al menos tu nombre de personaje y nivel.');
                 return;
+            }
+
+            // Cálculo automático de la skill más alta
+            let mainClass = "Melee";
+            let highestSkill = melee;
+
+            if (distance > highestSkill) {
+                highestSkill = distance;
+                mainClass = "Distance";
+            }
+            if (magic > highestSkill) {
+                highestSkill = magic;
+                mainClass = "Magic";
             }
 
             const tableBody = document.getElementById('rosterTableBody');
             const newRow = document.createElement('tr');
-            newRow.innerHTML = `<td>${rank}</td><td>${name}</td><td>${charClass}</td>`;
+            newRow.innerHTML = `
+                <td>Miembro (${mainClass})</td>
+                <td>${name}</td>
+                <td>${level}</td>
+                <td>${melee} / ${distance} / ${magic}</td>
+            `;
             tableBody.appendChild(newRow);
 
-            // Limpiar inputs
-            document.getElementById('newRank').value = '';
-            document.getElementById('newName').value = '';
-            document.getElementById('newClass').value = '';
-            alert('¡Miembro añadido exitosamente al roster!');
+            // Actualizar contador
+            const currentRows = tableBody.getElementsByTagName('tr').length;
+            document.getElementById('memberCount').innerText = currentRows;
+
+            // Limpiar formulario
+            document.getElementById('regName').value = '';
+            document.getElementById('regLevel').value = '';
+            document.getElementById('regMelee').value = '';
+            document.getElementById('regDistance').value = '';
+            document.getElementById('regMagic').value = '';
+
+            alert('¡Te has registrado exitosamente en la guild Silent March!');
         }
     </script>
 </body>
