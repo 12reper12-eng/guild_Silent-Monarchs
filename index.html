@@ -68,9 +68,10 @@
             text-decoration: none;
             transition: color 0.3s;
             font-weight: 500;
+            cursor: pointer;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active {
             color: var(--accent-gold);
         }
 
@@ -142,16 +143,20 @@
             transform: scale(1.08);
         }
 
-        /* Containers */
+        /* Containers & Vistas por Pestañas */
         .container {
             max-width: 1100px;
             margin: 4rem auto;
             padding: 0 2rem;
         }
 
-        section {
-            padding: 4rem 0;
-            border-bottom: 1px solid #222;
+        .view-section {
+            display: none; /* Ocultas por defecto */
+            padding: 2rem 0;
+        }
+
+        .view-section.active-view {
+            display: block; /* Solo se muestra la activa */
         }
 
         h2 {
@@ -205,6 +210,33 @@
             margin: 0.5rem 0;
         }
 
+        /* Tables */
+        .table-responsive {
+            max-height: 400px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid #2a2e3d;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-card);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #2a2e3d;
+        }
+
+        th {
+            background-color: #202330;
+            color: var(--accent-gold);
+            position: sticky;
+            top: 0;
+        }
+
         /* Status Badge */
         .status-badge {
             display: inline-block;
@@ -242,6 +274,60 @@
             width: 100%;
             padding: 0.8rem;
             background-color: var(--bg-dark);
+            border: 1px solid #2a2e3d;
+            color: white;
+            border-radius: 4px;
+        }
+
+        /* Minigame Section */
+        .minigame-box {
+            background-color: var(--bg-card);
+            border: 2px dashed var(--accent-purple);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #gameArea {
+            height: 300px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+            border: 1px solid #2a2e3d;
+        }
+
+        .target {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-gold);
+            border-radius: 50%;
+            position: absolute;
+            cursor: pointer;
+            box-shadow: 0 0 15px var(--accent-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #000;
+            font-weight: bold;
+            user-select: none;
+        }
+
+        /* Admin Panel */
+        .admin-section {
+            background-color: #12141c;
+            border: 2px dashed var(--accent-gold);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .admin-form select {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 0.5rem 0 1rem 0;
+            background-color: var(--bg-card);
             border: 1px solid #2a2e3d;
             color: white;
             border-radius: 4px;
@@ -296,12 +382,12 @@
 </head>
 <body>
 
-    <!-- Audio conectado al nombre real de tu archivo en GitHub -->
+    <!-- Audio de Fondo (Nombre exacto de tu archivo en GitHub) -->
     <audio id="lobbyMusic" loop>
         <source src="nastelbom-rap-rap-beats-427008.mp3" type="audio/mp3">
     </audio>
 
-    <!-- Botón Flotante para encender/apagar la música manualmente -->
+    <!-- Botón Flotante de Música -->
     <button class="music-float-btn" onclick="toggleMusic()">
         🎵 <span id="musicBtnText">Reproducir Música</span>
     </button>
@@ -315,115 +401,212 @@
         </div>
     </div>
 
-    <!-- Header & Nav limpio y redirigido -->
+    <!-- Header & Menú de Pestañas Internas -->
     <header>
         <nav>
             <div class="logo">Silent Monarchs</div>
             <ul class="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#acerca">Nosotros</a></li>
-                <li><a href="#tops">Pelea por Top</a></li>
-                <li><a href="#registro">Registro</a></li>
-                <li><a href="minijuego.html">Minijuego</a></li>
-                <li><a href="roster.html">Miembros</a></li>
-                <li><a href="admin.html">Admin</a></li>
+                <li><a onclick="switchView('home', this)" class="active">Inicio</a></li>
+                <li><a onclick="switchView('minigame', this)">Minijuego</a></li>
+                <li><a onclick="switchView('roster', this)">Miembros</a></li>
+                <li><a onclick="switchView('admin', this)">Admin</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section id="inicio" class="hero">
-        <h1>Silent Monarchs</h1>
-        <p>"En el silencio de las sombras, forjamos nuestra leyenda en Rucoy."</p>
-        <div>
-            <span id="guildStatus" class="status-badge status-open">Reclutamiento: ABIERTO</span>
-        </div>
-        <br>
-        <a href="#registro" class="btn">Registrarse en la Guild</a>
-    </section>
-
-    <!-- Container con las secciones esenciales solicitadas -->
-    <div class="container">
-
-        <!-- About & Rules -->
-        <section id="acerca">
-            <h2>Acerca de la Guild</h2>
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Nuestra Historia</h3>
-                    <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarchs no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
-                </div>
-                <div class="card">
-                    <h3>Código de Conducta</h3>
-                    <p>1. Respeto absoluto a los compañeros de guild.<br>
-                    2. Prohibido el KS (Kill Stealing) a aliados.<br>
-                    3. Actividad constante y uso obligatorio del canal de Discord para eventos.</p>
-                </div>
+    <!-- VISTA 1: INICIO (Acerca, Tops, Registro) -->
+    <div id="view-home" class="view-section active-view">
+        <section class="hero">
+            <h1>Silent Monarchs</h1>
+            <p>"En el silencio de las sombras, forjamos nuestra leyenda en Rucoy."</p>
+            <div>
+                <span id="guildStatus" class="status-badge status-open">Reclutamiento: ABIERTO</span>
             </div>
+            <br>
+            <a onclick="document.getElementById('registro-box').scrollIntoView({behavior: 'smooth'})" class="btn">Registrarse en la Guild</a>
         </section>
 
-        <!-- Sección de Tops del Clan (Pelea por Top) -->
-        <section id="tops">
-            <h2>Podio de Guerreros (Top 1 Clan)</h2>
-            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate en la guild!</p>
-            
-            <div class="grid-3">
-                <div class="card podium-card">
-                    <h3>⚔️ Top 1 Melee</h3>
-                    <div class="podium-player" id="topMeleeName">MonarchLeader</div>
-                    <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 450</p>
+        <div class="container">
+            <!-- Acerca de -->
+            <section style="padding: 2rem 0; border-bottom: 1px solid #222;">
+                <h2>Acerca de la Guild</h2>
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>Nuestra Historia</h3>
+                        <p>Fundada con el propósito de unir a los guerreros más dedicados de Rucoy Online. Silent Monarchs no es solo un clan, es una hermandad enfocada en el crecimiento mutuo, el dominio del farming avanzado y el control territorial.</p>
+                    </div>
+                    <div class="card">
+                        <h3>Código de Conducta</h3>
+                        <p>1. Respeto absoluto a los compañeros de guild.<br>
+                        2. Prohibido el KS (Kill Stealing) a aliados.<br>
+                        3. Actividad constante y uso obligatorio del canal de Discord para eventos.</p>
+                    </div>
                 </div>
-                <div class="card podium-card">
-                    <h3>🏹 Top 1 Distance</h3>
-                    <div class="podium-player" id="topDistanceName">ShadowKnight</div>
-                    <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 420</p>
-                </div>
-                <div class="card podium-card">
-                    <h3>🔮 Top 1 Magic</h3>
-                    <div class="podium-player" id="topMagicName">AetherMage</div>
-                    <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 410</p>
-                </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- Registro de Miembros -->
-        <section id="registro">
-            <h2>Registro de Miembro</h2>
-            <div class="card">
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus stats reales. Tu clase y puesto en el clan se calcularán automáticamente.</p>
+            <!-- Tops -->
+            <section style="padding: 3rem 0; border-bottom: 1px solid #222;">
+                <h2>Podio de Guerreros (Top 1 Clan)</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">¡Los líderes actuales que dominan cada estilo de combate en la guild!</p>
                 
-                <div class="form-grid">
-                    <div class="form-group full">
-                        <label>Nombre del Personaje:</label>
-                        <input type="text" id="regName" placeholder="Ej: RucoyWarrior">
+                <div class="grid-3">
+                    <div class="card podium-card">
+                        <h3>⚔️ Top 1 Melee</h3>
+                        <div class="podium-player" id="topMeleeName">MonarchLeader</div>
+                        <p style="color: var(--accent-gold);" id="topMeleeStat">Skill: 450</p>
                     </div>
-                    <div class="form-group">
-                        <label>Nivel (Level):</label>
-                        <input type="number" id="regLevel" placeholder="Ej: 500">
+                    <div class="card podium-card">
+                        <h3>🏹 Top 1 Distance</h3>
+                        <div class="podium-player" id="topDistanceName">ShadowKnight</div>
+                        <p style="color: var(--accent-gold);" id="topDistanceStat">Skill: 420</p>
                     </div>
-                    <div class="form-group">
-                        <label>Skill Melee:</label>
-                        <input type="number" id="regMelee" placeholder="Ej: 350">
-                    </div>
-                    <div class="form-group">
-                        <label>Skill Distancia (Distance):</label>
-                        <input type="number" id="regDistance" placeholder="Ej: 200">
-                    </div>
-                    <div class="form-group">
-                        <label>Skill Magia (Magic):</label>
-                        <input type="number" id="regMagic" placeholder="Ej: 150">
-                    </div>
-                    <div class="form-group full" style="text-align: center; margin-top: 1rem;">
-                        <button class="btn" onclick="registerMember()">Enviar Registro</button>
+                    <div class="card podium-card">
+                        <h3>🔮 Top 1 Magic</h3>
+                        <div class="podium-player" id="topMagicName">AetherMage</div>
+                        <p style="color: var(--accent-gold);" id="topMagicStat">Skill: 410</p>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
+            <!-- Registro -->
+            <section id="registro-box" style="padding: 3rem 0;">
+                <h2>Registro de Miembro</h2>
+                <div class="card">
+                    <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Introduce tus stats reales. Tu clase y puesto en el clan se calcularán automáticamente.</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full">
+                            <label>Nombre del Personaje:</label>
+                            <input type="text" id="regName" placeholder="Ej: RucoyWarrior">
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel (Level):</label>
+                            <input type="number" id="regLevel" placeholder="Ej: 500">
+                        </div>
+                        <div class="form-group">
+                            <label>Skill Melee:</label>
+                            <input type="number" id="regMelee" placeholder="Ej: 350">
+                        </div>
+                        <div class="form-group">
+                            <label>Skill Distancia (Distance):</label>
+                            <input type="number" id="regDistance" placeholder="Ej: 200">
+                        </div>
+                        <div class="form-group">
+                            <label>Skill Magia (Magic):</label>
+                            <input type="number" id="regMagic" placeholder="Ej: 150">
+                        </div>
+                        <div class="form-group full" style="text-align: center; margin-top: 1rem;">
+                            <button class="btn" onclick="registerMember()">Enviar Registro</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- VISTA 2: MINIJUEGO -->
+    <div id="view-minigame" class="view-section">
+        <div class="container" style="margin-top: 100px;">
+            <h2>Minijuego de Reacción "Quilla el Slime"</h2>
+            <div class="minigame-box">
+                <p style="color: var(--text-muted);">¡Pon a prueba tus reflejos! Haz clic en los slimes dorados tan rápido como puedas antes de que se acaben los 20 segundos.</p>
+                <div style="margin-top: 1rem; font-weight: bold; font-size: 1.1rem;">
+                    Puntuación: <span id="gameScore" style="color: var(--accent-gold);">0</span> | 
+                    Tiempo restante: <span id="gameTime" style="color: var(--danger);">20</span>s
+                </div>
+                <div id="gameArea">
+                    <div id="gameStartPrompt" style="position: absolute; width: 100%; top: 42%; text-align: center; color: var(--text-muted);">
+                        Presiona el botón de abajo para iniciar el evento competitivo
+                    </div>
+                </div>
+                <br>
+                <button class="btn" id="startBtn" onclick="startMinigame()">¡Iniciar Minijuego!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISTA 3: MIEMBROS (ROSTER) -->
+    <div id="view-roster" class="view-section">
+        <div class="container" style="margin-top: 100px;">
+            <h2>Roster de Miembros (<span id="memberCount">3</span>/200)</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Clase Principal</th>
+                            <th>Nombre del Personaje</th>
+                            <th>Nivel</th>
+                            <th>Estadísticas (Melee / Dist / Magia)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rosterTableBody">
+                        <tr>
+                            <td><strong>Melee</strong></td>
+                            <td>MonarchLeader</td>
+                            <td>600</td>
+                            <td>450 / 200 / 150</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Distance</strong></td>
+                            <td>ShadowKnight</td>
+                            <td>550</td>
+                            <td>180 / 420 / 140</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Magic</strong></td>
+                            <td>AetherMage</td>
+                            <td>520</td>
+                            <td>150 / 190 / 410</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- VISTA 4: ADMIN -->
+    <div id="view-admin" class="view-section">
+        <div class="container" style="margin-top: 100px;">
+            <div class="admin-section">
+                <h2>Panel de Administración</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Área exclusiva para la gestión del Líder y Sublíderes.</p>
+                
+                <div id="loginBox">
+                    <label>Contraseña de Administrador:</label>
+                    <input type="password" id="adminPassword" placeholder="Introduce la contraseña (Silent)...">
+                    <button class="btn" onclick="verifyAdmin()">Acceder</button>
+                </div>
+
+                <div id="adminControls" style="display: none;" class="admin-form">
+                    <hr style="border-color: #2a2e3d; margin: 1.5rem 0;">
+                    <h3 style="color: var(--accent-gold);">Configuración del Estado</h3>
+                    <label>Estado de Reclutamiento:</label>
+                    <select id="selectStatus" onchange="updateGuildStatus()">
+                        <option value="open">Abierto</option>
+                        <option value="closed">Cerrado</option>
+                    </select>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Scripting General -->
     <script>
+        // Cambiar entre pestañas de forma fluida
+        function switchView(viewName, element) {
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.remove('active-view');
+            });
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            document.getElementById('view-' + viewName).classList.add('active-view');
+            if(element) element.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Control de Música
         let isPlaying = false;
         function toggleMusic() {
             const music = document.getElementById('lobbyMusic');
@@ -439,7 +622,7 @@
                     isPlaying = true;
                     btnText.innerText = "Pausar Música";
                 }).catch(error => {
-                    alert("El navegador bloqueó la reproducción o falta verificar el archivo de audio.");
+                    alert("Haz clic en la página o en el botón de bienvenida para habilitar la música.");
                 });
             }
         }
@@ -499,6 +682,18 @@
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
             membersData.push({ name, level, melee, distance, magic, mainClass });
+
+            const tableBody = document.getElementById('rosterTableBody');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><strong>${mainClass}</strong></td>
+                <td>${name}</td>
+                <td>${level}</td>
+                <td>${melee} / ${distance} / ${magic}</td>
+            `;
+            tableBody.appendChild(newRow);
+
+            document.getElementById('memberCount').innerText = membersData.length;
             updateTops();
 
             document.getElementById('regName').value = '';
@@ -508,6 +703,103 @@
             document.getElementById('regMagic').value = '';
 
             alert('¡Te has registrado con éxito! Tus stats ya compiten por el Top de la guild.');
+        }
+
+        // Minijuego
+        let score = 0;
+        let timeLeft = 20;
+        let gameInterval = null;
+        let targetTimeout = null;
+
+        function startMinigame() {
+            const area = document.getElementById('gameArea');
+            document.getElementById('gameStartPrompt').style.display = 'none';
+            document.getElementById('startBtn').style.display = 'none';
+            
+            const oldTarget = document.getElementById('activeTarget');
+            if (oldTarget) oldTarget.remove();
+
+            score = 0;
+            timeLeft = 20;
+            document.getElementById('gameScore').innerText = score;
+            document.getElementById('gameTime').innerText = timeLeft;
+
+            gameInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('gameTime').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(gameInterval);
+                    clearTimeout(targetTimeout);
+                    const finalTarget = document.getElementById('activeTarget');
+                    if (finalTarget) finalTarget.remove();
+
+                    area.innerHTML = `<div style="position: absolute; width: 100%; top: 42%; text-align: center; color: var(--accent-gold); font-size: 1.2rem; font-weight: bold;">¡Tiempo terminado! Puntuación final: ${score} puntos.</div>`;
+                    document.getElementById('startBtn').style.display = 'inline-block';
+                    document.getElementById('startBtn').innerText = 'Jugar Otra Vez';
+                }
+            }, 1000);
+
+            spawnTarget();
+        }
+
+        function spawnTarget() {
+            const area = document.getElementById('gameArea');
+            const oldTarget = document.getElementById('activeTarget');
+            if (oldTarget) oldTarget.remove();
+
+            if (timeLeft <= 0) return;
+
+            const target = document.createElement('div');
+            target.className = 'target';
+            target.id = 'activeTarget';
+            target.innerText = 'Slime';
+
+            const maxX = area.clientWidth - 60;
+            const maxY = area.clientHeight - 60;
+            const randomX = Math.max(10, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(10, Math.floor(Math.random() * maxY));
+
+            target.style.left = randomX + 'px';
+            target.style.top = randomY + 'px';
+
+            target.onclick = function() {
+                score++;
+                document.getElementById('gameScore').innerText = score;
+                target.remove();
+                spawnTarget();
+            };
+
+            area.appendChild(target);
+
+            targetTimeout = setTimeout(() => {
+                if (document.getElementById('activeTarget')) {
+                    spawnTarget();
+                }
+            }, 900);
+        }
+
+        // Admin
+        function verifyAdmin() {
+            const pass = document.getElementById('adminPassword').value;
+            if (pass === "Silent") {
+                document.getElementById('loginBox').style.display = 'none';
+                document.getElementById('adminControls').style.display = 'block';
+                alert('¡Acceso concedido al panel de administración!');
+            } else {
+                alert('Contraseña incorrecta.');
+            }
+        }
+
+        function updateGuildStatus() {
+            const statusVal = document.getElementById('selectStatus').value;
+            const badge = document.getElementById('guildStatus');
+            if (statusVal === 'open') {
+                badge.className = 'status-badge status-open';
+                badge.innerText = 'Reclutamiento: ABIERTO';
+            } else {
+                badge.className = 'status-badge status-closed';
+                badge.innerText = 'Reclutamiento: CERRADO';
+            }
         }
     </script>
 </body>
