@@ -156,6 +156,18 @@
         }
         .btn-danger:hover { background-color: #c0392b; }
 
+        .btn-warning {
+            background-color: var(--accent-gold);
+            color: #000;
+            padding: 0.4rem 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .btn-warning:hover { background-color: #d68910; }
+
         /* Botón flotante para la música */
         .music-float-btn {
             position: fixed;
@@ -420,12 +432,10 @@
             .form-group.full { grid-column: span 1; }
             .hero h1 { font-size: 2.5rem; }
 
-            /* Mostrar botón de menú hamburguesa en móvil */
             .menu-toggle {
                 display: block;
             }
 
-            /* Estilo desplegable del menú en móvil */
             .nav-links {
                 display: none;
                 flex-direction: column;
@@ -530,9 +540,7 @@
                                     <th>Skill Melee</th>
                                 </tr>
                             </thead>
-                            <tbody id="topMeleeTableBody">
-                                <!-- Dinámico -->
-                            </tbody>
+                            <tbody id="topMeleeTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -550,9 +558,7 @@
                                     <th>Skill Distance</th>
                                 </tr>
                             </thead>
-                            <tbody id="topDistanceTableBody">
-                                <!-- Dinámico -->
-                            </tbody>
+                            <tbody id="topDistanceTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -570,9 +576,7 @@
                                     <th>Skill Magic</th>
                                 </tr>
                             </thead>
-                            <tbody id="topMagicTableBody">
-                                <!-- Dinámico -->
-                            </tbody>
+                            <tbody id="topMagicTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -590,9 +594,7 @@
                                     <th>Defensa</th>
                                 </tr>
                             </thead>
-                            <tbody id="topDefenseTableBody">
-                                <!-- Dinámico -->
-                            </tbody>
+                            <tbody id="topDefenseTableBody"></tbody>
                         </table>
                     </div>
                 </div>
@@ -676,15 +678,13 @@
                             <th>Estadísticas (Melee / Dist / Magia / Def)</th>
                         </tr>
                     </thead>
-                    <tbody id="rosterTableBody">
-                        <!-- Dinámico -->
-                    </tbody>
+                    <tbody id="rosterTableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- VISTA RANGOS (NUEVA: TABLA DE RANGOS POR MIEMBRO) -->
+    <!-- VISTA RANGOS -->
     <div id="view-rangos" class="view-section">
         <div class="container" style="margin-top: 100px;">
             <h2>⚡ Tabla de Rangos por Miembro ⚡</h2>
@@ -701,9 +701,7 @@
                             <th>Rango por Habilidad</th>
                         </tr>
                     </thead>
-                    <tbody id="rangosTableBody">
-                        <!-- Dinámico -->
-                    </tbody>
+                    <tbody id="rangosTableBody"></tbody>
                 </table>
             </div>
         </div>
@@ -714,7 +712,7 @@
         <div class="container" style="margin-top: 100px;">
             <div class="admin-section">
                 <h2>Panel de Administración Pro</h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Gestión de rangos y control total por niveles y skills.</p>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 1.5rem;">Gestión de rangos, eliminación y control de niveles y skills.</p>
                 
                 <div id="loginBox" style="max-width: 400px; margin: 0 auto; text-align: center;">
                     <label>Contraseña de Administrador:</label>
@@ -737,8 +735,6 @@
 
                     <!-- SOLICITUDES PENDIENTES -->
                     <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Solicitudes Pendientes de Aprobación</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Nuevos reclutas esperando aprobación.</p>
-                    
                     <div class="table-responsive" style="margin-bottom: 2rem;">
                         <table>
                             <thead>
@@ -750,17 +746,14 @@
                                     <th>Acción</th>
                                 </tr>
                             </thead>
-                            <tbody id="pendingTableBody">
-                                <!-- Dinámico pendientes -->
-                            </tbody>
+                            <tbody id="pendingTableBody"></tbody>
                         </table>
                     </div>
 
                     <hr style="border-color: #2a2e3d; margin: 1.5rem 0;">
 
-                    <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Gestión de Rangos y Miembros Activos</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Ordena la lista y asigna roles.</p>
-
+                    <h3 style="color: var(--accent-gold); margin-top: 1.5rem;">Gestión de Rangos, Skills y Miembros Activos</h3>
+                    
                     <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
                         <button class="btn-small" onclick="sortMembers('level')">Ordenar por Nivel</button>
                         <button class="btn-small" onclick="sortMembers('melee')">Ordenar por Melee</button>
@@ -774,18 +767,47 @@
                             <thead>
                                 <tr>
                                     <th>Personaje</th>
-                                    <th>Nivel</th>
-                                    <th>Melee / Dist / Magia / Def</th>
+                                    <th>Nivel / Stats (Nivel / M / D / Mg / Def)</th>
                                     <th>Rol Actual</th>
-                                    <th>Cambiar Rol</th>
+                                    <th>Acciones (Modificar / Eliminar)</th>
                                 </tr>
                             </thead>
-                            <tbody id="adminTableBody">
-                                <!-- Dinámico activos -->
-                            </tbody>
+                            <tbody id="adminTableBody"></tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Modificar Stats -->
+    <div id="editModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Modificar Stats</h2>
+            <input type="hidden" id="editMemberId">
+            <div class="form-group" style="text-align: left;">
+                <label>Nivel:</label>
+                <input type="number" id="editLevel">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>Skill Melee:</label>
+                <input type="number" id="editMelee">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>Skill Distance:</label>
+                <input type="number" id="editDistance">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>Skill Magic:</label>
+                <input type="number" id="editMagic">
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label>Defensa:</label>
+                <input type="number" id="editDefense">
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem;">
+                <button class="btn" onclick="saveEditedMember()">Guardar Cambios</button>
+                <button class="btn-danger" onclick="closeEditModal()">Cancelar</button>
             </div>
         </div>
     </div>
@@ -794,11 +816,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-    <!-- Scripting General + Firebase Config Real -->
     <script>
-        // ==========================================
-        // CONFIGURACIÓN DE FIREBASE
-        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyCy5uXiDewBDWjEksb3BZOvRL1VUfrfpqc",
             authDomain: "silent-monarchs.firebaseapp.com",
@@ -810,16 +828,12 @@
             measurementId: "G-D5SQ96SYD9"
         };
 
-        // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         let membersData = [];
         let pendingData = [];
 
-        // ==========================================
-        // SINCRONIZACIÓN EN TIEMPO REAL CON FIREBASE
-        // ==========================================
         db.ref('miembros').on('value', (snapshot) => {
             const data = snapshot.val();
             let rawMembers = [];
@@ -916,7 +930,6 @@
             }
         }
 
-        // Lógica de cálculo de rangos por nivel y skill
         function getLevelRank(level) {
             if (level >= 900) return '<span style="color: var(--accent-gold); font-weight: bold;">Leyenda Suprema Nivel Ω</span>';
             if (level >= 800) return '<span style="color: var(--accent-gold); font-weight: bold;">Monarca Eterno</span>';
@@ -960,8 +973,7 @@
             }
 
             list.forEach((m, index) => {
-                let crown = '';
-                if(index === 0) crown = '👑 ';
+                let crown = index === 0 ? '👑 ' : '';
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>#${index + 1}</strong></td>
@@ -997,7 +1009,6 @@
                     else if(m.role === 'colider') { roleBadgeName = "Co-Líder"; roleClass = "role-colider"; }
                     else if(m.role === 'admin') { roleBadgeName = "Admin"; roleClass = "role-admin"; }
 
-                    // Roster normal
                     rosterBody.innerHTML += `
                         <tr>
                             <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
@@ -1008,7 +1019,6 @@
                         </tr>
                     `;
 
-                    // Tabla de Rangos por Miembro
                     let maxSkillVal = Math.max(m.melee || 0, m.distance || 0, m.magic || 0);
                     rangosBody.innerHTML += `
                         <tr>
@@ -1051,10 +1061,11 @@
 
                     adminBody.innerHTML += `
                         <tr>
-                            <td><strong>${m.name}</strong></td>
-                            <td>${m.level}</td>
-                            <td>${m.melee} / ${m.distance} / ${m.magic} / Def: ${m.defense || 0}</td>
-                            <td><span class="badge-role ${roleClass}">${roleBadgeName}</span></td>
+                            <td>
+                                <strong>${m.name}</strong><br>
+                                <span class="badge-role ${roleClass}">${roleBadgeName}</span>
+                            </td>
+                            <td>Nvl: ${m.level} | M: ${m.melee} | D: ${m.distance} | Mg: ${m.magic} | Def: ${m.defense || 0}</td>
                             <td>
                                 <select onchange="changeRole('${m.id}', this.value)" style="background: var(--bg-dark); color: white; border: 1px solid #2a2e3d; padding: 0.3rem; border-radius: 4px;">
                                     <option value="miembro" ${m.role === 'miembro' ? 'selected' : ''}>Miembro</option>
@@ -1062,6 +1073,10 @@
                                     <option value="colider" ${m.role === 'colider' ? 'selected' : ''}>Co-Líder</option>
                                     <option value="lider" ${m.role === 'lider' ? 'selected' : ''}>Líder</option>
                                 </select>
+                            </td>
+                            <td>
+                                <button class="btn-warning" onclick="openEditModal('${m.id}')" style="margin-right: 5px; margin-bottom: 5px;">Editar Stats</button>
+                                <button class="btn-danger" onclick="deleteMember('${m.id}', '${m.name}')">Expulsar</button>
                             </td>
                         </tr>
                     `;
@@ -1097,14 +1112,7 @@
             if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
 
             db.ref('pendientes').push({
-                name,
-                level,
-                melee,
-                distance,
-                magic,
-                defense,
-                mainClass,
-                role: "miembro"
+                name, level, melee, distance, magic, defense, mainClass, role: "miembro"
             }).then(() => {
                 document.getElementById('regName').value = '';
                 document.getElementById('regLevel').value = '';
@@ -1113,10 +1121,8 @@
                 document.getElementById('regMagic').value = '';
                 document.getElementById('regDefense').value = '';
 
-                alert('¡Registro enviado con éxito! Espera que un admin, líder o co-líder te acepte la solicitud.');
+                alert('¡Registro enviado con éxito! Espera que un admin te acepte la solicitud.');
                 switchView('home', document.querySelector('.nav-links li:nth-child(1) a'));
-            }).catch(error => {
-                alert('Error al enviar el registro a Firebase: ' + error.message);
             });
         }
 
@@ -1125,24 +1131,61 @@
             refPending.once('value', (snapshot) => {
                 const memberData = snapshot.val();
                 if (memberData) {
-                    const lowerName = memberData.name.trim().toLowerCase();
-                    const alreadyActive = membersData.some(m => m.name && m.name.trim().toLowerCase() === lowerName);
-
-                    if (!alreadyActive) {
-                        memberData.role = "miembro"; 
-                        db.ref('miembros').push(memberData).then(() => {
-                            refPending.remove();
-                        });
-                    } else {
-                        alert('Este miembro ya se encuentra activo en el roster.');
+                    memberData.role = "miembro"; 
+                    db.ref('miembros').push(memberData).then(() => {
                         refPending.remove();
-                    }
+                    });
                 }
             });
         }
 
         function rejectMember(id) {
             db.ref('pendientes/' + id).remove();
+        }
+
+        function deleteMember(id, name) {
+            if (confirm(`¿Estás seguro de expulsar o eliminar al miembro "${name}" del clan?`)) {
+                db.ref('miembros/' + id).remove();
+            }
+        }
+
+        function openEditModal(id) {
+            const member = membersData.find(m => m.id === id);
+            if (!member) return;
+
+            document.getElementById('editMemberId').value = id;
+            document.getElementById('editLevel').value = member.level || 0;
+            document.getElementById('editMelee').value = member.melee || 0;
+            document.getElementById('editDistance').value = member.distance || 0;
+            document.getElementById('editMagic').value = member.magic || 0;
+            document.getElementById('editDefense').value = member.defense || 0;
+
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        function saveEditedMember() {
+            const id = document.getElementById('editMemberId').value;
+            const level = parseInt(document.getElementById('editLevel').value) || 0;
+            const melee = parseInt(document.getElementById('editMelee').value) || 0;
+            const distance = parseInt(document.getElementById('editDistance').value) || 0;
+            const magic = parseInt(document.getElementById('editMagic').value) || 0;
+            const defense = parseInt(document.getElementById('editDefense').value) || 0;
+
+            let mainClass = "Melee";
+            let highestSkill = melee;
+            if (distance > highestSkill) { highestSkill = distance; mainClass = "Distance"; }
+            if (magic > highestSkill) { highestSkill = magic; mainClass = "Magic"; }
+
+            db.ref('miembros/' + id).update({
+                level, melee, distance, magic, defense, mainClass
+            }).then(() => {
+                closeEditModal();
+                alert('¡Estadísticas actualizadas con éxito!');
+            });
         }
 
         function sortMembers(criteria) {
@@ -1154,7 +1197,6 @@
             db.ref('miembros/' + id).update({ role: newRole });
         }
 
-        // Minijuego
         let score = 0;
         let timeLeft = 20;
         let gameInterval = null;
@@ -1227,7 +1269,6 @@
             }, 900);
         }
 
-        // Admin Pro Auth
         function verifyAdmin() {
             const pass = document.getElementById('adminPassword').value;
             if (pass === "Silent") {
