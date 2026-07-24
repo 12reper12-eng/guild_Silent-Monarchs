@@ -87,7 +87,7 @@
             cursor: pointer;
         }
 
-        /* Hero Section */
+        /* Hero Section con transición de fondo */
         .hero {
             height: 90vh;
             background: linear-gradient(rgba(15, 16, 22, 0.7), rgba(15, 16, 22, 0.9)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop') no-repeat center center/cover;
@@ -98,6 +98,7 @@
             text-align: center;
             padding: 0 1rem;
             margin-top: 60px;
+            transition: background-image 1s ease-in-out;
         }
 
         .hero h1 {
@@ -496,7 +497,7 @@
 
     <!-- VISTA 1: INICIO -->
     <div id="view-home" class="view-section active-view">
-        <section class="hero">
+        <section class="hero" id="heroBackground">
             <h1>Silent Monarchs</h1>
             <p>"En el silencio de las sombras, forjamos nuestra leyenda en Rucoy."</p>
             <div>
@@ -833,6 +834,27 @@
 
         let membersData = [];
         let pendingData = [];
+
+        // ==========================================
+        // ROTACIÓN AUTOMÁTICA DE FONDOS MEDIEVALES CADA 30s
+        // ==========================================
+        const medievalBackgrounds = [
+            'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1533158307587-828f0a76ef46?q=80&w=1600&auto=format&fit=crop', // Castillo / Épico oscuro
+            'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?q=80&w=1600&auto=format&fit=crop', // Arte clásico / medieval
+            'https://images.unsplash.com/photo-1514539079130-25950c84af65?q=80&w=1600&auto=format&fit=crop'  // Ambiente nocturno / fantasía
+        ];
+        let currentBgIndex = 0;
+
+        function changeHeroBackground() {
+            currentBgIndex = (currentBgIndex + 1) % medievalBackgrounds.length;
+            const heroElement = document.getElementById('heroBackground');
+            if(heroElement) {
+                heroElement.style.backgroundImage = `linear-gradient(rgba(15, 16, 22, 0.7), rgba(15, 16, 22, 0.9)), url('${medievalBackgrounds[currentBgIndex]}')`;
+            }
+        }
+
+        setInterval(changeHeroBackground, 30000); // Cambia cada 30 segundos
 
         db.ref('miembros').on('value', (snapshot) => {
             const data = snapshot.val();
