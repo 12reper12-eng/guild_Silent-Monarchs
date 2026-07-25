@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal del Videojuego</title>
+    <style>
+        :root {
+            --primary-color: #0f172a;
+            --accent-color: #38bdf8;
+            --text-color: #f8fafc;
+            --card-bg: rgba(30, 41, 59, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+        }
+
+        header {
+            padding: 1.5rem;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.9);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+            text-transform: uppercase;
+        }
+
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Adaptación para PC */
+        @media (min-width: 768px) {
+            main {
+                grid-template-columns: 2fr 1fr;
+                padding: 2.5rem;
+            }
+            header h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .card h2 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            color: var(--accent-color);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Nombre del Juego</h1>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>Bienvenido, Aventurero</h2>
+            <p>Sumérgete en un mundo semirrealista diseñado para poner a prueba tus habilidades. Explora, equípate y conquista.</p>
+        </section>
+
+        <section class="card">
+            <h2>Estado del Servidor</h2>
+            <p id="status-text" style="margin-bottom: 1rem;">Conectando a Firebase...</p>
+            <button class="btn" id="action-btn">Acción Rápida</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Safegaming Service. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
