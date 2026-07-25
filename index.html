@@ -3,460 +3,513 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rucoy Style - MMORPG Retro</title>
+    <title>Nexus Recharge - Centro de Recargas Oficial</title>
     <style>
         :root {
-            --bg-dark: #1e1e1e;
-            --panel-bg: #2d2d2d;
-            --border-color: #555;
-            --hp-red: #cc0000;
-            --hp-blue: #0088ff;
-            --gold-color: #ffcc00;
+            --bg-deep: #090d16;
+            --bg-card: rgba(18, 24, 38, 0.85);
+            --border-glow: rgba(56, 189, 248, 0.3);
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --gold: #f59e0b;
+            --success: #22c55e;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Courier New', Courier, monospace; /* Estilo retro */
-            user-select: none;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: var(--bg-dark);
-            color: #fff;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 40%),
+                linear-gradient(to bottom, #090d16, #0f172a);
+        }
+
+        /* --- CABECERA --- */
+        header {
+            background: rgba(9, 13, 22, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glow);
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        /* Contenedor Principal Estilo Pantalla de Juego */
-        .game-viewport {
-            position: relative;
-            width: 800px;
-            height: 500px;
-            background: #333;
-            border: 4px solid #111;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            overflow: hidden;
-        }
-
-        canvas {
-            display: block;
-            background: #444;
-            image-rendering: pixelated; /* Mantiene el efecto pixel art nítido */
-        }
-
-        {
-            /* UI Superior: Barra de Vida */
-        }
-        .hud-top {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 2px solid #777;
-            padding: 4px 10px;
-            width: 250px;
-            border-radius: 4px;
-        }
-
-        .hp-bar-container {
-            width: 100%;
-            height: 18px;
-            background: #333;
-            border: 2px solid #000;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hp-bar-fill {
-            height: 100%;
-            background-color: var(--hp-red);
-            width: 100%;
-            transition: width 0.2s;
-        }
-
-        .hp-text {
-            position: absolute;
-            width: 100%;
-            text-align: center;
+            position: sticky;
             top: 0;
-            font-size: 11px;
-            font-weight: bold;
-            color: #fff;
-            line-height: 14px;
-            text-shadow: 1px 1px #000;
+            z-index: 100;
         }
 
-        {
-            /* HUD Superior Derecho: Iconos de Menú y Mapa */
-        }
-        .hud-top-right {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 6px;
-        }
-
-        .hud-icon {
-            width: 36px;
-            height: 36px;
-            background: #2d2d2d;
-            border: 2px solid #555;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        {
-            /* Controles Izquierdos: Selector de Profesión / Ataque (Melee, Distance, Magic) */
+        .support-badge {
+            font-size: 0.85rem;
+            color: var(--success);
+            background: rgba(34, 197, 94, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            font-weight: 600;
         }
-        .hud-left-controls {
-            position: absolute;
-            left: 10px;
-            bottom: 10px;
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 2rem;
         }
 
-        .control-slot {
-            width: 48px;
-            height: 48px;
-            background: #2d2d2d;
-            border: 3px solid #666;
+        .hero-title {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-title h1 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-title p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 0.4rem;
+        }
+
+        /* --- GRID DE OPCIONES DE RECARGA --- */
+        .recharge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .game-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(56, 189, 248, 0.2);
+        }
+
+        .game-icon {
+            width: 70px;
+            height: 70px;
+            margin: 0 auto 1rem;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        /* Colores distintivos temáticos */
+        .fc-freefire { background: linear-gradient(135deg, #f97316, #dc2626); }
+        .fc-roblox { background: linear-gradient(135deg, #ef4444, #991b1b); }
+        .fc-tiktok { background: linear-gradient(135deg, #000000, #25f4ee); border: 1px solid rgba(37, 244, 238, 0.3); }
+        .fc-pubg { background: linear-gradient(135deg, #eab308, #ca8a04); }
+
+        .game-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .game-card p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+        }
+
+        .btn-select {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-main);
+            width: 100%;
+            padding: 0.6rem;
+            border-radius: 8px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 20px;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.7);
-            transition: border-color 0.1s;
+            transition: background 0.2s, border-color 0.2s;
         }
 
-        .control-slot.active {
-            border-color: var(--gold-color);
-            background: #3d3d22;
+        .game-card:hover .btn-select {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #000;
         }
 
-        {
-            /* Inventario / Equipamiento Inferior Derecho estilo Rucoy */
-        }
-        .hud-right-inventory {
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            display: grid;
-            grid-template-columns: repeat(3, 42px);
-            gap: 4px;
-            background: rgba(0,0,0,0.6);
-            padding: 6px;
-            border: 2px solid #555;
-        }
-
-        .inv-slot {
-            width: 42px;
-            height: 42px;
-            background: #252525;
-            border: 2px solid #444;
+        /* --- MODAL DE RECARGA VALIDADA --- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
             display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 18px;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #0f172a;
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.7);
+            position: relative;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.2rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.4rem;
             cursor: pointer;
         }
 
-        .inv-slot.gold-border {
-            border-color: var(--gold-color);
+        .modal-box h2 {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
         }
 
-        {
-            /* Controles Móviles Táctiles en Pantalla */
-        }
-        .mobile-dpad {
-            position: absolute;
-            bottom: 10px;
-            left: 80px;
-            display: grid;
-            grid-template-columns: repeat(3, 40px);
-            gap: 2px;
+        .modal-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
         }
 
-        .d-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(45, 45, 45, 0.8);
-            border: 2px solid #666;
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 0.8rem;
+            border-radius: 8px;
             color: #fff;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            outline: none;
+            font-size: 0.95rem;
         }
 
-        .console-log {
-            margin-top: 10px;
-            width: 800px;
-            background: #111;
-            border: 2px solid #444;
-            padding: 8px;
-            font-size: 12px;
-            height: 60px;
-            overflow-y: auto;
-            color: #aaa;
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pkg-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.7rem 0.4rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .pkg-option.selected {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent);
+        }
+
+        .pkg-option .amount {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .pkg-option .price {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #000;
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        /* Mensaje de validación / éxito emergente dentro del modal */
+        .success-box {
+            display: none;
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .success-box h3 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+
+        .success-box p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: rgba(9, 13, 22, 0.9);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
     </style>
 </head>
 <body>
 
-    <div class="game-viewport">
-        {/* Lienzo del juego estilo mapa de baldosas */}
-        <canvas id="rucoyCanvas" width="800" height="500"></canvas>
+    <!-- CABECERA -->
+    <header>
+        <div class="logo">⚡ Nexus Recharge</div>
+        <div class="support-badge">🟢 Servidores Activos</div>
+    </header>
 
-        {/* HUD Superior: Barra de Vida */}
-        <div class="hud-top">
-            <div class="hp-bar-container">
-                <div class="hp-fill" id="hpFill"></div>
-                <div class="hp-text" id="hpText">500 / 500</div>
+    <!-- CONTENIDO -->
+    <main>
+        <div class="hero-title">
+            <h1>Centro de Recargas Instantáneas</h1>
+            <p>Selecciona tu juego o plataforma favorita para recargar de forma segura y validada.</p>
+        </div>
+
+        <div class="recharge-grid">
+            <!-- Free Fire -->
+            <div class="game-card" onclick="openModal('Free Fire', 'Ingresa tu ID de Jugador')">
+                <div class="game-icon fc-freefire">🔥</div>
+                <h3>Free Fire</h3>
+                <p>Diamantes directos a tu cuenta con ID.</p>
+                <button class="btn-select">Recargar Ahora</button>
+            </div>
+
+            <!-- Roblox -->
+            <div class="game-card" onclick="openModal('Roblox', 'Ingresa tu Usuario de Roblox')">
+                <div class="game-icon fc-roblox">🤖</div>
+                <h3>Roblox</h3>
+                <p>Robux y tarjetas de regalo oficiales.</p>
+                <button class="btn-select">Recargar Ahora</button>
+            </div>
+
+            <!-- TikTok -->
+            <div class="game-card" onclick="openModal('TikTok', 'Ingresa tu @Usuario de TikTok')">
+                <div class="game-icon fc-tiktok">🎵</div>
+                <h3>TikTok</h3>
+                <p>Monedas para enviar regalos en directo.</p>
+                <button class="btn-select">Recargar Ahora</button>
+            </div>
+
+            <!-- PUBG Mobile -->
+            <div class="game-card" onclick="openModal('PUBG Mobile', 'Ingresa tu ID de Jugador')">
+                <div class="game-icon fc-pubg">🛡️</div>
+                <h3>PUBG Mobile</h3>
+                <p>UCs rápidos y seguros por ID.</p>
+                <button class="btn-select">Recargar Ahora</button>
             </div>
         </div>
+    </main>
 
-        {/* HUD Superior Derecho: Mapa, Chat, Config */}
-        <div class="hud-top-right">
-            <div class="hud-icon" title="Mapa">🗺️</div>
-            <div class="hud-icon" title="Chat">💬</div>
-            <div class="hud-icon" title="Amigos">👥</div>
-            <div class="hud-icon" title="Ajustes">⚙️</div>
-        </div>
-
-        {/* Controles Izquierdos de Armas / Clases */}
-        <div class="hud-left-controls">
-            <div class="control-slot active" id="btn-melee" onclick="setProficiency('melee')" title="Melee (Espada)">⚔️</div>
-            <div class="control-slot" id="btn-distance" onclick="setProficiency('distance')" title="Distance (Arco)">🏹</div>
-            <div class="control-slot" id="btn-magic" onclick="setProficiency('magic')" title="Magic (Bastón)">🪄</div>
-            <div class="control-slot" onclick="usePotionQuick()" title="Poción de Vida" style="background: #2a1010;">🧪</div>
-        </div>
-
-        {/* D-Pad táctil móvil */}
-        <div class="mobile-dpad">
-            <div></div>
-            <div class="d-btn" ontouchstart="moveDir(0, -1)" onmousedown="moveDir(0, -1)">⬆️</div>
-            <div></div>
-            <div class="d-btn" ontouchstart="moveDir(-1, 0)" onmousedown="moveDir(-1, 0)">⬅️</div>
-            <div class="d-btn" style="background:#442222;" ontouchstart="playerAttack()" onmousedown="playerAttack()">💥</div>
-            <div class="d-btn" ontouchstart="moveDir(1, 0)" onmousedown="moveDir(1, 0)">➡️</div>
-            <div></div>
-            <div class="d-btn" ontouchstart="moveDir(0, 1)" onmousedown="moveDir(0, 1)">⬇️</div>
-            <div></div>
-        </div>
-
-        {/* Inventario / Equipaje Lateral Derecho */}
-        <div class="hud-right-inventory">
-            <div class="inv-slot gold-border" title="Armadura Dorada">🛡️</div>
-            <div class="inv-slot" title="Armadura Roja">🔴</div>
-            <div class="inv-slot" title="Armadura Verde">🟢</div>
-            <div class="inv-slot" title="Arco Azul">🏹</div>
-            <div class="inv-slot" title="Arco Amarillo">🟡</div>
-            <div class="inv-slot" title="Arco Morado">🟣</div>
-        </div>
-    </div>
-
-    <div class="console-log" id="gameLog">
-        [Sistema]: Bienvenido al prototipo oficial estilo Rucoy. Usa WASD o los botones táctiles para moverte.
-    </div>
-
-    <script>
-        const canvas = document.getElementById('rucoyCanvas');
-        const ctx = canvas.getContext('2d');
-
-        // Configuración de Jugador
-        let player = {
-            x: 400,
-            y: 250,
-            size: 16,
-            speed: 3,
-            hp: 500,
-            maxHp: 500,
-            profession: 'melee' // melee, distance, magic
-        };
-
-        let keys = {};
-        let monsters = [];
-
-        // Registrar eventos de teclado para PC (WASD o Flechas)
-        window.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
-        window.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
-
-        function logMessage(msg) {
-            const box = document.getElementById('gameLog');
-            box.innerHTML += `<br>` + msg;
-            box.scrollTop = box.scrollHeight;
-        }
-
-        function setProficiency(prof) {
-            player.profession = prof;
-            document.querySelectorAll('.control-slot').forEach(el => el.classList.remove('active'));
-            if(prof === 'melee') document.getElementById('btn-melee').classList.add('active');
-            if(prof === 'distance') document.getElementById('btn-distance').classList.add('active');
-            if(prof === 'magic') document.getElementById('btn-magic').classList.add('active');
-            logMessage(`[Sistema]: Profesión cambiada a ${prof.toUpperCase()}`);
-        }
-
-        function usePotionQuick() {
-            if(player.hp < player.maxHp) {
-                player.hp = player.maxHp;
-                logMessage(`[Sistema]: Usaste una poción. HP restaurado.`);
-                updateHUD();
-            } else {
-                logMessage(`[Sistema]: Tu vida ya está completa.`);
-            }
-        }
-
-        function moveDir(dx, dy) {
-            player.x = Math.max(30, Math.min(canvas.width - 30, player.x + dx * 15));
-            player.y = Math.max(30, Math.min(canvas.height - 30, player.y + dy * 15));
-        }
-
-        function playerAttack() {
-            logMessage(`[Ataque]: ¡Golpe ${player.profession.toUpperCase()} ejecutado!`);
-            // Simular daño a monstruos cercanos
-            monsters.forEach(m => {
-                let dist = Math.hypot(player.x - m.x, player.y - m.y);
-                if(dist < 60) {
-                    m.hp -= 50;
-                    if(m.hp <= 0) {
-                        m.dead = true;
-                        logMessage(`[Combate]: ¡Derrotaste a un monstruo! +100 XP`);
-                    }
-                }
-            });
-            monsters = monsters.filter(m => !m.dead);
-        }
-
-        // Generar algunos monstruos iniciales estilo Rucoy
-        function spawnMonsters() {
-            for(let i=0; i<4; i++) {
-                monsters.push({
-                    x: Math.random() * 600 + 100,
-                    y: Math.random() * 350 + 75,
-                    hp: 100,
-                    maxHp: 100
-                });
-            }
-        }
-        spawnMonsters();
-
-        function updateHUD() {
-            document.getElementById('hpText').innerText = `${Math.floor(player.hp)} / ${player.maxHp}`;
-            let pct = (player.hp / player.maxHp) * 100;
-            document.getElementById('hpFill').style.width = pct + '%';
-        }
-
-        // Bucle Principal
-        function update() {
-            if(keys['w'] || keys['arrowup']) player.y = Math.max(20, player.y - player.speed);
-            if(keys['s'] || keys['arrowdown']) player.y = Math.min(canvas.height - 20, player.y + player.speed);
-            if(keys['a'] || keys['arrowleft']) player.x = Math.max(20, player.x - player.speed);
-            if(keys['d'] || keys['arrowright']) player.x = Math.min(canvas.width - 20, player.x + player.speed);
+    <!-- MODAL DINÁMICO DE RECARGA -->
+    <div class="modal-overlay" id="rechargeModal">
+        <div class="modal-box">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
             
-            updateHUD();
+            <div id="form-content">
+                <h2 id="modal-game-title">Recarga</h2>
+                <p class="modal-subtitle" id="modal-game-sub">Completa los datos para procesar tu pedido.</p>
+
+                <form id="purchaseForm" onsubmit="handleValidation(event)">
+                    <div class="form-group">
+                        <label id="input-label-text">ID de Cuenta</label>
+                        <input type="text" id="accountInput" placeholder="Ej. 123456789" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Selecciona el Paquete</label>
+                        <div class="packages-grid">
+                            <div class="pkg-option selected" onclick="selectPkg(this)">
+                                <div class="amount">100 + 10</div>
+                                <div class="price">$1.00</div>
+                            </div>
+                            <div class="pkg-option" onclick="selectPkg(this)">
+                                <div class="amount">520 + 50</div>
+                                <div class="price">$5.00</div>
+                            </div>
+                            <div class="pkg-option" onclick="selectPkg(this)">
+                                <div class="amount">1060 + 110</div>
+                                <div class="price">$10.00</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Método de Pago</label>
+                        <select id="paymentMethod">
+                            <option value="card">Tarjeta de Crédito / Débito</option>
+                            <option value="paypal">PayPal / Saldo Digital</option>
+                            <option value="transfer">Pago Móvil / Transferencia</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Validar y Procesar</button>
+                </form>
+            </div>
+
+            <!-- Caja de Éxito Validado -->
+            <div class="success-box" id="successBox">
+                <h3>¡Recarga Validada con Éxito!</h3>
+                <p id="successDetails">Conectando con la pasarela de pago para acreditar a la cuenta...</p>
+                <button class="btn-submit" style="margin-top: 1.5rem;" onclick="closeModal()">Finalizar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        <p>&copy; 2026 Nexus Recharge. Sistema de recargas validado para Android y PC.</p>
+    </footer>
+
+    <!-- LÓGICA Y VALIDACIÓN JAVASCRIPT -->
+    <script>
+        const modal = document.getElementById('rechargeModal');
+        const titleElem = document.getElementById('modal-game-title');
+        const subElem = document.getElementById('modal-game-sub');
+        const labelElem = document.getElementById('input-label-text');
+        const formContent = document.getElementById('form-content');
+        const successBox = document.getElementById('successBox');
+
+        function openModal(gameName, inputPlaceholderText) {
+            titleElem.innerText = `Recargar ${gameName}`;
+            subElem.innerText = `Plataforma oficial validada para ${gameName}`;
+            labelElem.innerText = inputPlaceholderText;
+            document.getElementById('accountInput').value = '';
+            
+            // Resetear vistas
+            formContent.style.display = 'block';
+            successBox.style.display = 'none';
+            
+            modal.classList.add('active');
         }
 
-        // Renderizado del mapa estilo Rucoy (Baldosas grises de piedra y zona central verde con flores)
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function closeModal() {
+            modal.classList.remove('active');
+        }
 
-            // 1. Dibujar suelo de baldosas de piedra (Grid)
-            let tileSize = 40;
-            for(let x=0; x<canvas.width; x+=tileSize) {
-                for(let y=0; y<canvas.height; y+=tileSize) {
-                    ctx.fillStyle = "#4a4a4a";
-                    ctx.fillRect(x, y, tileSize-1, tileSize-1);
-                    // Borde interno de baldosa
-                    ctx.strokeStyle = "#383838";
-                    ctx.strokeRect(x, y, tileSize, tileSize);
-                }
+        // Selección visual de paquetes
+        function selectPkg(element) {
+            document.querySelectorAll('.pkg-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        // Validación estricta antes de procesar
+        function handleValidation(event) {
+            event.preventDefault();
+            const accountVal = document.getElementById('accountInput').value.trim();
+            
+            if(!accountVal) {
+                alert("Por favor, introduce un identificador válido.");
+                return;
             }
 
-            // 2. Zona central verde con flores (inspirada en la imagen de Rucoy)
-            ctx.fillStyle = "#00aa00";
-            ctx.beginPath();
-            ctx.roundRect(250, 100, 300, 300, 20);
-            ctx.fill();
-            ctx.strokeStyle = "#006600";
-            ctx.lineWidth = 4;
-            ctx.stroke();
-
-            // Detalles de flores rojas y amarillas en el jardín
-            let flowers = [
-                {x: 280, y: 140, color: 'red'}, {x: 350, y: 180, color: 'yellow'},
-                {x: 480, y: 130, color: 'white'}, {x: 510, y: 240, color: 'red'},
-                {x: 300, y: 320, color: 'yellow'}, {x: 420, y: 350, color: 'white'}
-            ];
-            flowers.forEach(f => {
-                ctx.fillStyle = f.color;
-                ctx.beginPath();
-                ctx.arc(f.x, f.y, 5, 0, Math.PI*2);
-                ctx.fill();
-            });
-
-            // 3. Dibujar fuente o NPC central en el jardín ("GM Rucoy")
-            ctx.fillStyle = "#888";
-            ctx.fillRect(385, 180, 30, 30);
-            ctx.fillStyle = "#ffcc00";
-            ctx.font = "10px monospace";
-            ctx.fillText("GM Rucoy", 375, 175);
-
-            // 4. Dibujar Monstruos
-            monsters.forEach(m => {
-                ctx.fillStyle = "#cc2222"; // Monstruo rojo
-                ctx.fillRect(m.x - 10, m.y - 10, 20, 20);
-                // Barra de vida del monstruo
-                ctx.fillStyle = "#000";
-                ctx.fillRect(m.x - 15, m.y - 20, 30, 5);
-                ctx.fillStyle = "#0f0";
-                ctx.fillRect(m.x - 15, m.y - 20, 30 * (m.hp/m.maxHp), 5);
-            });
-
-            // 5. Dibujar al Personaje (Estilo Pixel Art con capa azul y casco)
-            // Cuerpo / Capa
-            ctx.fillStyle = "#0055ff";
-            ctx.fillRect(player.x - 8, player.y - 8, 16, 20);
-            // Cabeza / Casco azul oscuro con detalles
-            ctx.fillStyle = "#112255";
-            ctx.fillRect(player.x - 8, player.y - 16, 16, 10);
-            // Espada equipada en la mano si es melee
-            if(player.profession === 'melee') {
-                ctx.fillStyle = "#ccc";
-                ctx.fillRect(player.x + 8, player.y - 4, 4, 14);
-            } else if(player.profession === 'distance') {
-                ctx.strokeStyle = "#a52a2a";
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.arc(player.x + 10, player.y, 8, -Math.PI/2, Math.PI/2);
-                ctx.stroke();
-            } else {
-                ctx.fillStyle = "#ffcc00";
-                ctx.fillRect(player.x + 8, player.y - 8, 4, 12);
-            }
+            // Simulación de validación interna con pasarela
+            formContent.style.display = 'none';
+            successBox.style.display = 'block';
+            
+            document.getElementById('successDetails').innerText = 
+                `Cuenta verificada correctamente. Procesando acreditación para la ID/Usuario: [ ${accountVal} ]. ¡Transacción segura y validada!`;
         }
 
-        function gameLoop() {
-            update();
-            draw();
-            requestAnimationFrame(gameLoop);
-        }
-
-        gameLoop();
+        // Cerrar modal haciendo clic fuera de la caja
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
     </script>
 </body>
 </html>
