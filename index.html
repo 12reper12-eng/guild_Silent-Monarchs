@@ -3,142 +3,695 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal del Videojuego</title>
+    <title>Portal Épico - Videojuego Semirreal</title>
     <style>
         :root {
-            --primary-color: #0f172a;
-            --accent-color: #38bdf8;
-            --text-color: #f8fafc;
-            --card-bg: rgba(30, 41, 59, 0.7);
+            --bg-deep: #07090e;
+            --bg-card: rgba(18, 24, 38, 0.75);
+            --border-glow: rgba(56, 189, 248, 0.3);
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --gold: #f59e0b;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-deep);
         }
 
         body {
-            background-color: var(--primary-color);
-            color: var(--text-color);
+            background-color: var(--bg-deep);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-image: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
+                linear-gradient(to bottom, #07090e, #0b1120);
+            overflow-x: hidden;
         }
 
+        /* --- NAVEGACIÓN --- */
         header {
-            padding: 1.5rem;
-            text-align: center;
-            background: rgba(15, 23, 42, 0.9);
-            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-            backdrop-filter: blur(10px);
+            background: rgba(7, 9, 14, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glow);
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
         }
 
-        header h1 {
-            font-size: 1.8rem;
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--accent), var(--gold));
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
             letter-spacing: 2px;
-            color: var(--accent-color);
             text-transform: uppercase;
+            color: var(--text-main);
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
+        nav ul {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .user-panel-btn {
+            background: linear-gradient(135deg, var(--accent), #0284c7);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .user-panel-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+        }
+
+        /* --- CONTENEDOR PRINCIPAL --- */
         main {
-            flex: 1;
-            max-width: 1200px;
+            max-width: 1400px;
             width: 100%;
             margin: 0 auto;
-            padding: 1.5rem;
+            padding: 2rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.6)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1600&auto=format&fit=crop') center/cover;
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, var(--bg-deep), transparent);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-main {
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            color: #fff;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-sec {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-main);
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-weight: bold;
+            text-decoration: none;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .btn-main:hover, .btn-sec:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+        }
+
+        /* --- GRID DE SECCIONES --- */
+        .dashboard-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
         }
 
-        /* Adaptación para PC */
-        @media (min-width: 768px) {
-            main {
-                grid-template-columns: 2fr 1fr;
-                padding: 2.5rem;
-            }
-            header h1 {
-                font-size: 2.5rem;
-            }
-        }
-
         .card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
             padding: 1.5rem;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .card h2 {
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-            color: var(--accent-color);
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 0.75rem;
         }
 
-        .btn {
-            display: inline-block;
-            width: 100%;
+        .card-header h2 {
+            font-size: 1.2rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Noticias dinámicas */
+        .news-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid var(--accent);
             padding: 0.8rem;
-            background: linear-gradient(135deg, #0284c7, #38bdf8);
-            color: white;
-            border: none;
-            border-radius: 8px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .news-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .news-date {
+            font-size: 0.75rem;
+            color: var(--gold);
             font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
-            text-align: center;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: opacity 0.2s ease, transform 0.1s ease;
         }
 
-        .btn:active {
-            transform: scale(0.98);
+        .news-title {
+            font-size: 0.95rem;
+            font-weight: bold;
+            margin-top: 0.2rem;
         }
 
-        .btn:hover {
-            opacity: 0.9;
+        /* Ranking de Jugadores */
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        footer {
-            text-align: center;
-            padding: 1rem;
+        .ranking-table th, .ranking-table td {
+            padding: 0.7rem;
+            text-align: left;
             font-size: 0.9rem;
-            color: #94a3b8;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ranking-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .rank-1 { background: var(--gold); color: #000; }
+        .rank-2 { background: #94a3b8; color: #000; }
+        .rank-3 { background: #b45309; color: #fff; }
+
+        /* Tienda / Mercado Interactivo */
+        .shop-filter {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 0.2rem;
+        }
+
+        .shop-item {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 0.8rem;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .shop-item h4 {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .shop-item p {
+            font-size: 0.8rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        /* Chat de Comunidad / Estadísticas */
+        .stats-box {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-top: 0.3rem;
+        }
+
+        /* Modal de Inicio de Sesión / Registro */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-box {
+            background: #0f172a;
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            position: relative;
+        }
+
+        .modal-box h3 {
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.7rem;
+            border-radius: 6px;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: rgba(7, 9, 14, 0.9);
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 3rem;
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES PARA MÓVIL Y PC --- */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+            nav ul {
+                display: none; /* Simplificado para móviles en menú compacto */
+            }
+            main {
+                padding: 1rem;
+            }
+            .hero-banner {
+                padding: 2.5rem 1rem;
+            }
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- CABECERA -->
     <header>
-        <h1>Nombre del Juego</h1>
+        <div class="logo-area">
+            <div class="logo-icon"></div>
+            <div class="logo-text">Nexus Realm</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#inicio" class="active">Inicio</a></li>
+                <li><a href="#noticias">Noticias</a></li>
+                <li><a href="#mercado">Mercado</a></li>
+                <li><a href="#ranking">Ranking</a></li>
+            </ul>
+        </nav>
+        <button class="user-panel-btn" id="open-modal-btn">Acceso / Registro</button>
     </header>
 
-    <main>
-        <section class="card">
-            <h2>Bienvenido, Aventurero</h2>
-            <p>Sumérgete en un mundo semirrealista diseñado para poner a prueba tus habilidades. Explora, equípate y conquista.</p>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main id="inicio">
+        
+        <!-- HERO BANNER -->
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h1>El Despertar del Reino</h1>
+                <p>Experimenta gráficos semirrealistas de última generación, combate táctico en tiempo real y una economía totalmente impulsada por la comunidad global de jugadores.</p>
+                <div class="cta-group">
+                    <a href="#mercado" class="btn-main">Explorar Tienda</a>
+                    <a href="#ranking" class="btn-sec">Ver Ranking</a>
+                </div>
+            </div>
         </section>
 
-        <section class="card">
-            <h2>Estado del Servidor</h2>
-            <p id="status-text" style="margin-bottom: 1rem;">Conectando a Firebase...</p>
-            <button class="btn" id="action-btn">Acción Rápida</button>
-        </section>
+        <!-- GRID DE COMPONENTES DINÁMICOS -->
+        <div class="dashboard-grid">
+            
+            <!-- TARJETA DE NOTICIAS -->
+            <section class="card" id="noticias">
+                <div class="card-header">
+                    <h2>📰 Últimas Noticias</h2>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">25 Jul 2026</div>
+                    <div class="news-title">Parche 2.4: Nuevos efectos de iluminación semirreal en mapas oscuros</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">18 Jul 2026</div>
+                    <div class="news-title">Torneo de Clanes Global: ¡Inscripciones abiertas con premios exclusivos!</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-date">10 Jul 2026</div>
+                    <div class="news-title">Optimización para dispositivos Android e iOS completada con éxito.</div>
+                </div>
+            </section>
+
+            <!-- TARJETA DE MERCADO / TIENDA -->
+            <section class="card" id="mercado">
+                <div class="card-header">
+                    <h2>⚔️ Mercado Negro</h2>
+                </div>
+                <div class="shop-filter">
+                    <button class="filter-btn active" onclick="filterShop('all')">Todos</button>
+                    <button class="filter-btn" onclick="filterShop('weapon')">Armas</button>
+                    <button class="filter-btn" onclick="filterShop('armor')">Armaduras</button>
+                </div>
+                <div class="shop-grid" id="shop-container">
+                    <div class="shop-item" data-category="weapon">
+                        <h4>Espada del Abismo</h4>
+                        <p>1,250 🪙</p>
+                    </div>
+                    <div class="shop-item" data-category="armor">
+                        <h4>Coraza de Titanio</h4>
+                        <p>2,100 🪙</p>
+                    </div>
+                    <div class="shop-item" data-category="weapon">
+                        <h4>Arco de Sombra</h4>
+                        <p>950 🪙</p>
+                    </div>
+                    <div class="shop-item" data-category="armor">
+                        <h4>Casco Protector</h4>
+                        <p>600 🪙</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TARJETA DE RANKING -->
+            <section class="card" id="ranking">
+                <div class="card-header">
+                    <h2>🏆 Tabla de Honor</h2>
+                </div>
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Guerrero</th>
+                            <th>Nivel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="rank-badge rank-1">1</span></td>
+                            <td>ZeusKilled</td>
+                            <td>99</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank-badge rank-2">2</span></td>
+                            <td>Valkyria</td>
+                            <td>97</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank-badge rank-3">3</span></td>
+                            <td>ShadowStike</td>
+                            <td>95</td>
+                        </tr>
+                        <tr>
+                            <td><span class="rank-badge" style="background:rgba(255,255,255,0.1)">4</span></td>
+                            <td>AresGaming</td>
+                            <td>91</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- ESTADÍSTICAS DEL SERVIDOR -->
+            <section class="card">
+                <div class="card-header">
+                    <h2>📊 Estado del Servidor</h2>
+                </div>
+                <div class="stats-box">
+                    <div class="stat-card">
+                        <div style="font-size:0.85rem; color:var(--text-muted)">Online Ahora</div>
+                        <div class="stat-value" id="online-players">4,821</div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="font-size:0.85rem; color:var(--text-muted)">Latencia Ping</div>
+                        <div class="stat-value" style="color: #22c55e;">18 ms</div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
     </main>
 
+    <!-- MODAL DE ACCESO / REGISTRO -->
+    <div class="modal-overlay" id="auth-modal">
+        <div class="modal-box">
+            <button class="close-modal" id="close-modal-btn">&times;</button>
+            <h3>Portal de Usuario</h3>
+            <form onsubmit="event.preventDefault(); alert('¡Sesión simulada correctamente!'); toggleModal();">
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" placeholder="usuario@realm.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="user-panel-btn" style="width: 100%; margin-top: 0.5rem;">Ingresar al Juego</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
     <footer>
-        <p>&copy; 2026 Safegaming Service. Todos los derechos reservados.</p>
+        <p>&copy; 2026 Nexus Realm. Desarrollado con estilo semirrealista para Android y PC.</p>
     </footer>
 
+    <!-- SCRIPTS DINÁMICOS -->
+    <script>
+        // Control del Modal de Acceso
+        const modal = document.getElementById('auth-modal');
+        const openBtn = document.getElementById('open-modal-btn');
+        const closeBtn = document.getElementById('close-modal-btn');
+
+        function toggleModal() {
+            modal.classList.toggle('open');
+        }
+
+        openBtn.addEventListener('click', toggleModal);
+        closeBtn.addEventListener('click', toggleModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) toggleModal();
+        });
+
+        // Filtrado interactivo de la tienda
+        function filterShop(category) {
+            // Actualizar botones activos
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Filtrar elementos
+            const items = document.querySelectorAll('.shop-item');
+            items.forEach(item => {
+                if (category === 'all' || item.getAttribute('data-category') === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Simulación dinámica de jugadores online fluctuantes
+        setInterval(() => {
+            const onlineElem = document.getElementById('online-players');
+            let current = parseInt(onlineElem.innerText.replace(',', ''));
+            let change = Math.floor(Math.random() * 11) - 5; // Cambia entre -5 y +5
+            onlineElem.innerText = (current + change).toLocaleString();
+        }, 4000);
+    </script>
 </body>
 </html>
