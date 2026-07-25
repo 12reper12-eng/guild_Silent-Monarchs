@@ -3,16 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal Épico - Videojuego Semirreal</title>
+    <title>Solo Leveling: Dungeon & Magic</title>
     <style>
         :root {
-            --bg-deep: #07090e;
-            --bg-card: rgba(18, 24, 38, 0.75);
-            --border-glow: rgba(56, 189, 248, 0.3);
+            --bg-dark: #090d16;
+            --panel-bg: rgba(15, 23, 42, 0.85);
             --accent: #38bdf8;
-            --accent-hover: #0ea5e9;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
+            --purple-glow: #a855f7;
+            --red-hp: #ef4444;
+            --green-xp: #22c55e;
             --gold: #f59e0b;
         }
 
@@ -20,678 +19,546 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) var(--bg-deep);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--bg-deep);
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            color: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
-                linear-gradient(to bottom, #07090e, #0b1120);
+            align-items: center;
             overflow-x: hidden;
+            background-image: radial-gradient(circle at center, #1e1b4b 0%, #090d16 100%);
         }
 
-        /* --- NAVEGACIÓN --- */
         header {
-            background: rgba(7, 9, 14, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-glow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
+            text-align: center;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+            width: 100%;
+            background: rgba(7, 9, 14, 0.9);
+            box-shadow: 0 4px 20px rgba(168, 85, 247, 0.2);
         }
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--accent), var(--gold));
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-        }
-
-        .logo-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 2px;
+        header h1 {
+            font-size: 1.8rem;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            color: var(--text-main);
-            background: linear-gradient(90deg, #fff, var(--accent));
+            background: linear-gradient(90deg, #fff, var(--purple-glow));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        nav ul {
+        .game-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 280px;
+            gap: 1rem;
+            max-width: 1300px;
+            width: 100%;
+            padding: 1.5rem;
+            flex: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .game-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.2rem;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
             display: flex;
-            gap: 1.5rem;
-            list-style: none;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-
-        nav a:hover, nav a.active {
+        .panel h3 {
             color: var(--accent);
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .user-panel-btn {
-            background: linear-gradient(135deg, var(--accent), #0284c7);
+        /* Barras de Estado */
+        .stat-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .bar-fill {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        #hp-fill { background-color: var(--red-hp); }
+        #mp-fill { background-color: var(--accent); }
+        #xp-fill { background-color: var(--green-xp); }
+
+        /* Lienzo del Juego (Canvas) */
+        .canvas-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        canvas {
+            background: #050508;
+            border: 2px solid var(--purple-glow);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+            max-width: 100%;
+            height: auto;
+        }
+
+        .game-controls-info {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Inventario y Tienda */
+        .grid-slots {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .slot {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .slot:hover {
+            border-color: var(--accent);
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--purple-glow), #7e22ce);
             color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
+            padding: 0.7rem;
+            border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
-            transition: transform 0.2s, opacity 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: opacity 0.2s, transform 0.1s;
         }
 
-        .user-panel-btn:hover {
-            opacity: 0.95;
+        .btn-action:hover {
+            opacity: 0.9;
             transform: translateY(-1px);
         }
 
-        /* --- CONTENEDOR PRINCIPAL --- */
-        main {
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        /* Hero Banner */
-        .hero-banner {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.6)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1600&auto=format&fit=crop') center/cover;
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 4rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .hero-banner::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, var(--bg-deep), transparent);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-content h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 900;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .hero-content p {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn-main {
-            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-            color: #fff;
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .btn-sec {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-main);
-            padding: 0.8rem 2rem;
-            border-radius: 8px;
-            font-weight: bold;
-            text-decoration: none;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .btn-main:hover, .btn-sec:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
-        }
-
-        /* --- GRID DE SECCIONES --- */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 0.75rem;
-        }
-
-        .card-header h2 {
-            font-size: 1.2rem;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        /* Noticias dinámicas */
-        .news-item {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 3px solid var(--accent);
-            padding: 0.8rem;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 0.8rem;
-            transition: background 0.2s;
-        }
-
-        .news-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .news-date {
-            font-size: 0.75rem;
-            color: var(--gold);
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .news-title {
-            font-size: 0.95rem;
-            font-weight: bold;
-            margin-top: 0.2rem;
-        }
-
-        /* Ranking de Jugadores */
-        .ranking-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .ranking-table th, .ranking-table td {
-            padding: 0.7rem;
-            text-align: left;
-            font-size: 0.9rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .ranking-table th {
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .rank-badge {
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            text-align: center;
-            line-height: 24px;
-            border-radius: 50%;
-            font-weight: bold;
-            font-size: 0.8rem;
-        }
-
-        .rank-1 { background: var(--gold); color: #000; }
-        .rank-2 { background: #94a3b8; color: #000; }
-        .rank-3 { background: #b45309; color: #fff; }
-
-        /* Tienda / Mercado Interactivo */
-        .shop-filter {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .filter-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-muted);
-            padding: 0.3rem 0.8rem;
+        .log-box {
+            background: rgba(0, 0, 0, 0.4);
             border-radius: 6px;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .filter-btn.active, .filter-btn:hover {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-        }
-
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 0.8rem;
-            max-height: 250px;
-            overflow-y: auto;
-            padding-right: 0.2rem;
-        }
-
-        .shop-item {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 8px;
-            padding: 0.8rem;
-            text-align: center;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .shop-item:hover {
-            transform: translateY(-2px);
-            border-color: var(--accent);
-        }
-
-        .shop-item h4 {
-            font-size: 0.9rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .shop-item p {
+            padding: 0.5rem;
             font-size: 0.8rem;
-            color: var(--gold);
-            font-weight: bold;
-        }
-
-        /* Chat de Comunidad / Estadísticas */
-        .stats-box {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
+            height: 100px;
+            overflow-y: auto;
+            color: #cbd5e1;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .stat-value {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent);
-            margin-top: 0.3rem;
-        }
-
-        /* Modal de Inicio de Sesión / Registro */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            display: flex;
+        /* Controles móviles táctiles alternativos */
+        .mobile-controls {
+            display: none;
+            grid-template-columns: repeat(3, 60px);
+            gap: 5px;
             justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            margin-top: 10px;
         }
 
-        .modal-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal-box {
-            background: #0f172a;
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            position: relative;
-        }
-
-        .modal-box h3 {
-            margin-bottom: 1.2rem;
-            color: var(--accent);
-            font-size: 1.4rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.4rem;
-        }
-
-        .form-group input {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 0.7rem;
-            border-radius: 6px;
-            color: #fff;
-            outline: none;
-            font-size: 0.95rem;
-        }
-
-        .form-group input:focus {
-            border-color: var(--accent);
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: var(--text-muted);
+        .mobile-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
             font-size: 1.2rem;
+            text-align: center;
             cursor: pointer;
         }
 
-        /* --- FOOTER --- */
-        footer {
-            background: rgba(7, 9, 14, 0.9);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: 3rem;
-        }
-
-        /* --- RESPONSIVE MEDIA QUERIES PARA MÓVIL Y PC --- */
-        @media (max-width: 768px) {
-            header {
-                padding: 1rem;
-            }
-            nav ul {
-                display: none; /* Simplificado para móviles en menú compacto */
-            }
-            main {
-                padding: 1rem;
-            }
-            .hero-banner {
-                padding: 2.5rem 1rem;
-            }
-            .shop-grid {
-                grid-template-columns: 1fr;
+        @media (max-width: 1024px) {
+            .mobile-controls {
+                display: grid;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- CABECERA -->
     <header>
-        <div class="logo-area">
-            <div class="logo-icon"></div>
-            <div class="logo-text">Nexus Realm</div>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#inicio" class="active">Inicio</a></li>
-                <li><a href="#noticias">Noticias</a></li>
-                <li><a href="#mercado">Mercado</a></li>
-                <li><a href="#ranking">Ranking</a></li>
-            </ul>
-        </nav>
-        <button class="user-panel-btn" id="open-modal-btn">Acceso / Registro</button>
+        <h1>Solo Leveling: Awaken</h1>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main id="inicio">
-        
-        <!-- HERO BANNER -->
-        <section class="hero-banner">
-            <div class="hero-content">
-                <h1>El Despertar del Reino</h1>
-                <p>Experimenta gráficos semirrealistas de última generación, combate táctico en tiempo real y una economía totalmente impulsada por la comunidad global de jugadores.</p>
-                <div class="cta-group">
-                    <a href="#mercado" class="btn-main">Explorar Tienda</a>
-                    <a href="#ranking" class="btn-sec">Ver Ranking</a>
-                </div>
+    <div class="game-container">
+        <!-- PANEL IZQUIERDO: ESTADÍSTICAS Y EQUIPAMIENTO -->
+        <div class="panel">
+            <h3>Estado del Cazador</h3>
+            <div class="stat-group">
+                <span class="stat-label">Nivel: <strong id="val-lvl">1</strong></span>
             </div>
-        </section>
+            <div class="stat-group">
+                <span class="stat-label"><span>Vida (HP)</span> <span id="val-hp">100/100</span></span>
+                <div class="bar-container"><div class="bar-fill" id="hp-fill" style="width: 100%;"></div></div>
+            </div>
+            <div class="stat-group">
+                <span class="stat-label"><span>Maná (MP)</span> <span id="val-mp">50/50</span></span>
+                <div class="bar-container"><div class="bar-fill" id="mp-fill" style="width: 100%;"></div></div>
+            </div>
+            <div class="stat-group">
+                <span class="stat-label"><span>Experiencia (XP)</span> <span id="val-xp">0/100</span></span>
+                <div class="bar-container"><div class="bar-fill" id="xp-fill" style="width: 0%;"></div></div>
+            </div>
 
-        <!-- GRID DE COMPONENTES DINÁMICOS -->
-        <div class="dashboard-grid">
-            
-            <!-- TARJETA DE NOTICIAS -->
-            <section class="card" id="noticias">
-                <div class="card-header">
-                    <h2>📰 Últimas Noticias</h2>
-                </div>
-                <div class="news-item">
-                    <div class="news-date">25 Jul 2026</div>
-                    <div class="news-title">Parche 2.4: Nuevos efectos de iluminación semirreal en mapas oscuros</div>
-                </div>
-                <div class="news-item">
-                    <div class="news-date">18 Jul 2026</div>
-                    <div class="news-title">Torneo de Clanes Global: ¡Inscripciones abiertas con premios exclusivos!</div>
-                </div>
-                <div class="news-item">
-                    <div class="news-date">10 Jul 2026</div>
-                    <div class="news-title">Optimización para dispositivos Android e iOS completada con éxito.</div>
-                </div>
-            </section>
-
-            <!-- TARJETA DE MERCADO / TIENDA -->
-            <section class="card" id="mercado">
-                <div class="card-header">
-                    <h2>⚔️ Mercado Negro</h2>
-                </div>
-                <div class="shop-filter">
-                    <button class="filter-btn active" onclick="filterShop('all')">Todos</button>
-                    <button class="filter-btn" onclick="filterShop('weapon')">Armas</button>
-                    <button class="filter-btn" onclick="filterShop('armor')">Armaduras</button>
-                </div>
-                <div class="shop-grid" id="shop-container">
-                    <div class="shop-item" data-category="weapon">
-                        <h4>Espada del Abismo</h4>
-                        <p>1,250 🪙</p>
-                    </div>
-                    <div class="shop-item" data-category="armor">
-                        <h4>Coraza de Titanio</h4>
-                        <p>2,100 🪙</p>
-                    </div>
-                    <div class="shop-item" data-category="weapon">
-                        <h4>Arco de Sombra</h4>
-                        <p>950 🪙</p>
-                    </div>
-                    <div class="shop-item" data-category="armor">
-                        <h4>Casco Protector</h4>
-                        <p>600 🪙</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TARJETA DE RANKING -->
-            <section class="card" id="ranking">
-                <div class="card-header">
-                    <h2>🏆 Tabla de Honor</h2>
-                </div>
-                <table class="ranking-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Guerrero</th>
-                            <th>Nivel</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="rank-badge rank-1">1</span></td>
-                            <td>ZeusKilled</td>
-                            <td>99</td>
-                        </tr>
-                        <tr>
-                            <td><span class="rank-badge rank-2">2</span></td>
-                            <td>Valkyria</td>
-                            <td>97</td>
-                        </tr>
-                        <tr>
-                            <td><span class="rank-badge rank-3">3</span></td>
-                            <td>ShadowStike</td>
-                            <td>95</td>
-                        </tr>
-                        <tr>
-                            <td><span class="rank-badge" style="background:rgba(255,255,255,0.1)">4</span></td>
-                            <td>AresGaming</td>
-                            <td>91</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <!-- ESTADÍSTICAS DEL SERVIDOR -->
-            <section class="card">
-                <div class="card-header">
-                    <h2>📊 Estado del Servidor</h2>
-                </div>
-                <div class="stats-box">
-                    <div class="stat-card">
-                        <div style="font-size:0.85rem; color:var(--text-muted)">Online Ahora</div>
-                        <div class="stat-value" id="online-players">4,821</div>
-                    </div>
-                    <div class="stat-card">
-                        <div style="font-size:0.85rem; color:var(--text-muted)">Latencia Ping</div>
-                        <div class="stat-value" style="color: #22c55e;">18 ms</div>
-                    </div>
-                </div>
-            </section>
-
+            <h3>Atributos</h3>
+            <div style="font-size: 0.9rem; display: flex; flex-direction: column; gap: 0.3rem;">
+                <span>Fuerza de Ataque: <strong id="val-atk">15</strong></span>
+                <span>Monedas: <strong id="val-gold" style="color: var(--gold);">50 🪙</strong></span>
+                <span>Zona Actual: <strong id="val-zone" style="color: var(--accent);">Ciudad Segura</strong></span>
+            </div>
+            <button class="btn-action" onclick="toggleZone()">Cambiar a Mazmorra</button>
         </div>
 
-    </main>
+        <!-- CENTRO: LIENZO DEL JUEGO -->
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            <div class="game-controls-info">Usa <strong>W, A, S, D</strong> para moverte | Espacio o Click para Atacar/Usar Magia</div>
+            
+            <!-- Controles para dispositivos móviles -->
+            <div class="mobile-controls">
+                <div></div>
+                <button class="mobile-btn" ontouchstart="movePlayer(0, -1)">⬆️</button>
+                <div></div>
+                <button class="mobile-btn" ontouchstart="movePlayer(-1, 0)">⬅️</button>
+                <button class="mobile-btn" ontouchstart="playerAttack()">⚔️</button>
+                <button class="mobile-btn" ontouchstart="movePlayer(1, 0)">➡️</button>
+                <div></div>
+                <button class="mobile-btn" ontouchstart="movePlayer(0, 1)">⬇️</button>
+                <div></div>
+            </div>
+        </div>
 
-    <!-- MODAL DE ACCESO / REGISTRO -->
-    <div class="modal-overlay" id="auth-modal">
-        <div class="modal-box">
-            <button class="close-modal" id="close-modal-btn">&times;</button>
-            <h3>Portal de Usuario</h3>
-            <form onsubmit="event.preventDefault(); alert('¡Sesión simulada correctamente!'); toggleModal();">
-                <div class="form-group">
-                    <label>Correo Electrónico</label>
-                    <input type="email" placeholder="usuario@realm.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Contraseña</label>
-                    <input type="password" placeholder="••••••••" required>
-                </div>
-                <button type="submit" class="user-panel-btn" style="width: 100%; margin-top: 0.5rem;">Ingresar al Juego</button>
-            </form>
+        <!-- PANEL DERECHO: BOLSO, TIENDA Y LOGS -->
+        <div class="panel">
+            <h3>Bolso / Inventario</h3>
+            <div class="grid-slots" id="inventory-slots">
+                <div class="slot" title="Poción de Vida" onclick="usePotion(0)">🧪</div>
+                <div class="slot" title="Vacío"></div>
+                <div class="slot" title="Vacío"></div>
+                <div class="slot" title="Vacío"></div>
+            </div>
+            <button class="btn-action" onclick="buyPotion()">Comprar Poción (20 🪙)</button>
+
+            <h3>Registro de Sucesos</h3>
+            <div class="log-box" id="game-log">
+                [Sistema]: Bienvenido Cazador. Te encuentras en la zona segura. Entra a la mazmorra para cazar monstruos.
+            </div>
         </div>
     </div>
 
-    <!-- PIE DE PÁGINA -->
-    <footer>
-        <p>&copy; 2026 Nexus Realm. Desarrollado con estilo semirrealista para Android y PC.</p>
-    </footer>
-
-    <!-- SCRIPTS DINÁMICOS -->
     <script>
-        // Control del Modal de Acceso
-        const modal = document.getElementById('auth-modal');
-        const openBtn = document.getElementById('open-modal-btn');
-        const closeBtn = document.getElementById('close-modal-btn');
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
 
-        function toggleModal() {
-            modal.classList.toggle('open');
+        // Estado del Jugador
+        let player = {
+            x: 300,
+            y: 200,
+            size: 20,
+            speed: 4,
+            hp: 100,
+            maxHp: 100,
+            mp: 50,
+            maxMp: 50,
+            xp: 0,
+            maxXp: 100,
+            level: 1,
+            atk: 15,
+            gold: 50,
+            potions: 1
+        };
+
+        let inDungeon = false;
+        let keys = {};
+        let monsters = [];
+        let projectiles = [];
+
+        // Registro en pantalla
+        function addLog(text) {
+            const logBox = document.getElementById('game-log');
+            logBox.innerHTML += `<br>${text}`;
+            logBox.scrollTop = logBox.scrollHeight;
         }
 
-        openBtn.addEventListener('click', toggleModal);
-        closeBtn.addEventListener('click', toggleModal);
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) toggleModal();
+        // Controles de Teclado
+        window.addEventListener('keydown', (e) => {
+            keys[e.key.toLowerCase()] = true;
+            if (e.code === 'Space') {
+                playerAttack();
+            }
         });
 
-        // Filtrado interactivo de la tienda
-        function filterShop(category) {
-            // Actualizar botones activos
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        window.addEventListener('keyup', (e) => {
+            keys[e.key.toLowerCase()] = false;
+        });
 
-            // Filtrar elementos
-            const items = document.querySelectorAll('.shop-item');
-            items.forEach(item => {
-                if (category === 'all' || item.getAttribute('data-category') === category) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+        // Cambiar entre Ciudad y Mazmorra
+        function toggleZone() {
+            inDungeon = !inDungeon;
+            const btn = document.querySelector('.panel button');
+            if (inDungeon) {
+                document.getElementById('val-zone').innerText = "Mazmorra Oscura";
+                document.getElementById('val-zone').style.color = "var(--red-hp)";
+                btn.innerText = "Regresar a Ciudad";
+                spawnMonsters();
+                addLog("[Sistema]: ¡Has entrado a la mazmorra! Cuidado con las bestias.");
+            } else {
+                document.getElementById('val-zone').innerText = "Ciudad Segura";
+                document.getElementById('val-zone').style.color = "var(--accent)";
+                btn.innerText = "Cambiar a Mazmorra";
+                monsters = [];
+                addLog("[Sistema]: Regresaste a la zona segura a descansar y comerciar.");
+            }
         }
 
-        // Simulación dinámica de jugadores online fluctuantes
-        setInterval(() => {
-            const onlineElem = document.getElementById('online-players');
-            let current = parseInt(onlineElem.innerText.replace(',', ''));
-            let change = Math.floor(Math.random() * 11) - 5; // Cambia entre -5 y +5
-            onlineElem.innerText = (current + change).toLocaleString();
-        }, 4000);
+        // Generar Monstruos en la Mazmorra
+        function spawnMonsters() {
+            monsters = [];
+            for (let i = 0; i < 3 + player.level; i++) {
+                monsters.push({
+                    x: Math.random() * (canvas.width - 40) + 20,
+                    y: Math.random() * (canvas.height - 40) + 20,
+                    size: 18,
+                    hp: 30 + (player.level * 10),
+                    maxHp: 30 + (player.level * 10),
+                    speed: 1 + Math.random()
+                });
+            }
+        }
+
+        // Ataque del Jugador (Magia / Espada)
+        function playerAttack() {
+            if (!inDungeon) {
+                addLog("[Sistema]: No puedes atacar en la ciudad segura.");
+                return;
+            }
+            // Crear proyectil mágico frontal
+            projectiles.push({
+                x: player.x,
+                y: player.y,
+                dx: 6,
+                dy: 0,
+                radius: 6
+            });
+            addLog("[Cazador]: ¡Golpe de Maná lanzado!");
+        }
+
+        // Usar Poción desde el Bolso
+        function usePotion(slotIndex) {
+            if (slotIndex === 0 && player.potions > 0) {
+                if (player.hp >= player.maxHp) {
+                    addLog("[Sistema]: Tu vida ya está al máximo.");
+                    return;
+                }
+                player.potions--;
+                player.hp = Math.min(player.maxHp, player.hp + 50);
+                addLog("[Sistema]: ¡Usaste una poción de vida! (+50 HP)");
+                updateUI();
+            } else {
+                addLog("[Sistema]: No hay pociones en este espacio.");
+            }
+        }
+
+        // Comprar pociones en la Tienda
+        function buyPotion() {
+            if (player.gold >= 20) {
+                player.gold -= 20;
+                player.potions++;
+                addLog("[Tienda]: Compraste una poción de vida.");
+                updateUI();
+            } else {
+                addLog("[Tienda]: No tienes suficientes monedas.");
+            }
+        }
+
+        // Actualizar Elementos Visuales de Interfaz
+        function updateUI() {
+            document.getElementById('val-lvl').innerText = player.level;
+            document.getElementById('val-hp').innerText = `${player.hp}/${player.maxHp}`;
+            document.getElementById('hp-fill').style.width = `${(player.hp / player.maxHp) * 100}%`;
+            document.getElementById('val-mp').innerText = `${player.mp}/${player.maxMp}`;
+            document.getElementById('mp-fill').style.width = `${(player.mp / player.maxMp) * 100}%`;
+            document.getElementById('val-xp').innerText = `${player.xp}/${player.maxXp}`;
+            document.getElementById('xp-fill').style.width = `${(player.xp / player.maxXp) * 100}%`;
+            document.getElementById('val-atk').innerText = player.atk;
+            document.getElementById('val-gold').innerText = `${player.gold} 🪙`;
+        }
+
+        // Movimiento móvil táctil directo
+        function movePlayer(dx, dy) {
+            player.x = Math.max(15, Math.min(canvas.width - 15, player.x + dx * 20));
+            player.y = Math.max(15, Math.min(canvas.height - 15, player.y + dy * 20));
+        }
+
+        // Bucle Principal del Juego
+        function update() {
+            // Movimiento por teclado PC
+            if (keys['w'] || keys['arrowup']) player.y = Math.max(15, player.y - player.speed);
+            if (keys['s'] || keys['arrowdown']) player.y = Math.min(canvas.height - 15, player.y + player.speed);
+            if (keys['a'] || keys['arrowleft']) player.x = Math.max(15, player.x - player.speed);
+            if (keys['d'] || keys['arrowright']) player.x = Math.min(canvas.width - 15, player.x + player.speed);
+
+            // Actualizar Proyectiles
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                let p = projectiles[i];
+                p.x += p.dx;
+                // Colisión con monstruos
+                for (let j = monsters.length - 1; j >= 0; j--) {
+                    let m = monsters[j];
+                    let dist = Math.hypot(p.x - m.x, p.y - m.y);
+                    if (dist < p.radius + m.size) {
+                        m.hp -= player.atk;
+                        projectiles.splice(i, 1);
+                        if (m.hp <= 0) {
+                            monsters.splice(j, 1);
+                            player.xp += 40;
+                            player.gold += 15;
+                            addLog("[Sistema]: ¡Monstruo derrotado! +40 XP, +15 Monedas");
+                            // Subida de Nivel
+                            if (player.xp >= player.maxXp) {
+                                player.level++;
+                                player.xp = 0;
+                                player.maxXp = Math.floor(player.maxXp * 1.5);
+                                player.maxHp += 25;
+                                player.hp = player.maxHp;
+                                player.atk += 5;
+                                addLog(`⭐ ¡FELICIDADES! Subiste al Nivel ${player.level}. Tus estadísticas aumentaron.`);
+                            }
+                        }
+                        break;
+                    }
+                }
+                // Remover proyectil fuera de pantalla
+                if (p && (p.x > canvas.width || p.x < 0)) {
+                    projectiles.splice(i, 1);
+                }
+            }
+
+            // IA simple de Monstruos en la Mazmorra
+            if (inDungeon) {
+                monsters.forEach(m => {
+                    let angle = Math.atan2(player.y - m.y, player.x - m.x);
+                    m.x += Math.cos(angle) * m.speed;
+                    m.y += Math.sin(angle) * m.speed;
+
+                    // Daño al jugador si colisionan
+                    let dist = Math.hypot(player.x - m.x, player.y - m.y);
+                    if (dist < player.size + m.size) {
+                        player.hp -= 0.5; // Daño continuo leve
+                        if (player.hp <= 0) {
+                            player.hp = player.maxHp;
+                            inDungeon = false;
+                            document.getElementById('val-zone').innerText = "Ciudad Segura";
+                            document.getElementById('val-zone').style.color = "var(--accent)";
+                            document.querySelector('.panel button').innerText = "Cambiar a Mazmorra";
+                            monsters = [];
+                            addLog("[Sistema]: Has muerto en la mazmorra y reapareciste en la ciudad segura.");
+                        }
+                    }
+                });
+
+                // Repoblar si se vacía la mazmorra
+                if (monsters.length === 0) {
+                    spawnMonsters();
+                    addLog("[Sistema]: ¡Has despejado la zona! Nuevos enemigos acechan.");
+                }
+            }
+
+            updateUI();
+        }
+
+        // Renderizado Gráfico
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Dibujar al Cazador (Estilo Solo Leveling - Azul brillante / Tono místico)
+            ctx.fillStyle = "#38bdf8";
+            ctx.beginPath();
+            ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#a855f7";
+            ctx.stroke();
+
+            // Dibujar Proyectiles
+            ctx.fillStyle = "#a855f7";
+            projectiles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Dibujar Monstruos (si está en la mazmorra)
+            if (inDungeon) {
+                monsters.forEach(m => {
+                    ctx.fillStyle = "#ef4444";
+                    ctx.beginPath();
+                    ctx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.strokeStyle = "#991b1b";
+                    ctx.stroke();
+                });
+            }
+        }
+
+        // Bucle de animación continuo
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        loop();
     </script>
 </body>
 </html>
